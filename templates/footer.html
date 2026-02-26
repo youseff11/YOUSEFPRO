@@ -1,0 +1,330 @@
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700;900&family=Cairo:wght@300;400;700;900&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --neon-cyan: #00f3ff;
+        --neon-purple: #bc13fe;
+        --dark-bg: #050505;
+        --glass-bg: rgba(16, 16, 24, 0.4);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --text-muted: #8892b0;
+    }
+
+    .cyber-footer {
+        background-color: var(--dark-bg);
+        color: white;
+        padding: 100px 0 30px;
+        position: relative;
+        overflow: hidden;
+        border-top: 1px solid var(--glass-border);
+        font-family: 'Space Grotesk', 'Cairo', sans-serif;
+        z-index: 10;
+    }
+
+    .cyber-footer::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-image: 
+            linear-gradient(var(--glass-border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+        background-size: 40px 40px;
+        opacity: 0.1;
+        z-index: -2;
+        transform: perspective(500px) rotateX(60deg) scale(2);
+        transform-origin: top center;
+    }
+
+    .footer-glow-left {
+        position: absolute;
+        bottom: -200px;
+        left: -200px;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(188, 19, 254, 0.08) 0%, transparent 60%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .footer-glow-right {
+        position: absolute;
+        top: -150px;
+        right: -150px;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(0, 243, 255, 0.05) 0%, transparent 60%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .footer-brand {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 2rem;
+        font-weight: 900;
+        margin-bottom: 20px;
+        display: inline-block;
+        text-decoration: none;
+        color: #fff !important;
+        letter-spacing: 2px;
+        text-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+    }
+
+    .footer-brand span {
+        color: var(--neon-cyan);
+    }
+
+    .footer-desc {
+        color: var(--text-muted);
+        line-height: 1.8;
+        font-size: 0.95rem;
+        max-width: 320px;
+        font-family: 'Cairo', sans-serif;
+    }
+
+    .footer-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: var(--neon-purple);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        font-family: 'Syncopate', sans-serif;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .footer-title::before {
+        content: '';
+        width: 15px;
+        height: 2px;
+        background: var(--neon-purple);
+    }
+
+    .footer-link {
+        display: flex;
+        align-items: center;
+        color: var(--text-muted) !important;
+        text-decoration: none;
+        margin-bottom: 15px;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        font-size: 0.95rem;
+        font-family: 'Cairo', sans-serif;
+    }
+
+    .footer-link::before {
+        content: '>';
+        color: var(--neon-cyan);
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+        font-family: 'Space Grotesk';
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .footer-link:hover {
+        color: var(--neon-cyan) !important;
+        text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        transform: translateX(-10px);
+    }
+
+    .footer-link:hover::before {
+        opacity: 1;
+        transform: translateX(0);
+        margin-left: 8px;
+    }
+
+    .social-wrapper {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .social-hex {
+        width: 45px;
+        height: 45px;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: all 0.4s ease;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        backdrop-filter: blur(5px);
+    }
+
+    .social-hex:hover {
+        background: var(--neon-cyan);
+        color: #000;
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 20px var(--neon-cyan);
+        transform: translateY(-5px) scale(1.1);
+    }
+
+    .cyber-input-group {
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--glass-border);
+        padding: 5px;
+        display: flex;
+        position: relative;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        clip-path: polygon(0 0, 100% 0, 100% 70%, 95% 100%, 0 100%);
+    }
+
+    .cyber-input-group:focus-within {
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+    }
+
+    .cyber-input {
+        background: transparent;
+        border: none;
+        color: var(--neon-cyan);
+        padding: 10px 15px;
+        width: 100%;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.9rem;
+    }
+
+    .cyber-input::placeholder {
+        color: rgba(136, 146, 176, 0.5);
+    }
+
+    .cyber-input:focus {
+        outline: none;
+    }
+
+    .cyber-btn {
+        background: var(--glass-bg);
+        border: 1px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        padding: 0 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Syncopate', sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+    }
+
+    .cyber-btn:hover {
+        background: var(--neon-cyan);
+        color: #000;
+        box-shadow: 0 0 15px var(--neon-cyan);
+    }
+
+    .footer-bottom {
+        margin-top: 80px;
+        padding-top: 30px;
+        border-top: 1px solid var(--glass-border);
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .sys-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Space Grotesk', sans-serif;
+        letter-spacing: 2px;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--neon-cyan);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--neon-cyan);
+        animation: blink 2s infinite;
+    }
+
+    .creator-tag {
+        color: #fff;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .creator-tag span {
+        color: var(--neon-purple);
+        text-shadow: 0 0 10px rgba(188, 19, 254, 0.5);
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+</style>
+
+<footer class="cyber-footer">
+    <div class="footer-glow-left"></div>
+    <div class="footer-glow-right"></div>
+    
+    <div class="container relative z-10">
+        <div class="row gy-5">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                <a class="footer-brand" href="/">JOO'S<span>PROTOFOLIO</span></a>
+                <p class="footer-desc mt-3">نحن ندمج التكنولوجيا بالفن لنصنع تجارب رقمية خارجة عن المألوف. أنظمة برمجية مصممة للمستقبل.</p>
+                
+                <div class="social-wrapper">
+                    <!-- <a href="#" class="social-hex"><i class="fab fa-github"></i></a> -->
+                    <a href="https://www.linkedin.com/in/yousef-osama-b92b312ab?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="social-hex"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://wa.me/201143890607" class="social-hex"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://discord.com/users/1youseff_" class="social-hex"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6 ms-auto" data-aos="fade-up" data-aos-delay="100">
+                <h5 class="footer-title">SYS_MAP</h5>
+                <div class="d-flex flex-column">
+                    <a href="/" class="footer-link">الرئيسية</a>
+                    <a href="{% url 'project' %}" class="footer-link">أرشيف المشاريع</a>
+                    <a href="{% url 'project' %}" class="footer-link">الشبكة العصبية</a>
+                    <a href="{% url 'project' %}" class="footer-link">البروتوكولات</a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <h5 class="footer-title">MODULES</h5>
+                <div class="d-flex flex-column">
+                    <a href="{% url 'project' %}" class="footer-link">هندسة الويب</a>
+                    <a href="{% url 'project' %}" class="footer-link">تصميم UI/UX</a>
+                    <a href="{% url 'project' %}" class="footer-link">قواعد البيانات</a>
+                    <a href="{% url 'project' %}" class="footer-link">أمن المعلومات</a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <h5 class="footer-title">UPLINK</h5>
+                <p class="footer-desc mb-3" style="font-size: 0.85rem;">قم بتهيئة الاتصال لاستقبال التحديثات الأمنية والتقنية.</p>
+                
+                <div class="cyber-input-group">
+                    <input type="text" class="cyber-input" placeholder="ENTER_EMAIL_ADDRESS...">
+                    <button class="cyber-btn">
+                        <i class="fas fa-terminal"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="sys-status">
+                <div class="status-dot"></div>
+                SYSTEM ONLINE_ // © 2026 
+            </div>
+            
+            <div class="creator-tag">
+                BUILT BY <span>YOUSEF OSAMA</span>
+            </div>
+        </div>
+    </div>
+</footer>

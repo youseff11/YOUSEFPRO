@@ -1,0 +1,424 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700;900&family=Alexandria:wght@300;400;500;700;800&family=Space+Grotesk:wght@300;500;700&family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --neon-cyan: #00f3ff;
+        --neon-purple: #bc13fe;
+        --dark-bg: #030305;
+        --glass-bg: rgba(12, 12, 18, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --whatsapp-green: #25D366;
+        --luxury-ease: cubic-bezier(0.23, 1, 0.32, 1);
+        --accent-gold: #c5a059;
+    }
+
+    body {
+        background-color: var(--dark-bg);
+        color: #fff;
+        overflow-x: hidden;
+        font-family: 'Alexandria', sans-serif;
+    }
+
+    /* الخلفية والشبكة */
+    .cosmic-engine {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        z-index: -2;
+        background: radial-gradient(circle at 50% 50%, #0a0014 0%, #030305 80%);
+    }
+
+    .grid-overlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background-image: 
+            linear-gradient(var(--glass-border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: -1;
+        opacity: 0.15;
+        transform: perspective(500px) rotateX(60deg) translateY(-100px);
+    }
+
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.5;
+        animation: float-particle 15s infinite linear;
+    }
+
+    @keyframes float-particle {
+        0% { transform: translateY(0) opacity: 0; }
+        50% { opacity: 0.8; }
+        100% { transform: translateY(-100vh) opacity: 0; }
+    }
+
+    .contact-section {
+        padding: 160px 0 100px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .contact-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(25px);
+        border: 1px solid var(--glass-border);
+        border-radius: 30px;
+        padding: 50px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .contact-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 4px;
+        background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+    }
+
+    .cyber-alert {
+        background: rgba(0, 243, 255, 0.1);
+        border: 1px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        text-align: center;
+        font-family: 'Alexandria', sans-serif;
+        font-weight: 700;
+        box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        animation: fadeInDown 0.5s ease-out;
+    }
+
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .info-box { text-align: right; }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 30px;
+        transition: 0.3s;
+        flex-direction: row;
+    }
+
+    .info-item:hover { transform: translateX(-10px); }
+
+    .info-icon {
+        width: 55px;
+        height: 55px;
+        background: rgba(0, 243, 255, 0.05);
+        border: 1px solid rgba(0, 243, 255, 0.2);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--neon-cyan);
+        font-size: 1.3rem;
+        box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+        flex-shrink: 0;
+    }
+
+    .info-content h4 {
+        font-size: 0.8rem;
+        color: var(--neon-cyan);
+        margin: 0;
+        letter-spacing: 1px;
+        font-weight: 700;
+    }
+
+    .info-content p {
+        font-size: 1rem;
+        color: #fff;
+        margin: 5px 0 0;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .input-group-cyber {
+        position: relative;
+        margin-bottom: 25px;
+        text-align: right;
+    }
+
+    .label-cyber {
+        display: block;
+        font-size: 0.85rem;
+        color: #a0a0b0;
+        margin-bottom: 10px;
+        margin-right: 5px;
+    }
+
+    .input-cyber {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 15px 20px;
+        color: #fff;
+        transition: all 0.4s;
+        outline: none;
+        text-align: right;
+    }
+
+    .input-cyber:focus {
+        border-color: var(--neon-cyan);
+        background: rgba(0, 243, 255, 0.05);
+        box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 18px;
+        background: transparent;
+        border: 1px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.4s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .btn-submit:hover {
+        background: var(--neon-cyan);
+        color: #000;
+        box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+        transform: translateY(-3px);
+    }
+
+    /* --- WhatsApp Multi-Contact Style --- */
+    .wa-float-container {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 15px;
+    }
+
+    .wa-contact-list {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 5px;
+        transform-origin: bottom right;
+    }
+
+    .wa-contact-item {
+        background: white;
+        color: #333;
+        padding: 12px 20px;
+        border-radius: 50px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: 'Cairo', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.3s var(--luxury-ease);
+        white-space: nowrap;
+        border: 1px solid #eee;
+    }
+
+    .wa-contact-item i { color: var(--whatsapp-green); font-size: 18px; }
+
+    .wa-contact-item:hover {
+        transform: translateX(-10px);
+        background: var(--neon-cyan);
+        color: #000;
+    }
+    
+    .wa-contact-item:hover i { color: #000; }
+
+    .wa-main-btn {
+        width: 65px;
+        height: 65px;
+        background: var(--whatsapp-green);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 32px;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        transition: 0.4s var(--luxury-ease);
+    }
+
+    .wa-main-btn:hover { transform: scale(1.1) rotate(15deg); }
+
+    .wa-float-container.active .wa-contact-list {
+        display: flex;
+        animation: slideIn 0.4s var(--luxury-ease) forwards;
+    }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(20px) scale(0.8); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .main-title {
+        font-family: 'Syncopate', sans-serif;
+        font-weight: 900;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+    }
+
+    @media (max-width: 991px) {
+        .contact-card { padding: 30px; }
+        .info-box { margin-bottom: 40px; }
+        .contact-section { padding-top: 120px; }
+    }
+    
+</style>
+
+<div class="wa-float-container" id="waContainer">
+    <div class="wa-contact-list">
+        <a href="https://wa.me/201143890607?" target="_blank" class="wa-contact-item">
+            <span>01143890607</span>
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://wa.me/201062201552?" target="_blank" class="wa-contact-item">
+            <span>01062201552</span>
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+    <div class="wa-main-btn" onclick="document.getElementById('waContainer').classList.toggle('active')">
+        <i class="fa-brands fa-whatsapp"></i>
+    </div>
+</div>
+
+<div class="cosmic-engine" id="particles"></div>
+<div class="grid-overlay"></div>
+
+<section class="contact-section">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span style="color: var(--neon-cyan); letter-spacing: 5px; font-size: 0.7rem; font-weight: 800; border: 1px solid var(--neon-cyan); padding: 5px 15px; border-radius: 50px; margin-bottom: 15px; display: inline-block;">اتصال_بالنظام</span>
+            <h1 class="main-title">مركز <span style="color: var(--neon-cyan)">التواصل</span></h1>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-11">
+                <div class="contact-card" data-aos="zoom-in">
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="cyber-alert">
+                                <i class="fa-solid fa-circle-check" style="margin-left: 10px;"></i> {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <div class="row g-5">
+                        <div class="col-lg-5">
+                            <div class="info-box">
+                                <h2 style="font-weight: 800; margin-bottom: 35px; color: #fff; font-size: 1.6rem;">دعنا نتحدث عن مشروعك القادم</h2>
+                                
+                                <div class="info-item">
+                                    <div class="info-icon"><i class="fa-regular fa-envelope"></i></div>
+                                    <div class="info-content">
+                                        <h4>البريد الإلكتروني</h4>
+                                        <p>1youseff777@gmail.com</p>
+                                    </div>
+                                </div>
+
+                                <div class="info-item">
+                                    <div class="info-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                                    <div class="info-content">
+                                        <h4>رقم الهاتف</h4>
+                                        <p>+201143890607</p>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            </div>
+
+                        <div class="col-lg-7">
+                            <form method="POST" class="cyber-form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="input-group-cyber">
+                                            <label class="label-cyber">الاسم بالكامل</label>
+                                            <input type="text" name="name" class="input-cyber" placeholder="الاسم " required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group-cyber">
+                                            <label class="label-cyber">البريد الإلكتروني</label>
+                                            <input type="email" name="email" class="input-cyber" placeholder="البريد" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-group-cyber">
+                                    <label class="label-cyber">عنوان الرسالة</label>
+                                    <input type="text" name="subject" class="input-cyber" placeholder="طلب مشروع / تعاون عمل">
+                                </div>
+
+                                <div class="input-group-cyber">
+                                    <label class="label-cyber">تفاصيل الرسالة</label>
+                                    <textarea name="message" class="input-cyber" rows="5" placeholder="اكتب هنا تفاصيل فكرتك أو مشروعك..."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn-submit">
+                                    إرسال الرسالة <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init({ duration: 1000, once: true });
+
+    // WhatsApp logic: Close when clicking outside
+    document.addEventListener('click', (e) => {
+        const container = document.getElementById('waContainer');
+        if (!container.contains(e.target)) {
+            container.classList.remove('active');
+        }
+    });
+
+    // إنشاء جزيئات الخلفية
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 50; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.top = Math.random() * 100 + 'vh';
+        const size = Math.random() * 3 + 1;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.animationDelay = Math.random() * 15 + 's';
+        p.style.background = i % 2 === 0 ? 'var(--neon-cyan)' : 'var(--neon-purple)';
+        particlesContainer.appendChild(p);
+    }
+</script>
+{% endblock %}

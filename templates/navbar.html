@@ -1,0 +1,178 @@
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    :root {
+        --main-bg: #0f172a;
+        --accent-glow: #38bdf8;
+        --purple-glow: #818cf8;
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text-bright: #f8fafc;
+    }
+
+    .nav-holder {
+        position: fixed; /* تم استخدام fixed لضمان الثبات التام أثناء التمدد */
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: 20px 0;
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .navbar-kharaq {
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid var(--glass-border);
+        border-radius: 100px;
+        padding: 10px 30px;
+        margin: 0 auto;
+        max-width: 95%;
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); /* حركة انسيابية للتمدد */
+        font-family: 'Outfit', 'Cairo', sans-serif;
+    }
+
+    /* التعديلات عند السكرول */
+    .nav-holder.scrolled {
+        padding: 0; /* إزالة المسافة العلوية */
+    }
+
+    .nav-holder.scrolled .navbar-kharaq {
+        background: rgba(15, 23, 42, 0.95);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 
+                    0 0 20px rgba(56, 189, 248, 0.1);
+        padding: 15px 5%; /* زيادة الحشو الجانبي */
+        max-width: 100%; /* العرض كامل */
+        border-radius: 0; /* إزالة الانحناء ليصبح ملتصقاً بالحواف */
+        border-left: none;
+        border-right: none;
+        border-top: none;
+    }
+
+    .navbar-brand {
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: var(--text-bright) !important;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        letter-spacing: 1px;
+    }
+
+    .logo-icon {
+        background: linear-gradient(135deg, var(--accent-glow), var(--purple-glow));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
+        animation: pulse-glow 2s infinite;
+    }
+
+    .nav-link {
+        color: rgba(248, 250, 252, 0.8) !important;
+        font-weight: 500;
+        font-size: 0.95rem;
+        padding: 8px 15px !important;
+        transition: 0.3s;
+        position: relative;
+    }
+
+    .nav-link:hover {
+        color: var(--accent-glow) !important;
+        text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-action {
+        background: linear-gradient(135deg, #38bdf8, #818cf8);
+        border: none;
+        border-radius: 50px;
+        padding: 10px 25px !important;
+        color: #fff !important;
+        font-weight: 700;
+        position: relative;
+        overflow: hidden;
+        transition: 0.4s;
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-action::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: 0.5s;
+    }
+
+    .btn-action:hover::before {
+        left: 100%;
+    }
+
+    .btn-action:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5);
+    }
+
+    @media (max-width: 991px) {
+        .navbar-collapse {
+            background: rgba(15, 23, 42, 0.95);
+            margin-top: 20px;
+            padding: 25px;
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+        .navbar-kharaq { border-radius: 25px; }
+    }
+
+    @keyframes pulse-glow {
+        0% { filter: drop-shadow(0 0 2px var(--accent-glow)); }
+        50% { filter: drop-shadow(0 0 12px var(--accent-glow)); }
+        100% { filter: drop-shadow(0 0 2px var(--accent-glow)); }
+    }
+</style>
+
+<div class="nav-holder" id="navHolder">
+    <nav class="navbar navbar-expand-lg navbar-kharaq">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <span>JOO'S<span style="color:var(--accent-glow)">PROTOFOLIO</span></span>
+            </a>
+
+            <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <i class="fa-solid fa-bars-staggered text-white"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fa-solid fa-house-user me-2 opacity-50"></i>الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'project' %}"><i class="fa-solid fa-code-merge me-2 opacity-50"></i>المشاريع</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}"><i class="fa-solid fa-comments me-2 opacity-50"></i>تواصل معي</a>
+                    </li>
+                    <li class="nav-item mx-lg-3">
+                        <a class="nav-link btn-action" href="#">
+                            <i class="fa-regular fa-paper-plane me-2"></i>ابدأ مشروعك
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    window.addEventListener('scroll', () => {
+        const holder = document.getElementById('navHolder');
+        if (window.scrollY > 30) {
+            holder.classList.add('scrolled');
+        } else {
+            holder.classList.remove('scrolled');
+        }
+    });
+</script>

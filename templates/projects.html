@@ -1,0 +1,425 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700;900&family=Alexandria:wght@300;400;500;700;800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<style>
+    :root {
+        --neon-cyan: #00f3ff;
+        --neon-purple: #bc13fe;
+        --dark-bg: #030305;
+        --glass-bg: rgba(12, 12, 18, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.06);
+    }
+
+    body {
+        background-color: var(--dark-bg);
+        color: #fff;
+        overflow-x: hidden;
+        font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .cosmic-engine {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        z-index: -2;
+        background: radial-gradient(circle at 50% 50%, #0a0014 0%, #030305 80%);
+    }
+
+    .grid-overlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background-image: 
+            linear-gradient(var(--glass-border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: -1;
+        opacity: 0.15;
+        transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+        animation: gridMove 25s linear infinite;
+    }
+
+    .particle {
+        position: absolute;
+        background: #fff;
+        border-radius: 50%;
+        opacity: 0;
+        box-shadow: 0 0 12px var(--neon-cyan);
+        animation: float-particle 12s infinite linear;
+    }
+
+    .archive-header {
+        padding: 160px 0 80px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .main-text-glitch {
+        font-family: 'Syncopate', sans-serif;
+        font-size: clamp(2.5rem, 6vw, 5.5rem);
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: -2px;
+        margin-bottom: 25px;
+        text-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+    }
+
+    .status-tag {
+        display: inline-block;
+        padding: 8px 18px;
+        background: rgba(0, 243, 255, 0.05);
+        border: 1px solid rgba(0, 243, 255, 0.3);
+        border-radius: 50px;
+        font-size: 0.75rem;
+        letter-spacing: 4px;
+        color: var(--neon-cyan);
+        margin-bottom: 2rem;
+        box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+    }
+
+    .projects-container {
+        padding-bottom: 150px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .card-vault {
+        background: linear-gradient(145deg, rgba(20,20,30,0.4) 0%, rgba(5,5,10,0.6) 100%);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        position: relative;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+        backdrop-filter: blur(20px);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    .card-vault::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+        opacity: 0;
+        transition: 0.5s;
+    }
+
+    .card-vault:hover {
+        transform: translateY(-12px) scale(1.02);
+        border-color: rgba(0, 243, 255, 0.3);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 40px rgba(0, 243, 255, 0.15);
+    }
+
+    .card-vault:hover::before {
+        opacity: 1;
+    }
+
+    .image-vault {
+        height: 340px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .swiper { width: 100%; height: 100%; }
+
+    .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background-color: #000;
+        transition: filter 0.5s;
+    }
+
+    .card-vault:hover .swiper-slide img {
+        filter: brightness(1.1) contrast(1.1);
+    }
+
+    .content-vault {
+        padding: 40px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .project-id {
+        color: var(--neon-cyan);
+        font-size: 0.75rem;
+        letter-spacing: 4px;
+        font-weight: 700;
+    }
+
+    .project-date {
+        color: #666;
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+    }
+
+    .project-title {
+        font-family: 'Alexandria', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 800;
+        margin: 5px 0 15px 0;
+        background: linear-gradient(90deg, #ffffff, #a0a0b0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        direction: rtl;
+        text-align: right;
+    }
+
+    .project-desc {
+        color: #a0a0b0;
+        font-family: 'Alexandria', sans-serif;
+        font-size: 1rem;
+        line-height: 1.8;
+        font-weight: 400;
+        direction: rtl;
+        text-align: right;
+        margin-bottom: 25px;
+    }
+
+    .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255,255,255,0.05);
+        direction: rtl;
+    }
+
+    .tech-pill {
+        padding: 6px 14px;
+        background: rgba(188, 19, 254, 0.05);
+        border: 1px solid rgba(188, 19, 254, 0.4);
+        color: #e2a0ff;
+        font-size: 0.7rem;
+        border-radius: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+        transition: 0.3s;
+    }
+
+    .card-vault:hover .tech-pill {
+        background: rgba(188, 19, 254, 0.15);
+        border-color: var(--neon-purple);
+        box-shadow: 0 0 10px rgba(188, 19, 254, 0.2);
+    }
+
+    .protocol-btn {
+        margin-top: 30px;
+        padding: 16px 25px;
+        background: rgba(0, 243, 255, 0.05);
+        border: 1px solid var(--neon-cyan);
+        color: var(--neon-cyan);
+        font-family: 'Alexandria', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        text-decoration: none;
+        text-align: center;
+        transition: all 0.4s ease;
+        border-radius: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        direction: rtl;
+        gap: 10px;
+    }
+
+    .protocol-btn:hover {
+        background: var(--neon-cyan);
+        color: #000;
+        box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
+        transform: translateY(-3px);
+    }
+
+    .icon-btn {
+        width: 60px;
+        padding: 0;
+        font-family: 'Space Grotesk';
+    }
+
+    .swiper-button-next, .swiper-button-prev {
+        color: #fff !important;
+        background: rgba(0,0,0,0.5);
+        width: 50px; height: 50px;
+        border-radius: 50%;
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--glass-border);
+        opacity: 0.8;
+        transition: 0.3s;
+    }
+
+    .swiper-button-next::after, .swiper-button-prev::after {
+        font-size: 1.2rem !important;
+        font-weight: bold;
+    }
+
+    .swiper-button-next:hover, .swiper-button-prev:hover {
+        background: var(--neon-cyan);
+        color: #000 !important;
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .swiper-pagination-bullet {
+        background: #fff;
+        opacity: 0.5;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: var(--neon-cyan);
+        box-shadow: 0 0 10px var(--neon-cyan);
+        opacity: 1;
+    }
+
+    @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
+    
+    @keyframes float-particle {
+        0% { transform: translateY(0) scale(1); opacity: 0; }
+        20% { opacity: 0.8; }
+        80% { opacity: 0.8; }
+        100% { transform: translateY(-100vh) scale(0); opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+        .image-vault { height: 260px; }
+        .main-text-glitch { font-size: 3.2rem; }
+    }
+</style>
+
+<div class="cosmic-engine" id="particles"></div>
+<div class="grid-overlay"></div>
+
+<header class="archive-header text-center">
+    <div class="container" data-aos="fade-up" data-aos-duration="1200">
+        <div class="status-tag">SYSTEM_ARCHIVE_ONLINE</div>
+        <h1 class="main-text-glitch">
+            <span style="color: #fff">CORE</span> 
+            <span style="color: var(--neon-cyan)">PROJECTS</span>
+        </h1>
+        <p style="color: #a0a0b0; max-width: 700px; margin: 0 auto; font-family: 'Alexandria', sans-serif; font-size: 1.1rem; line-height: 1.9; font-weight: 300;">
+            هنا تكمن نتائج التجارب الرقمية، حيث تلتقي الشيفرة البرمجية مع الخيال الهندسي لتكوين واجهات استثنائية وأداء لا يقبل المنافسة.
+        </p>
+    </div>
+</header>
+
+<main class="container projects-container">
+    <div class="row g-5">
+        {% for project in projects %}
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:1 }}00">
+            <div class="card-vault">
+                <div class="image-vault">
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            {% for img_obj in project.images.all %}
+                            <div class="swiper-slide">
+                                <a href="{{ project.live_url }}" target="_blank" style="display: block; width: 100%; height: 100%;">
+                                    <img src="{{ img_obj.image.url }}" alt="{{ project.title }}">
+                                </a>
+                            </div>
+                            {% empty %}
+                            <div class="swiper-slide">
+                                <img src="/static/images/default-project.jpg" alt="No Image">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                
+                <div class="content-vault">
+                    <div class="project-meta">
+                        <span class="project-id">ID: 0{{ forloop.counter }}</span>
+                        <span class="project-date">{{ project.created_at|date:"Y" }}</span>
+                    </div>
+                    
+                    <h2 class="project-title">{{ project.title }}</h2>
+                    <p class="project-desc">
+                        {{ project.description|truncatewords:20 }}
+                    </p>
+                    
+                    <div class="tech-stack">
+                        {% if project.technologies %}
+                            <span class="tech-pill">{{ project.technologies }}</span>
+                        {% else %}
+                            <span class="tech-pill">DJANGO</span>
+                            <span class="tech-pill">UI/UX</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex gap-3 mt-4 flex-row-reverse">
+                        <a href="{{ project.live_url }}" class="protocol-btn flex-grow-1" target="_blank">
+                            <i class="fa-solid fa-bolt"></i> عرض الموقع 
+                        </a>
+                        {% if project.live_url %}
+                        <a href="{{ project.live_url }}" class="protocol-btn icon-btn" target="_blank">
+                            <i class="fa-solid fa-globe"></i>
+                        </a>
+                        {% endif %}
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" class="protocol-btn icon-btn" target="_blank">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    AOS.init({ duration: 1000, once: true });
+
+    new Swiper(".mySwiper", {
+        loop: true,
+        grabCursor: true,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            dynamicBullets: true,
+        },
+    });
+
+    const particlesContainer = document.getElementById('particles');
+    if (particlesContainer) {
+        for (let i = 0; i < 60; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = Math.random() * 100 + 'vh';
+            const size = Math.random() * 3 + 1;
+            p.style.width = size + 'px'; 
+            p.style.height = size + 'px';
+            p.style.animationDelay = Math.random() * 15 + 's';
+            particlesContainer.appendChild(p);
+        }
+    }
+</script>
+{% endblock %}

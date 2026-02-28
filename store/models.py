@@ -27,6 +27,7 @@ class ProjectImage(models.Model):
 class ContactMessage(models.Model):
     name = models.CharField(max_length=150, verbose_name="اسم المرسل")
     email = models.EmailField(verbose_name="البريد الإلكتروني")
+    phone = models.CharField(max_length=20, verbose_name="رقم الهاتف", blank=True, null=True)
     subject = models.CharField(max_length=250, blank=True, null=True, verbose_name="الموضوع")
     message = models.TextField(verbose_name="محتوى الرسالة")
     is_read = models.BooleanField(default=False, verbose_name="تمت القراءة؟")

@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.html import strip_tags
+from django.core.mail import EmailMultiAlternatives
 def index(request):
     projects = Project.objects.filter(is_published=True).prefetch_related('images').order_by('-created_at')
     context = {

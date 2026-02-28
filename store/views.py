@@ -3,6 +3,7 @@ from .models import Project
 from .models import Project, ContactMessage
 from django.contrib import messages
 from django.core.mail import send_mail
+from django.conf import settings
 def index(request):
     projects = Project.objects.filter(is_published=True).prefetch_related('images').order_by('-created_at')
     context = {

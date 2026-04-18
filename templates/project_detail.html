@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ project.title }} | يوسف{% endblock %}
+{% block meta_description %}{{ project.description|truncatechars:150 }}{% endblock %}
+
+{% block content %}
+
+<div class="project-detail-wrap">
+
+  <!-- Project Hero -->
+  <div class="project-detail-hero">
+    <div class="project-detail-hero-inner">
+
+      <!-- Info -->
+      <div class="project-detail-info">
+
+        <a href="{% url 'project' %}" class="btn btn-secondary" style="margin-bottom:1.5rem; display:inline-flex;">
+          <i class="fa-solid fa-arrow-right"></i>
+          العودة للأعمال
+        </a>
+
+        {% if project.technologies %}
+        <div class="project-tags" style="margin-bottom:1rem;">
+          {% for tech in project.technologies.split %}
+          <span class="project-tag">{{ tech }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <h1 class="project-detail-title">{{ project.title }}</h1>
+        <p class="project-detail-desc">{{ project.description }}</p>
+
+        <div class="project-detail-meta">
+          {% if project.technologies %}
+          <div class="meta-row">
+            <span class="meta-label">التقنيات</span>
+            <span class="meta-value">{{ project.technologies }}</span>
+          </div>
+          {% endif %}
+          <div class="meta-row">
+            <span class="meta-label">التاريخ</span>
+            <span class="meta-value">{{ project.created_at|date:"F Y" }}</span>
+          </div>
+        </div>
+
+        <div class="project-detail-actions">
+          {% if project.live_url %}
+          <a href="{{ project.live_url }}" target="_blank" class="btn btn-primary">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            معاينة المشروع
+          </a>
+          {% endif %}
+          {% if project.github_url %}
+          <a href="{{ project.github_url }}" target="_blank" class="btn btn-secondary">
+            <i class="fa-brands fa-github"></i>
+            عرض الكود
+          </a>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <!-- Main Image/Gallery -->
+      <div class="project-detail-gallery">
+        {% with project.images.first as img %}
+          {% if img %}
+            <img src="{{ img.image.url }}" alt="{{ project.title }}" class="gallery-main" />
+          {% else %}
+            <div class="gallery-placeholder">💻</div>
+          {% endif %}
+        {% endwith %}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Project Body -->
+  <div class="project-detail-body">
+
+    {% if project.images.count > 1 %}
+    <h2 class="detail-section-title">صور المشروع</h2>
+    <div class="images-gallery-grid">
+      {% for image in project.images.all %}
+        {% if not forloop.first %}
+        <div class="gallery-thumb">
+          <img src="{{ image.image.url }}" alt="{{ project.title }} - صورة {{ forloop.counter }}" loading="lazy" />
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- More Projects CTA -->
+    <div style="margin-top:4rem; text-align:center; padding:3rem; background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-xl);">
+      <h3 style="font-family:var(--font-display); font-size:1.5rem; margin-bottom:0.75rem;">
+        هل أعجبك هذا المشروع؟
+      </h3>
+      <p style="color:var(--text-secondary); margin-bottom:2rem;">
+        تواصل معي لنبني مشروعك القادم معاً
+      </p>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="{% url 'contact' %}" class="btn btn-primary">
+          <i class="fa-solid fa-envelope"></i> تواصل معي
+        </a>
+        <a href="{% url 'project' %}" class="btn btn-secondary">
+          <i class="fa-solid fa-briefcase"></i> مشاريع أخرى
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

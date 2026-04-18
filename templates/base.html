@@ -129,20 +129,30 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navContent">
                     <ul class="navbar-nav ms-auto align-items-center">
+                        {% url 'index' as index_url %}
+
                         <li class="nav-item">
-                            <a class="nav-link" href="#home"><i class="fa-solid fa-house-user me-2 opacity-50"></i>الرئيسية</a>
+                            <a class="nav-link" href="{% if request.path == index_url %}#home{% else %}{{ index_url }}#home{% endif %}">
+                                <i class="fa-solid fa-house-user me-2 opacity-50"></i>الرئيسية
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#projects"><i class="fa-solid fa-code-merge me-2 opacity-50"></i>المشاريع</a>
+                            <a class="nav-link" href="{% if request.path == index_url %}#projects{% else %}{{ index_url }}#projects{% endif %}">
+                                <i class="fa-solid fa-code-merge me-2 opacity-50"></i>المشاريع
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#services"><i class="fa-solid fa-layer-group me-2 opacity-50"></i>خدماتي</a>
+                            <a class="nav-link" href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}">
+                                <i class="fa-solid fa-layer-group me-2 opacity-50"></i>خدماتي
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#contact"><i class="fa-solid fa-comments me-2 opacity-50"></i>تواصل معي</a>
+                            <a class="nav-link" href="{% if request.path == index_url %}#contact{% else %}{{ index_url }}#contact{% endif %}">
+                                <i class="fa-solid fa-comments me-2 opacity-50"></i>تواصل معي
+                            </a>
                         </li>
                         <li class="nav-item mx-lg-3">
-                            <a class="nav-link btn-action" href="#contact" style="text-decoration:none;">
+                            <a class="nav-link btn-action" href="{% if request.path == index_url %}#contact{% else %}{{ index_url }}#contact{% endif %}" style="text-decoration:none;">
                                 <i class="fa-regular fa-paper-plane me-2"></i>ابدأ مشروعك
                             </a>
                         </li>

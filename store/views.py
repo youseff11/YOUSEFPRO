@@ -82,11 +82,12 @@ def contact(request):
 
         # 3. محاولة الإرسال
         try:
+# اذهب إلى سطر الإرسال في ملف views.py وعدله ليكون هكذا:
             msg = EmailMultiAlternatives(
                 subject=f"🚀 {name}: {subject}",
                 body=text_content,
                 from_email=settings.EMAIL_HOST_USER,
-                recipient_list=['1youseff777@gmail.com'], # بريدك المستلم
+                to=['1youseff777@gmail.com'], # التغيير هنا: استخدم to بدلاً من recipient_list
             )
             msg.attach_alternative(html_content, "text/html")
             msg.send()

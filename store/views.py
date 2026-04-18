@@ -96,6 +96,8 @@ def contact(request):
             print(f"SMTP Error Log: {e}")
             messages.warning(request, 'تم حفظ رسالتك، ولكن واجهنا مشكلة في إرسال التنبيه البريدي.')
 
-        return redirect('contact')
+        # توجيه المستخدم إلى قسم التواصل في الصفحة الرئيسية بعد الإرسال
+        return redirect('/#contact')
 
-    return render(request, 'contact.html')
+    # توجيه أي شخص يحاول الدخول للرابط مباشرة إلى الصفحة الرئيسية
+    return redirect('index')

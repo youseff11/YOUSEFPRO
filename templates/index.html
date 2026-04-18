@@ -44,7 +44,9 @@
         border-radius: 50%;
         pointer-events: none;
         z-index: 9999;
-        transform: translate(-50%, -50%);
+        top: 0;
+        left: 0;
+        will-change: transform; /* تسريع الأداء باستخدام GPU */
         mix-blend-mode: screen;
         transition: width 0.2s, height 0.2s;
     }
@@ -55,7 +57,12 @@
         position: relative; padding-top: 5rem; z-index: 10; perspective: 1500px;
     }
 
-    #heroBox { transform-style: preserve-3d; transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1); width: 100%; }
+    #heroBox { 
+        transform-style: preserve-3d; 
+        transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1); 
+        width: 100%; 
+        will-change: transform; /* تسريع الأداء */
+    }
 
     .system-status {
         display: inline-block; padding: 8px 16px;
@@ -127,6 +134,9 @@
     .card-vault:hover { transform: translateY(-12px) scale(1.02); border-color: rgba(0, 243, 255, 0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 40px rgba(0, 243, 255, 0.15); }
     .card-vault:hover::before { opacity: 1; }
     
+    .interactive-card {
+        will-change: transform; /* تسريع الأداء */
+    }
     .interactive-card::after {
         content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
@@ -256,7 +266,7 @@
                     <div class="cyber-scanner"></div>
                     <div class="hud-badge badge-top-right"><i class="fa-solid fa-shield-halved"></i> SECURE</div>
                     <div class="hud-badge badge-bottom-left"><i class="fa-solid fa-bolt"></i> HIGH_PERFORMANCE</div>
-                    <img src="media/images/5.jpg" alt="Youssef Avatar" class="hero-cyber-img">
+                    <img src="media/images/5.jpg" alt="Youssef Avatar" class="hero-cyber-img" loading="lazy">
                 </div>
             </div>
         </div>
@@ -306,12 +316,12 @@
                                 {% for img_obj in project.images.all %}
                                 <div class="swiper-slide">
                                     <a href="{{ project.live_url }}" target="_blank" style="display: block; width: 100%; height: 100%;">
-                                        <img src="{{ img_obj.image.url }}" alt="{{ project.title }}">
+                                        <img src="{{ img_obj.image.url }}" alt="{{ project.title }}" loading="lazy">
                                     </a>
                                 </div>
                                 {% empty %}
                                 <div class="swiper-slide">
-                                    <img src="/static/images/default-project.jpg" alt="No Image">
+                                    <img src="/static/images/default-project.jpg" alt="No Image" loading="lazy">
                                 </div>
                                 {% endfor %}
                             </div>
@@ -520,10 +530,10 @@
         pagination: { el: ".swiper-pagination", dynamicBullets: true },
     });
 
-    // توليد جزيئات الخلفية
+    // توليد جزيئات الخلفية (تم التقليل لـ 30 لتحسين الأداء)
     const particlesContainer = document.getElementById('particles');
     if (particlesContainer) {
-        for (let i = 0; i < 70; i++) {
+        for (let i = 0; i < 30; i++) {
             const p = document.createElement('div');
             p.className = 'particle';
             p.style.left = Math.random() * 100 + 'vw';
@@ -561,8 +571,8 @@
         cursorX += (mouseX - cursorX) * 0.1;
         cursorY += (mouseY - cursorY) * 0.1;
         if(cursor) {
-            cursor.style.left = cursorX + 'px';
-            cursor.style.top = cursorY + 'px';
+            // استخدام translate3d بدلاً من left و top لتفعيل تسريع الـ GPU
+            cursor.style.transform = `translate3d(${cursorX - 300}px, ${cursorY - 300}px, 0)`;
         }
         requestAnimationFrame(animateCursor);
     }

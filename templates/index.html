@@ -1,50 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700;900&family=Alexandria:wght@300;400;500;700;800&family=Space+Grotesk:wght@300;500;700&family=Cairo:wght@300;400;600;700;800&family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-    /* ================= والمتغيرات العامة والأساسيات ================= */
-    :root {
-        --neon-cyan: #00f3ff;
-        --neon-purple: #bc13fe;
-        --dark-bg: #030305;
-        --glass-bg: rgba(12, 12, 18, 0.6);
-        --glass-border: rgba(255, 255, 255, 0.08);
-        --whatsapp-green: #25D366;
-        --luxury-ease: cubic-bezier(0.23, 1, 0.32, 1);
-        --accent-glow: #38bdf8;
-        --purple-glow: #818cf8;
-        --text-bright: #f8fafc;
-    }
-
-    html {
-        scroll-behavior: smooth; /* تفعيل النزول السلس */
-    }
-
-    body {
-        background-color: var(--dark-bg);
-        color: #fff;
-        overflow-x: hidden;
-        font-family: 'Alexandria', 'Space Grotesk', sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-
-    ::selection {
-        background: var(--neon-cyan);
-        color: #000;
-    }
-
-    /* إزاحة الأقسام عشان الـ Navbar ما يغطيش عليها لما تعمل سكرول */
-    section, .projects-wrapper {
-        scroll-margin-top: 100px;
-    }
-
     /* ================= الخلفيات والأنيميشن ================= */
     .cosmic-engine {
         position: fixed;
@@ -90,66 +49,6 @@
         transition: width 0.2s, height 0.2s;
     }
 
-    /* ================= الناف بار ================= */
-    .nav-holder {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        padding: 20px 0;
-        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .navbar-kharaq {
-        background: rgba(15, 23, 42, 0.7);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border: 1px solid var(--glass-border);
-        border-radius: 100px;
-        padding: 10px 30px;
-        margin: 0 auto;
-        max-width: 95%;
-        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        font-family: 'Outfit', 'Cairo', sans-serif;
-    }
-
-    .nav-holder.scrolled { padding: 0; }
-    .nav-holder.scrolled .navbar-kharaq {
-        background: rgba(15, 23, 42, 0.95);
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(56, 189, 248, 0.1);
-        padding: 15px 5%;
-        max-width: 100%;
-        border-radius: 0;
-        border-left: none; border-right: none; border-top: none;
-    }
-
-    .navbar-brand {
-        font-weight: 800; font-size: 1.4rem; color: var(--text-bright) !important;
-        display: flex; align-items: center; gap: 10px; letter-spacing: 1px;
-    }
-
-    .nav-link {
-        color: rgba(248, 250, 252, 0.8) !important;
-        font-weight: 500; font-size: 0.95rem; padding: 8px 15px !important;
-        transition: 0.3s; position: relative;
-    }
-
-    .nav-link:hover { color: var(--accent-glow) !important; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
-
-    .btn-action {
-        background: linear-gradient(135deg, #38bdf8, #818cf8);
-        border: none; border-radius: 50px; padding: 10px 25px !important;
-        color: #fff !important; font-weight: 700; position: relative;
-        overflow: hidden; transition: 0.4s; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-    }
-    .btn-action::before {
-        content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-        transition: 0.5s;
-    }
-    .btn-action:hover::before { left: 100%; }
-    .btn-action:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5); }
-
     /* ================= قسم البطل (Hero) ================= */
     .hero-quantum {
         min-height: 100vh; display: flex; align-items: center;
@@ -187,8 +86,6 @@
     .btn-hyper::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.4), transparent); transition: 0.5s; }
     .btn-hyper:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 30px rgba(0, 243, 255, 0.5); transform: translateY(-3px); }
     .btn-hyper:hover::after { left: 100%; }
-    .btn-hyper.secondary { border-color: var(--neon-purple); color: var(--neon-purple); }
-    .btn-hyper.secondary:hover { background: var(--neon-purple); color: #fff; box-shadow: 0 0 30px rgba(188, 19, 254, 0.5); }
 
     /* الصورة والدوائر الجانبية */
     .cyber-image-container { position: relative; width: 100%; max-width: 550px; aspect-ratio: 1; margin: 0 auto; display: flex; align-items: center; justify-content: center; animation: float-hologram 6s ease-in-out infinite; }
@@ -230,7 +127,6 @@
     .card-vault:hover { transform: translateY(-12px) scale(1.02); border-color: rgba(0, 243, 255, 0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 40px rgba(0, 243, 255, 0.15); }
     .card-vault:hover::before { opacity: 1; }
     
-    /* ستايل الماوس للبطاقات */
     .interactive-card::after {
         content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         background: radial-gradient(800px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
@@ -255,7 +151,6 @@
     .protocol-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 25px rgba(0, 243, 255, 0.5); transform: translateY(-3px); }
     .icon-btn { width: 60px; padding: 0; font-family: 'Space Grotesk'; }
 
-    /* أزرار السوايبير */
     .swiper-button-next, .swiper-button-prev { color: #fff !important; background: rgba(0,0,0,0.5); width: 50px; height: 50px; border-radius: 50%; backdrop-filter: blur(8px); border: 1px solid var(--glass-border); opacity: 0.8; transition: 0.3s; }
     .swiper-button-next::after, .swiper-button-prev::after { font-size: 1.2rem !important; font-weight: bold; }
     .swiper-button-next:hover, .swiper-button-prev:hover { background: var(--neon-cyan); color: #000 !important; border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0, 243, 255, 0.6); opacity: 1; transform: scale(1.1); }
@@ -292,7 +187,7 @@
     .wa-main-btn:hover { transform: scale(1.1) rotate(15deg); }
     .wa-float-container.active .wa-contact-list { display: flex; animation: slideIn 0.4s var(--luxury-ease) forwards; }
 
-    /* ================= الرسوم المتحركة والميديا ================= */
+    /* ================= الرسوم المتحركة ================= */
     @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
     @keyframes float-particle { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-100vh) scale(0); opacity: 0; } }
     @keyframes pulse-glow-cyan { 0% { box-shadow: 0 0 10px rgba(0, 243, 255, 0.1); } 100% { box-shadow: 0 0 25px rgba(0, 243, 255, 0.3); } }
@@ -305,8 +200,6 @@
     @keyframes slideIn { from { opacity: 0; transform: translateY(20px) scale(0.8); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
     @media (max-width: 991px) {
-        .navbar-collapse { background: rgba(15, 23, 42, 0.95); margin-top: 20px; padding: 25px; border-radius: 30px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
-        .navbar-kharaq { border-radius: 25px; }
         .hero-quantum { padding-top: 8rem; text-align: center; }
         .main-text { font-size: clamp(2rem, 8vw, 4rem); }
         .hero-desc { margin: 2rem auto; text-align: center; }
@@ -340,59 +233,24 @@
     </div>
 </div>
 
-<div class="nav-holder" id="navHolder">
-    <nav class="navbar navbar-expand-lg navbar-kharaq">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#home">
-                <span>JOO'S<span style="color:var(--accent-glow)">PROT</span></span>
-            </a>
-            <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-                <i class="fa-solid fa-bars-staggered text-white"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="navContent">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#home"><i class="fa-solid fa-house-user me-2 opacity-50"></i>الرئيسية</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#projects"><i class="fa-solid fa-code-merge me-2 opacity-50"></i>المشاريع</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#services"><i class="fa-solid fa-layer-group me-2 opacity-50"></i>خدماتي</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact"><i class="fa-solid fa-comments me-2 opacity-50"></i>تواصل معي</a>
-                    </li>
-                    <li class="nav-item mx-lg-3">
-                        <a class="nav-link btn-action" href="#contact" style="text-decoration:none;">
-                            <i class="fa-regular fa-paper-plane me-2"></i>ابدأ مشروعك
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</div>
-
 <section id="home" class="hero-quantum">
     <div class="container px-4 px-lg-5">
         <div class="row align-items-center" id="heroBox">
             <div class="col-lg-6 text-start position-relative z-3">
-                <div class="system-status" data-aos="fade-down" data-aos-duration="1000">STATUS: ONLINE // V_3.0</div>
+                <div class="system-status">STATUS: ONLINE // V_3.0</div>
                 <h1 class="main-text">
-                    <span class="text-layer-1" data-aos="zoom-in-right" data-aos-duration="1000" data-aos-delay="200">YOUSEF</span>
-                    <span class="text-layer-2" data-aos="zoom-in-right" data-aos-duration="1200" data-aos-delay="300">VISIONARY</span>
+                    <span class="text-layer-1">YOUSEF</span>
+                    <span class="text-layer-2">VISIONARY</span>
                 </h1>
-                <p class="hero-desc" data-aos="fade-up" data-aos-delay="400">
+                <p class="hero-desc">
                     أنا لا أبرمج صفحات الويب فقط، بل أصمم عوالم رقمية تتجاوز المألوف. مهندس برمجيات ومصمم تجارب تفاعلية يدمج بين الفن التقني والأداء الخارق لبناء المستقبل اليوم.
                 </p>
                 <div class="btn-container">
-                    <a href="#projects" class="btn-hyper" data-aos="fade-up" data-aos-delay="500"> Explore Vault</a>
-                    <a href="#contact" class="btn-hyper secondary" data-aos="fade-up" data-aos-delay="600">Initialize Contact</a>
+                    <a href="#projects" class="btn-hyper"> Explore Vault</a>
                 </div>
             </div>
             <div class="col-lg-6 mt-5 mt-lg-0">
-                <div class="cyber-image-container" data-aos="zoom-in-left" data-aos-duration="1500" data-aos-delay="300">
+                <div class="cyber-image-container">
                     <div class="cyber-ring-outer"></div>
                     <div class="cyber-ring-inner"></div>
                     <div class="cyber-scanner"></div>
@@ -426,7 +284,7 @@
 
 <div id="projects" class="projects-wrapper">
     <header class="archive-header text-center">
-        <div class="container" data-aos="fade-up" data-aos-duration="1200">
+        <div class="container">
             <div class="status-tag">SYSTEM_ARCHIVE_ONLINE</div>
             <h1 class="main-text-glitch">
                 <span style="color: #fff">CORE</span> <span style="color: var(--neon-cyan)">PROJECTS</span>
@@ -440,7 +298,7 @@
     <main class="container projects-container">
         <div class="row g-5">
             {% for project in projects %}
-            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:1 }}00">
+            <div class="col-lg-6">
                 <div class="card-vault interactive-card">
                     <div class="image-vault">
                         <div class="swiper mySwiper">
@@ -481,9 +339,10 @@
                         </div>
 
                         <div class="d-flex gap-3 mt-4 flex-row-reverse">
-                            <a href="{{ project.live_url }}" class="protocol-btn flex-grow-1" target="_blank">
-                                <i class="fa-solid fa-bolt"></i> عرض الموقع 
+                            <a href="{% url 'project_detail' project.id %}" class="protocol-btn flex-grow-1">
+                                <i class="fa-solid fa-bolt"></i> تفاصيل الموقع 
                             </a>
+                            
                             {% if project.live_url %}
                             <a href="{{ project.live_url }}" class="protocol-btn icon-btn" target="_blank">
                                 <i class="fa-solid fa-globe"></i>
@@ -504,7 +363,7 @@
 </div>
 
 <section id="services" class="container services-grid" dir="rtl">
-    <div class="text-center mb-5" data-aos="fade-up">
+    <div class="text-center mb-5">
         <span style="color: var(--neon-cyan); letter-spacing: 5px; font-size: 0.7rem; font-weight: 800; border: 1px solid var(--neon-cyan); padding: 5px 15px; border-radius: 50px; margin-bottom: 15px; display: inline-block;">الخبرات_والمميزات</span>
         <h1 class="main-title" style="font-family: 'Syncopate', sans-serif; font-weight: 900; font-size: clamp(2.2rem, 5vw, 4rem); margin-top: 15px;">
             الخدمات <span style="color: var(--neon-cyan)">الرقمية</span>
@@ -512,42 +371,42 @@
     </div>
 
     <div class="row g-4">
-        <div class="col-lg-4 col-md-6" data-aos="fade-up">
+        <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-server"></i></div>
                 <h3 class="service-title">قواعد البيانات</h3>
                 <p class="service-desc">تصميم وإدارة قواعد البيانات العلائقية (PostgreSQL, SQLite) مع تحسين الأداء وضمان أمان البيانات.</p>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-gear"></i></div>
                 <h3 class="service-title">تطوير تطبيقات ويب</h3>
                 <p class="service-desc">تصميم وتطوير تطبيقات ويب متقدمة مع لوحات تحكم، نظام مستخدمين، وواجهات برمجة REST API قوية وآمنة.</p>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-globe"></i></div>
                 <h3 class="service-title">تطوير مواقع ويب</h3>
                 <p class="service-desc">بناء مواقع ويب احترافية كاملة من الصفر باستخدام Django و HTML/CSS/JS مع التركيز على السرعة والأداء وتجربة المستخدم.</p>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6" data-aos="fade-up">
+        <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-handshake"></i></div>
                 <h3 class="service-title">استشارات تقنية</h3>
                 <p class="service-desc">تقديم الاستشارات التقنية لمساعدتك في اختيار الحلول المناسبة لمشروعك وتخطيط المسار الصحيح للتطوير.</p>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-wrench"></i></div>
                 <h3 class="service-title">صيانة وتطوير</h3>
                 <p class="service-desc">تطوير وصيانة المشاريع القائمة، إضافة ميزات جديدة، وتحسين أداء التطبيقات الموجودة.</p>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-mobile-screen-button"></i></div>
                 <h3 class="service-title">تصميم متجاوب</h3>
@@ -559,7 +418,7 @@
 
 <section id="contact" class="contact-section">
     <div class="container">
-        <div class="text-center mb-5" data-aos="fade-up">
+        <div class="text-center mb-5">
             <span style="color: var(--neon-cyan); letter-spacing: 5px; font-size: 0.7rem; font-weight: 800; border: 1px solid var(--neon-cyan); padding: 5px 15px; border-radius: 50px; margin-bottom: 15px; display: inline-block;">اتصال_بالنظام</span>
             <h1 class="main-title" style="font-family: 'Syncopate', sans-serif; font-weight: 900; font-size: clamp(2.2rem, 5vw, 4rem);">
                 مركز <span style="color: var(--neon-cyan)">التواصل</span>
@@ -568,7 +427,7 @@
 
         <div class="row justify-content-center">
             <div class="col-lg-11">
-                <div class="contact-card" data-aos="zoom-in">
+                <div class="contact-card">
                     {% if messages %}
                         {% for message in messages %}
                             <div class="cyber-alert">
@@ -650,15 +509,10 @@
     </div>
 </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // 1. تهيئة AOS
-    AOS.init({ duration: 1000, once: true, offset: 50 });
-
-    // 2. تهيئة Swiper للمشاريع
+    // تهيئة Swiper للمشاريع
     new Swiper(".mySwiper", {
         loop: true,
         grabCursor: true,
@@ -666,7 +520,7 @@
         pagination: { el: ".swiper-pagination", dynamicBullets: true },
     });
 
-    // 3. توليد جزيئات الخلفية مرة واحدة فقط لجميع الأقسام
+    // توليد جزيئات الخلفية
     const particlesContainer = document.getElementById('particles');
     if (particlesContainer) {
         for (let i = 0; i < 70; i++) {
@@ -684,7 +538,7 @@
         }
     }
 
-    // 4. حركة الماوس المضيء (Cursor Follower)
+    // حركة الماوس المضيء (Cursor Follower)
     const cursor = document.getElementById('cursor');
     const heroBox = document.getElementById('heroBox');
     let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
@@ -714,7 +568,7 @@
     }
     animateCursor();
 
-    // 5. تفاعل الكروت مع الماوس
+    // تفاعل الكروت مع الماوس
     const interactiveCards = document.querySelectorAll('.interactive-card');
     interactiveCards.forEach(card => {
         card.addEventListener('mousemove', e => {
@@ -726,17 +580,7 @@
         });
     });
 
-    // 6. تغيير شكل الـ Navbar مع السكرول
-    window.addEventListener('scroll', () => {
-        const holder = document.getElementById('navHolder');
-        if (window.scrollY > 30) {
-            holder.classList.add('scrolled');
-        } else {
-            holder.classList.remove('scrolled');
-        }
-    });
-
-    // 7. إغلاق قائمة الواتس آب عند النقر في الخارج
+    // إغلاق قائمة الواتس آب عند النقر في الخارج
     document.addEventListener('click', (e) => {
         const waContainer = document.getElementById('waContainer');
         if (waContainer && !waContainer.contains(e.target)) {

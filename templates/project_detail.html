@@ -5,112 +5,318 @@
 {% block meta_description %}{{ project.description|truncatechars:150 }}{% endblock %}
 
 {% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700;900&family=Alexandria:wght@300;400;500;700;800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    /* ================= نفس متغيرات وستايل الـ Index ================= */
+    :root {
+        --neon-cyan: #00f3ff;
+        --neon-purple: #bc13fe;
+        --dark-bg: #030305;
+        --glass-bg: rgba(12, 12, 18, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --text-main: #ffffff;
+        --text-muted: #a0a0b0;
+    }
+
+    body {
+        background-color: var(--dark-bg);
+        color: #fff;
+        overflow-x: hidden;
+        font-family: 'Alexandria', sans-serif;
+        margin: 0;
+    }
+
+    /* نفس تأثيرات الخلفية */
+    .cosmic-engine {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        z-index: -2;
+        background: radial-gradient(circle at 50% 50%, #0a0014 0%, #030305 80%);
+    }
+
+    .grid-overlay {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw; height: 100vh;
+        background-image: 
+            linear-gradient(var(--glass-border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: -1;
+        opacity: 0.15;
+        transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+        animation: gridMove 25s linear infinite;
+    }
+
+    .particle {
+        position: absolute;
+        background: #fff;
+        border-radius: 50%;
+        opacity: 0;
+        box-shadow: 0 0 10px var(--neon-cyan);
+        animation: float-particle 15s infinite linear;
+    }
+
+    .cursor-follower {
+        position: fixed;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(0, 243, 255, 0.08) 0%, transparent 60%);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        mix-blend-mode: screen;
+    }
+
+    /* ستايل المحتوى */
+    .project-detail-wrap {
+        position: relative;
+        z-index: 10;
+        direction: rtl;
+        padding: 150px 5% 80px;
+        max-width: 1300px;
+        margin: 0 auto;
+    }
+
+    .project-detail-hero-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4rem;
+        align-items: flex-start;
+    }
+
+    .project-detail-info { flex: 1 1 500px; }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 25px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.4s;
+        border: 1px solid transparent;
+        font-family: 'Alexandria', sans-serif;
+    }
+
+    .btn-primary {
+        background: rgba(0, 243, 255, 0.1);
+        border-color: var(--neon-cyan);
+        color: var(--neon-cyan);
+    }
+
+    .btn-primary:hover {
+        background: var(--neon-cyan);
+        color: #000;
+        box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
+    }
+
+    .btn-secondary {
+        background: var(--glass-bg);
+        border-color: var(--glass-border);
+        color: #fff;
+        backdrop-filter: blur(10px);
+    }
+
+    .project-tag {
+        background: rgba(188, 19, 254, 0.1);
+        border: 1px solid rgba(188, 19, 254, 0.3);
+        color: #e2a0ff;
+        padding: 5px 15px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .project-detail-title {
+        font-family: 'Syncopate', sans-serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 900;
+        margin: 1.5rem 0;
+        background: linear-gradient(90deg, #fff, var(--neon-cyan));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .project-detail-desc {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+    }
+
+    .project-detail-meta {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 25px;
+        backdrop-filter: blur(15px);
+        margin-bottom: 2rem;
+    }
+
+    .meta-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .meta-label { color: var(--neon-cyan); font-weight: 800; }
+
+    .gallery-main {
+        width: 100%;
+        border-radius: 24px;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        transition: 0.5s;
+    }
+
+    .images-gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 3rem;
+    }
+
+    .gallery-thumb {
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid var(--glass-border);
+        height: 250px;
+    }
+
+    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+    .gallery-thumb:hover img { transform: scale(1.1); }
+
+    @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
+    @keyframes float-particle { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-100vh) scale(0); opacity: 0; } }
+
+    @media (max-width: 768px) {
+        .project-detail-hero-inner { flex-direction: column-reverse; }
+    }
+</style>
+
+<div class="cursor-follower" id="cursor"></div>
+<div class="grid-overlay"></div>
+<div class="cosmic-engine" id="particles"></div>
 
 <div class="project-detail-wrap">
 
-  <!-- Project Hero -->
-  <div class="project-detail-hero">
-    <div class="project-detail-hero-inner">
+    <div class="project-detail-hero">
+        <div class="project-detail-hero-inner">
+            
+            <div class="project-detail-info">
+                <a href="/#projects" class="btn btn-secondary" style="margin-bottom:2rem;">
+                    <i class="fa-solid fa-arrow-right"></i> العودة للمشاريع
+                </a>
 
-      <!-- Info -->
-      <div class="project-detail-info">
+                {% if project.technologies %}
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    {% for tech in project.technologies.split %}
+                        <span class="project-tag">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
 
-        <a href="{% url 'project' %}" class="btn btn-secondary" style="margin-bottom:1.5rem; display:inline-flex;">
-          <i class="fa-solid fa-arrow-right"></i>
-          العودة للأعمال
-        </a>
+                <h1 class="project-detail-title">{{ project.title }}</h1>
+                <p class="project-detail-desc">{{ project.description }}</p>
 
-        {% if project.technologies %}
-        <div class="project-tags" style="margin-bottom:1rem;">
-          {% for tech in project.technologies.split %}
-          <span class="project-tag">{{ tech }}</span>
-          {% endfor %}
+                <div class="project-detail-meta">
+                    <div class="meta-row">
+                        <span class="meta-label">المنصة</span>
+                        <span class="meta-value">ويب / تطبيق</span>
+                    </div>
+                    <div class="meta-row">
+                        <span class="meta-label">التاريخ</span>
+                        <span class="meta-value">{{ project.created_at|date:"F Y" }}</span>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 flex-wrap">
+                    {% if project.live_url %}
+                    <a href="{{ project.live_url }}" target="_blank" class="btn btn-primary">
+                        <i class="fa-solid fa-bolt"></i> معاينة حية
+                    </a>
+                    {% endif %}
+                    {% if project.github_url %}
+                    <a href="{{ project.github_url }}" target="_blank" class="btn btn-secondary">
+                        <i class="fa-brands fa-github"></i> الكود المصدرى
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="project-detail-gallery" style="flex: 1 1 500px;">
+                {% with project.images.first as img %}
+                {% if img %}
+                    <img src="{{ img.image.url }}" alt="{{ project.title }}" class="gallery-main">
+                {% else %}
+                    <div style="height:400px; background:var(--glass-bg); border-radius:24px; display:flex; align-items:center; justify-content:center; font-size:3rem;">💻</div>
+                {% endif %}
+                {% endwith %}
+            </div>
         </div>
-        {% endif %}
-
-        <h1 class="project-detail-title">{{ project.title }}</h1>
-        <p class="project-detail-desc">{{ project.description }}</p>
-
-        <div class="project-detail-meta">
-          {% if project.technologies %}
-          <div class="meta-row">
-            <span class="meta-label">التقنيات</span>
-            <span class="meta-value">{{ project.technologies }}</span>
-          </div>
-          {% endif %}
-          <div class="meta-row">
-            <span class="meta-label">التاريخ</span>
-            <span class="meta-value">{{ project.created_at|date:"F Y" }}</span>
-          </div>
-        </div>
-
-        <div class="project-detail-actions">
-          {% if project.live_url %}
-          <a href="{{ project.live_url }}" target="_blank" class="btn btn-primary">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            معاينة المشروع
-          </a>
-          {% endif %}
-          {% if project.github_url %}
-          <a href="{{ project.github_url }}" target="_blank" class="btn btn-secondary">
-            <i class="fa-brands fa-github"></i>
-            عرض الكود
-          </a>
-          {% endif %}
-        </div>
-
-      </div>
-
-      <!-- Main Image/Gallery -->
-      <div class="project-detail-gallery">
-        {% with project.images.first as img %}
-          {% if img %}
-            <img src="{{ img.image.url }}" alt="{{ project.title }}" class="gallery-main" />
-          {% else %}
-            <div class="gallery-placeholder">💻</div>
-          {% endif %}
-        {% endwith %}
-      </div>
-
     </div>
-  </div>
-
-  <!-- Project Body -->
-  <div class="project-detail-body">
 
     {% if project.images.count > 1 %}
-    <h2 class="detail-section-title">صور المشروع</h2>
+    <h2 style="margin-top:5rem; font-family:'Syncopate'; font-weight:900; color:var(--neon-cyan);">PROJECT_SNAPSHOTS</h2>
     <div class="images-gallery-grid">
-      {% for image in project.images.all %}
-        {% if not forloop.first %}
-        <div class="gallery-thumb">
-          <img src="{{ image.image.url }}" alt="{{ project.title }} - صورة {{ forloop.counter }}" loading="lazy" />
-        </div>
-        {% endif %}
-      {% endfor %}
+        {% for image in project.images.all %}
+            {% if not forloop.first %}
+            <div class="gallery-thumb">
+                <img src="{{ image.image.url }}" alt="Screenshot" loading="lazy">
+            </div>
+            {% endif %}
+        {% endfor %}
     </div>
     {% endif %}
 
-    <!-- More Projects CTA -->
-    <div style="margin-top:4rem; text-align:center; padding:3rem; background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-xl);">
-      <h3 style="font-family:var(--font-display); font-size:1.5rem; margin-bottom:0.75rem;">
-        هل أعجبك هذا المشروع؟
-      </h3>
-      <p style="color:var(--text-secondary); margin-bottom:2rem;">
-        تواصل معي لنبني مشروعك القادم معاً
-      </p>
-      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-        <a href="{% url 'contact' %}" class="btn btn-primary">
-          <i class="fa-solid fa-envelope"></i> تواصل معي
-        </a>
-        <a href="{% url 'project' %}" class="btn btn-secondary">
-          <i class="fa-solid fa-briefcase"></i> مشاريع أخرى
-        </a>
-      </div>
+    <div style="margin-top:6rem; text-align:center; padding:4rem 2rem; background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:30px; backdrop-filter:blur(20px);">
+        <h3 style="font-size:2rem; font-weight:800; margin-bottom:1rem;">هل تبحث عن تنفيذ فكرة مشابهة؟</h3>
+        <p style="color:var(--text-muted); margin-bottom:2.5rem;">أنا جاهز لتحويل رؤيتك إلى واقع رقمي مبهر.</p>
+        <a href="/#contact" class="btn btn-primary" style="padding:15px 40px;">ابدأ مشروعك الآن</a>
     </div>
 
-  </div>
-
 </div>
+
+<script>
+    // جلب نفس سكريبت الجزيئات والماوس من الـ Index
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 60; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.top = Math.random() * 100 + 'vh';
+        const size = Math.random() * 3 + 1;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.animationDelay = Math.random() * 15 + 's';
+        p.style.background = i % 3 === 0 ? 'var(--neon-purple)' : 'var(--neon-cyan)';
+        particlesContainer.appendChild(p);
+    }
+
+    const cursor = document.getElementById('cursor');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+        cursorX += (mouseX - cursorX) * 0.1;
+        cursorY += (mouseY - cursorY) * 0.1;
+        cursor.style.left = cursorX + 'px';
+        cursor.style.top = cursorY + 'px';
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+</script>
 
 {% endblock %}

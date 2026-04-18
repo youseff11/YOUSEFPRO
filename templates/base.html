@@ -4,19 +4,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yousef Visionary </title>
+    <title>Yousef Visionary</title>
     
     <link rel="icon" type="image/png" href="/media/images/LOGO.jpg">
-
     <meta name="description" content="CORESTORE | Yousef Visionary - Software Engineer">
 
-    </head>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700;900&family=Alexandria:wght@300;400;500;700;800&family=Space+Grotesk:wght@300;500;700&family=Cairo:wght@300;400;600;700;800&family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* ================= المتغيرات العامة والأساسيات ================= */
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --dark-bg: #030305;
+            --glass-bg: rgba(12, 12, 18, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --whatsapp-green: #25D366;
+            --luxury-ease: cubic-bezier(0.23, 1, 0.32, 1);
+            --accent-glow: #38bdf8;
+            --purple-glow: #818cf8;
+            --text-bright: #f8fafc;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #fff;
+            overflow-x: hidden;
+            font-family: 'Alexandria', 'Space Grotesk', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        ::selection {
+            background: var(--neon-cyan);
+            color: #000;
+        }
+
+        section, .projects-wrapper {
+            scroll-margin-top: 100px;
+        }
+
+        /* ================= الناف بار ================= */
+        .nav-holder {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .navbar-kharaq {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+            padding: 10px 30px;
+            margin: 0 auto;
+            max-width: 95%;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: 'Outfit', 'Cairo', sans-serif;
+        }
+
+        .nav-holder.scrolled { padding: 0; }
+        .nav-holder.scrolled .navbar-kharaq {
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(56, 189, 248, 0.1);
+            padding: 15px 5%;
+            max-width: 100%;
+            border-radius: 0;
+            border-left: none; border-right: none; border-top: none;
+        }
+
+        .navbar-brand {
+            font-weight: 800; font-size: 1.4rem; color: var(--text-bright) !important;
+            display: flex; align-items: center; gap: 10px; letter-spacing: 1px;
+        }
+
+        .nav-link {
+            color: rgba(248, 250, 252, 0.8) !important;
+            font-weight: 500; font-size: 0.95rem; padding: 8px 15px !important;
+            transition: 0.3s; position: relative;
+        }
+
+        .nav-link:hover { color: var(--accent-glow) !important; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
+
+        .btn-action {
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            border: none; border-radius: 50px; padding: 10px 25px !important;
+            color: #fff !important; font-weight: 700; position: relative;
+            overflow: hidden; transition: 0.4s; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+        .btn-action::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        .btn-action:hover::before { left: 100%; }
+        .btn-action:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5); }
+
+        @media (max-width: 991px) {
+            .navbar-collapse { background: rgba(15, 23, 42, 0.95); margin-top: 20px; padding: 25px; border-radius: 30px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
+            .navbar-kharaq { border-radius: 25px; }
+        }
+    </style>
+</head>
 <body>
-    {% include 'navbar.html' %}
+    
+    <div class="nav-holder" id="navHolder">
+        <nav class="navbar navbar-expand-lg navbar-kharaq">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#home">
+                    <span>JOO'S<span style="color:var(--accent-glow)">PROT</span></span>
+                </a>
+                <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                    <i class="fa-solid fa-bars-staggered text-white"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navContent">
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#home"><i class="fa-solid fa-house-user me-2 opacity-50"></i>الرئيسية</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#projects"><i class="fa-solid fa-code-merge me-2 opacity-50"></i>المشاريع</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#services"><i class="fa-solid fa-layer-group me-2 opacity-50"></i>خدماتي</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact"><i class="fa-solid fa-comments me-2 opacity-50"></i>تواصل معي</a>
+                        </li>
+                        <li class="nav-item mx-lg-3">
+                            <a class="nav-link btn-action" href="#contact" style="text-decoration:none;">
+                                <i class="fa-regular fa-paper-plane me-2"></i>ابدأ مشروعك
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
 
     {% block content %}
     {% endblock %}
 
     {% include 'footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // تغيير شكل الـ Navbar مع السكرول
+        window.addEventListener('scroll', () => {
+            const holder = document.getElementById('navHolder');
+            if (window.scrollY > 30) {
+                holder.classList.add('scrolled');
+            } else {
+                holder.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 </html>

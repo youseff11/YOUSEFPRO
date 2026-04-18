@@ -90,6 +90,7 @@
     }
 
     .project-detail-info { flex: 1 1 500px; }
+    .project-detail-gallery { flex: 1 1 500px; }
 
     .btn {
         display: inline-flex;
@@ -196,8 +197,22 @@
     @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
     @keyframes float-particle { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-100vh) scale(0); opacity: 0; } }
 
+    /* التعديلات الخاصة بالجوال لتصحيح المسافات */
     @media (max-width: 768px) {
-        .project-detail-hero-inner { flex-direction: column-reverse; }
+        .project-detail-hero-inner { 
+            flex-direction: column-reverse; 
+            gap: 1.5rem; /* تقليل المسافة بين الصورة والكلام */
+        }
+        
+        .project-detail-info, 
+        .project-detail-gallery {
+            flex: 1 1 100%; /* إلغاء فرض حجم 500 بكسل في الشاشات الصغيرة */
+            width: 100%;
+        }
+
+        .project-detail-wrap {
+            padding-top: 100px; /* تقليل المساحة العلوية في الجوال لتناسق أفضل */
+        }
     }
 </style>
 
@@ -251,7 +266,7 @@
                 </div>
             </div>
 
-            <div class="project-detail-gallery" style="flex: 1 1 500px;">
+            <div class="project-detail-gallery">
                 {% with project.images.first as img %}
                 {% if img %}
                     <img src="{{ img.image.url }}" alt="{{ project.title }}" class="gallery-main">

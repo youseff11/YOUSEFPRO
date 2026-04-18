@@ -272,34 +272,35 @@
     <div class="container relative z-10">
         <div class="row gy-5">
             <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                <a class="footer-brand" href="/">Joo's<span>Portfolio</span></a>
+                <a class="footer-brand" href="{% url 'index' %}">Joo's<span>Portfolio</span></a>
                 <p class="footer-desc mt-3">نحن ندمج التكنولوجيا بالفن لنصنع تجارب رقمية خارجة عن المألوف. أنظمة برمجية مصممة للمستقبل.</p>
                 
                 <div class="social-wrapper">
-                    <!-- <a href="#" class="social-hex"><i class="fab fa-github"></i></a> -->
                     <a href="https://www.linkedin.com/in/yousef-osama-b92b312ab?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="social-hex"><i class="fab fa-linkedin-in"></i></a>
                     <a href="https://wa.me/201143890607" class="social-hex"><i class="fab fa-whatsapp"></i></a>
                     <a href="https://discord.com/users/1youseff_" class="social-hex"><i class="fab fa-discord"></i></a>
                 </div>
             </div>
 
+            {% url 'index' as index_url %}
+
             <div class="col-lg-2 col-md-6 ms-auto" data-aos="fade-up" data-aos-delay="100">
                 <h5 class="footer-title">SYS_MAP</h5>
                 <div class="d-flex flex-column">
-                    <a href="/" class="footer-link">الرئيسية</a>
-                    <a href="{% url 'project' %}" class="footer-link">أرشيف المشاريع</a>
-                    <a href="{% url 'project' %}" class="footer-link">الشبكة العصبية</a>
-                    <a href="{% url 'project' %}" class="footer-link">البروتوكولات</a>
+                    <a href="{% if request.path == index_url %}#home{% else %}{{ index_url }}#home{% endif %}" class="footer-link">الرئيسية</a>
+                    <a href="{% if request.path == index_url %}#projects{% else %}{{ index_url }}#projects{% endif %}" class="footer-link">المشاريع</a>
+                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link">خدماتي</a>
+                    <a href="{% if request.path == index_url %}#contact{% else %}{{ index_url }}#contact{% endif %}" class="footer-link">تواصل معي</a>
                 </div>
             </div>
 
             <div class="col-lg-2 col-md-6" data-aos="fade-up" data-aos-delay="200">
                 <h5 class="footer-title">MODULES</h5>
                 <div class="d-flex flex-column">
-                    <a href="{% url 'project' %}" class="footer-link">هندسة الويب</a>
-                    <a href="{% url 'project' %}" class="footer-link">تصميم UI/UX</a>
-                    <a href="{% url 'project' %}" class="footer-link">قواعد البيانات</a>
-                    <a href="{% url 'project' %}" class="footer-link">أمن المعلومات</a>
+                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link">هندسة الويب</a>
+                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link">تصميم UI/UX</a>
+                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link">قواعد البيانات</a>
+                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link">أمن المعلومات</a>
                 </div>
             </div>
 

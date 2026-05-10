@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
 <style>
-    /* ================= الخلفيات والأنيميشن ================= */
     .cosmic-engine {
         position: fixed;
         top: 0; left: 0;
@@ -51,7 +50,6 @@
         transition: width 0.2s, height 0.2s;
     }
 
-    /* ================= قسم البطل (Hero) ================= */
     .hero-quantum {
         min-height: 100vh; display: flex; align-items: center;
         position: relative; padding-top: 5rem; z-index: 10; perspective: 1500px;
@@ -94,7 +92,6 @@
     .btn-hyper:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 30px rgba(0, 243, 255, 0.5); transform: translateY(-3px); }
     .btn-hyper:hover::after { left: 100%; }
 
-    /* الصورة والدوائر الجانبية */
     .cyber-image-container { position: relative; width: 100%; max-width: 550px; aspect-ratio: 1; margin: 0 auto; display: flex; align-items: center; justify-content: center; animation: float-hologram 6s ease-in-out infinite; }
     .cyber-ring-outer { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px dashed rgba(0, 243, 255, 0.4); border-left: 2px solid var(--neon-cyan); border-right: 2px solid var(--neon-cyan); animation: spin-slow 20s linear infinite; box-shadow: inset 0 0 40px rgba(0, 243, 255, 0.1); }
     .cyber-ring-inner { position: absolute; width: 85%; height: 85%; border-radius: 50%; border: 2px solid rgba(188, 19, 254, 0.3); border-top: 3px solid var(--neon-purple); border-bottom: 3px solid var(--neon-purple); animation: spin-reverse 15s linear infinite; }
@@ -105,7 +102,6 @@
     .hero-cyber-img { width: 75%; height: 75%; border-radius: 50%; object-fit: cover; object-position: top; border: 3px solid transparent; box-shadow: 0 0 60px rgba(0, 243, 255, 0.3); z-index: 2; transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); filter: contrast(1.1) brightness(1.1); }
     .cyber-image-container:hover .hero-cyber-img { transform: scale(1.05); box-shadow: 0 0 80px rgba(0, 243, 255, 0.6); border-color: rgba(0, 243, 255, 0.5); }
 
-    /* ================= الشريط المتحرك والخدمات ================= */
     .marquee-container { width: 100%; overflow: hidden; padding: 3rem 0; background: linear-gradient(90deg, var(--dark-bg), transparent, var(--dark-bg)); position: relative; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); }
     .marquee-content { display: flex; width: max-content; animation: scrollMarquee 30s linear infinite; }
     .marquee-item { font-family: 'Syncopate', sans-serif; font-size: 2rem; font-weight: 700; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.2); margin: 0 3rem; text-transform: uppercase; transition: 0.3s; }
@@ -117,7 +113,6 @@
     .service-title { font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 1.4rem; margin-bottom: 15px; color: #fff; position: relative; z-index: 1; }
     .service-desc { font-family: 'Cairo', sans-serif; color: #a0a0b0; font-size: 1rem; line-height: 1.8; position: relative; z-index: 1; margin: 0; }
 
-    /* ================= المشاريع (Projects) ================= */
     .archive-header { padding: 80px 0 40px; position: relative; z-index: 10; }
     .main-text-glitch { font-family: 'Syncopate', sans-serif; font-size: clamp(2.5rem, 6vw, 5.5rem); font-weight: 900; text-transform: uppercase; letter-spacing: -2px; margin-bottom: 25px; text-shadow: 0 0 30px rgba(0, 243, 255, 0.2); }
     .status-tag { display: inline-block; padding: 8px 18px; background: rgba(0, 243, 255, 0.05); border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 50px; font-size: 0.75rem; letter-spacing: 4px; color: var(--neon-cyan); margin-bottom: 2rem; box-shadow: 0 0 15px rgba(0, 243, 255, 0.1); }
@@ -144,16 +139,74 @@
     }
     .interactive-card:hover::after { opacity: 1; }
 
-    .image-vault { height: 220px; position: relative; overflow: hidden; } /* تم تصغير الارتفاع */
+    .project-flip-container {
+        perspective: 1500px;
+        height: 100%;
+    }
+    .project-flip-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform-style: preserve-3d;
+    }
+    .project-flip-inner.is-flipped {
+        transform: rotateY(180deg);
+    }
+    .project-flip-front, .project-flip-back {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        width: 100%;
+        height: 100%;
+    }
+    .project-flip-front {
+        position: relative;
+        z-index: 2;
+    }
+    .project-flip-back {
+        position: absolute;
+        top: 0; left: 0;
+        transform: rotateY(180deg);
+        z-index: 1;
+    }
+
+    .read-more-btn {
+        color: var(--neon-cyan);
+        font-size: 0.85rem;
+        cursor: pointer;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 10px;
+        transition: 0.3s;
+    }
+    .read-more-btn:hover {
+        color: #fff;
+        text-shadow: 0 0 10px var(--neon-cyan);
+    }
+    .desc-scroll::-webkit-scrollbar {
+        width: 4px;
+    }
+    .desc-scroll::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+    .desc-scroll::-webkit-scrollbar-thumb {
+        background: var(--neon-cyan);
+        border-radius: 10px;
+    }
+
+    .image-vault { height: 220px; position: relative; overflow: hidden; }
     .swiper { width: 100%; height: 100%; }
     .swiper-slide img { width: 100%; height: 100%; object-fit: contain; background-color: #000; transition: filter 0.5s; }
     .card-vault:hover .swiper-slide img { filter: brightness(1.1) contrast(1.1); }
-    .content-vault { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; } /* تم تصغير الحواف */
+    .content-vault { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
     .project-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .project-id { color: var(--neon-cyan); font-size: 0.7rem; letter-spacing: 3px; font-weight: 700; }
     .project-date { color: #666; font-size: 0.7rem; letter-spacing: 2px; }
-    .project-title { font-family: 'Alexandria', sans-serif; font-size: 1.4rem; font-weight: 800; margin: 5px 0 10px 0; background: linear-gradient(90deg, #ffffff, #a0a0b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; direction: rtl; text-align: right; } /* تم تصغير الخط */
-    .project-desc { color: #a0a0b0; font-family: 'Alexandria', sans-serif; font-size: 0.9rem; line-height: 1.6; font-weight: 400; direction: rtl; text-align: right; margin-bottom: 20px; } /* تم تصغير الخط */
+    .project-title { font-family: 'Alexandria', sans-serif; font-size: 1.4rem; font-weight: 800; margin: 5px 0 10px 0; background: linear-gradient(90deg, #ffffff, #a0a0b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; direction: rtl; text-align: right; }
+    .project-desc { color: #a0a0b0; font-family: 'Alexandria', sans-serif; font-size: 0.9rem; line-height: 1.6; font-weight: 400; direction: rtl; text-align: right; margin-bottom: 20px; }
     .tech-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); direction: rtl; }
     .tech-pill { padding: 5px 10px; background: rgba(188, 19, 254, 0.05); border: 1px solid rgba(188, 19, 254, 0.4); color: #e2a0ff; font-size: 0.65rem; border-radius: 6px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; transition: 0.3s; }
     .card-vault:hover .tech-pill { background: rgba(188, 19, 254, 0.15); border-color: var(--neon-purple); box-shadow: 0 0 10px rgba(188, 19, 254, 0.2); }
@@ -167,7 +220,6 @@
     .swiper-pagination-bullet { background: #fff; opacity: 0.5; }
     .swiper-pagination-bullet-active { background: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan); opacity: 1; }
 
-    /* ================= التواصل (Contact) ================= */
     .contact-section { padding: 80px 0 100px; position: relative; z-index: 10; }
     .contact-card { background: var(--glass-bg); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 50px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); position: relative; overflow: hidden; }
     .contact-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple)); }
@@ -186,7 +238,6 @@
     .btn-submit { width: 100%; padding: 18px; background: transparent; border: 1px solid var(--neon-cyan); color: var(--neon-cyan); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border-radius: 12px; cursor: pointer; transition: 0.4s; display: flex; align-items: center; justify-content: center; gap: 12px; }
     .btn-submit:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 30px rgba(0, 243, 255, 0.4); transform: translateY(-3px); }
 
-    /* ================= واتساب العائم ================= */
     .wa-float-container { position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 15px; }
     .wa-contact-list { display: none; flex-direction: column; gap: 10px; margin-bottom: 5px; transform-origin: bottom right; }
     .wa-contact-item { background: white; color: #333; padding: 12px 20px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-decoration: none; display: flex; align-items: center; gap: 12px; font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 600; transition: 0.3s var(--luxury-ease); white-space: nowrap; border: 1px solid #eee; }
@@ -197,7 +248,6 @@
     .wa-main-btn:hover { transform: scale(1.1) rotate(15deg); }
     .wa-float-container.active .wa-contact-list { display: flex; animation: slideIn 0.4s var(--luxury-ease) forwards; }
 
-    /* ================= الرسوم المتحركة ================= */
     @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
     @keyframes float-particle { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-100vh) scale(0); opacity: 0; } }
     @keyframes pulse-glow-cyan { 0% { box-shadow: 0 0 10px rgba(0, 243, 255, 0.1); } 100% { box-shadow: 0 0 25px rgba(0, 243, 255, 0.3); } }
@@ -216,7 +266,7 @@
         .btn-container { justify-content: center; margin-bottom: 4rem; }
         .cyber-image-container { max-width: 350px; margin-bottom: 3rem; }
         .badge-top-right { right: 0; } .badge-bottom-left { left: 0; }
-        .image-vault { height: 200px; } /* تصغير للموبايل */
+        .image-vault { height: 200px; } 
         .main-text-glitch { font-size: 3.2rem; }
         .contact-card { padding: 30px; }
         .info-box { margin-bottom: 40px; }
@@ -306,62 +356,90 @@
     </header>
 
     <main class="container projects-container">
-        <div class="row g-4"> {% for project in projects %}
-            <div class="col-lg-4 col-md-6"> <div class="card-vault interactive-card">
-                    <div class="image-vault">
-                        <div class="swiper mySwiper">
-                            <div class="swiper-wrapper">
-                                {% for img_obj in project.images.all %}
-                                <div class="swiper-slide">
-                                    <a href="{{ project.live_url }}" target="_blank" style="display: block; width: 100%; height: 100%;">
-                                        <img src="{{ img_obj.image.url }}" alt="{{ project.title }}" loading="lazy">
-                                    </a>
-                                </div>
-                                {% empty %}
-                                <div class="swiper-slide">
-                                    <img src="/static/images/default-project.jpg" alt="No Image" loading="lazy">
-                                </div>
-                                {% endfor %}
-                            </div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-pagination"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="content-vault">
-                        <div class="project-meta">
-                            <span class="project-id">ID: 0{{ forloop.counter }}</span>
-                            <span class="project-date">{{ project.created_at|date:"Y" }}</span>
-                        </div>
-                        <h2 class="project-title">{{ project.title }}</h2>
-                        <p class="project-desc">{{ project.description|truncatewords:15 }}</p>
+        <div class="row g-4"> 
+            {% for project in projects %}
+            <div class="col-lg-4 col-md-6"> 
+                <div class="project-flip-container">
+                    <div class="project-flip-inner">
                         
-                        <div class="tech-stack">
-                            {% if project.technologies %}
-                                <span class="tech-pill">{{ project.technologies }}</span>
-                            {% else %}
-                                <span class="tech-pill">DJANGO</span>
-                                <span class="tech-pill">UI/UX</span>
-                            {% endif %}
+                        <div class="project-flip-front">
+                            <div class="card-vault interactive-card">
+                                <div class="image-vault">
+                                    <div class="swiper mySwiper">
+                                        <div class="swiper-wrapper">
+                                            {% for img_obj in project.images.all %}
+                                            <div class="swiper-slide">
+                                                <a href="{{ project.live_url }}" target="_blank" style="display: block; width: 100%; height: 100%;">
+                                                    <img src="{{ img_obj.image.url }}" alt="{{ project.title }}" loading="lazy">
+                                                </a>
+                                            </div>
+                                            {% empty %}
+                                            <div class="swiper-slide">
+                                                <img src="/static/images/default-project.jpg" alt="No Image" loading="lazy">
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="swiper-button-next"></div>
+                                        <div class="swiper-button-prev"></div>
+                                        <div class="swiper-pagination"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="content-vault">
+                                    <div class="project-meta">
+                                        <span class="project-id">ID: 0{{ forloop.counter }}</span>
+                                        <span class="project-date">{{ project.created_at|date:"Y" }}</span>
+                                    </div>
+                                    <h2 class="project-title">{{ project.title }}</h2>
+                                    <p class="project-desc">
+                                        {{ project.description|truncatewords:15 }}
+                                        <br>
+                                        <span class="read-more-btn" onclick="this.closest('.project-flip-inner').classList.toggle('is-flipped')">
+                                            اضغط هنا لقراءة الوصف <i class="fa-solid fa-arrow-left" style="font-size: 0.75rem;"></i>
+                                        </span>
+                                    </p>
+                                    
+                                    <div class="tech-stack">
+                                        {% if project.technologies %}
+                                            <span class="tech-pill">{{ project.technologies }}</span>
+                                        {% else %}
+                                            <span class="tech-pill">DJANGO</span>
+                                            <span class="tech-pill">UI/UX</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="d-flex gap-2 mt-4 flex-row-reverse">
+                                        <a href="{% url 'project_detail' project.id %}" class="protocol-btn flex-grow-1">
+                                            <i class="fa-solid fa-bolt"></i> تفاصيل الموقع 
+                                        </a>
+                                        
+                                        {% if project.live_url %}
+                                        <a href="{{ project.live_url }}" class="protocol-btn icon-btn" target="_blank">
+                                            <i class="fa-solid fa-globe"></i>
+                                        </a>
+                                        {% endif %}
+                                        {% if project.github_url %}
+                                        <a href="{{ project.github_url }}" class="protocol-btn icon-btn" target="_blank">
+                                            <i class="fa-brands fa-github"></i>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="d-flex gap-2 mt-4 flex-row-reverse">
-                            <a href="{% url 'project_detail' project.id %}" class="protocol-btn flex-grow-1">
-                                <i class="fa-solid fa-bolt"></i> تفاصيل الموقع 
-                            </a>
-                            
-                            {% if project.live_url %}
-                            <a href="{{ project.live_url }}" class="protocol-btn icon-btn" target="_blank">
-                                <i class="fa-solid fa-globe"></i>
-                            </a>
-                            {% endif %}
-                            {% if project.github_url %}
-                            <a href="{{ project.github_url }}" class="protocol-btn icon-btn" target="_blank">
-                                <i class="fa-brands fa-github"></i>
-                            </a>
-                            {% endif %}
+                        <div class="project-flip-back">
+                            <div class="card-vault interactive-card" style="padding: 30px; display: flex; flex-direction: column; height: 100%;">
+                                <h2 class="project-title" style="margin-bottom: 20px; text-align: center;">{{ project.title }}</h2>
+                                <div class="desc-scroll" style="overflow-y: auto; flex-grow: 1; margin-bottom: 20px; padding-left: 10px; direction: rtl;">
+                                    <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300;">{{ project.description }}</p>
+                                </div>
+                                <button class="protocol-btn" style="width: 100%; margin-top: auto; justify-content: center;" onclick="this.closest('.project-flip-inner').classList.toggle('is-flipped')">
+                                    <i class="fa-solid fa-rotate-left"></i> رجوع
+                                </button>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -520,7 +598,6 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <script>
-    // تهيئة Swiper للمشاريع
     new Swiper(".mySwiper", {
         loop: true,
         grabCursor: true,
@@ -528,7 +605,6 @@
         pagination: { el: ".swiper-pagination", dynamicBullets: true },
     });
 
-    // توليد جزيئات الخلفية (تم التقليل لـ 30 لتحسين الأداء)
     const particlesContainer = document.getElementById('particles');
     if (particlesContainer) {
         for (let i = 0; i < 30; i++) {
@@ -546,7 +622,6 @@
         }
     }
 
-    // حركة الماوس المضيء (Cursor Follower)
     const cursor = document.getElementById('cursor');
     const heroBox = document.getElementById('heroBox');
     let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
@@ -569,14 +644,12 @@
         cursorX += (mouseX - cursorX) * 0.1;
         cursorY += (mouseY - cursorY) * 0.1;
         if(cursor) {
-            // استخدام translate3d بدلاً من left و top لتفعيل تسريع الـ GPU
             cursor.style.transform = `translate3d(${cursorX - 300}px, ${cursorY - 300}px, 0)`;
         }
         requestAnimationFrame(animateCursor);
     }
     animateCursor();
 
-    // تفاعل الكروت مع الماوس
     const interactiveCards = document.querySelectorAll('.interactive-card');
     interactiveCards.forEach(card => {
         card.addEventListener('mousemove', e => {
@@ -588,7 +661,6 @@
         });
     });
 
-    // إغلاق قائمة الواتس آب عند النقر في الخارج
     document.addEventListener('click', (e) => {
         const waContainer = document.getElementById('waContainer');
         if (waContainer && !waContainer.contains(e.target)) {

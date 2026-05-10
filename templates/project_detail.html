@@ -9,12 +9,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-    /* ================= نفس متغيرات وستايل الـ Index ================= */
     :root {
         --neon-cyan: #00f3ff;
         --neon-purple: #bc13fe;
         --dark-bg: #030305;
-        --glass-bg: rgba(12, 12, 18, 0.6);
+        --glass-bg: rgba(12, 12, 18, 0.4);
         --glass-border: rgba(255, 255, 255, 0.08);
         --text-main: #ffffff;
         --text-muted: #a0a0b0;
@@ -28,7 +27,6 @@
         margin: 0;
     }
 
-    /* نفس تأثيرات الخلفية */
     .cosmic-engine {
         position: fixed;
         top: 0; left: 0;
@@ -64,7 +62,7 @@
         position: fixed;
         width: 600px;
         height: 600px;
-        background: radial-gradient(circle, rgba(0, 243, 255, 0.08) 0%, transparent 60%);
+        background: radial-gradient(circle, rgba(0, 243, 255, 0.05) 0%, transparent 60%);
         border-radius: 50%;
         pointer-events: none;
         z-index: 9999;
@@ -72,146 +70,299 @@
         mix-blend-mode: screen;
     }
 
-    /* ستايل المحتوى */
     .project-detail-wrap {
         position: relative;
         z-index: 10;
         direction: rtl;
-        padding: 150px 5% 80px;
-        max-width: 1300px;
+        padding: 140px 5% 80px;
+        max-width: 1400px;
         margin: 0 auto;
     }
 
     .project-detail-hero-inner {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4rem;
-        align-items: flex-start;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
     }
 
-    .project-detail-info { flex: 1 1 500px; }
-    .project-detail-gallery { flex: 1 1 500px; }
-
-    .btn {
+    .back-btn {
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        padding: 12px 25px;
-        border-radius: 12px;
+        padding: 10px 20px;
+        border-radius: 50px;
         font-weight: 600;
+        font-size: 0.9rem;
         text-decoration: none;
-        transition: 0.4s;
-        border: 1px solid transparent;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--glass-border);
+        color: var(--text-muted);
+        transition: all 0.4s ease;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .back-btn:hover {
+        background: rgba(0, 243, 255, 0.1);
+        border-color: var(--neon-cyan);
+        color: var(--neon-cyan);
+        transform: translateX(-5px);
+    }
+
+    .project-detail-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .tech-stack-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .project-tag {
+        background: rgba(188, 19, 254, 0.05);
+        border: 1px solid rgba(188, 19, 254, 0.3);
+        color: #e2a0ff;
+        padding: 6px 18px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        font-weight: 700;
+        text-transform: uppercase;
+        box-shadow: 0 0 10px rgba(188, 19, 254, 0.1);
+    }
+
+    .project-detail-title {
         font-family: 'Alexandria', sans-serif;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        font-weight: 900;
+        line-height: 1.2;
+        margin: 0 0 1.5rem 0;
+        background: linear-gradient(90deg, #ffffff, var(--neon-cyan));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+    }
+
+    .project-detail-desc {
+        font-size: 1.05rem;
+        line-height: 2;
+        color: var(--text-muted);
+        margin-bottom: 2.5rem;
+        font-weight: 300;
+        text-align: justify;
+    }
+
+    .project-detail-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 25px;
+        backdrop-filter: blur(20px);
+        margin-bottom: 2.5rem;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+
+    .meta-box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .meta-label { 
+        color: var(--neon-cyan); 
+        font-size: 0.8rem; 
+        font-weight: 700; 
+        letter-spacing: 1px; 
+        text-transform: uppercase;
+    }
+
+    .meta-value {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn-cyber {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 30px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-family: 'Alexandria', sans-serif;
+        cursor: pointer;
     }
 
     .btn-primary {
-        background: rgba(0, 243, 255, 0.1);
-        border-color: var(--neon-cyan);
+        background: rgba(0, 243, 255, 0.05);
+        border: 1px solid var(--neon-cyan);
         color: var(--neon-cyan);
     }
 
     .btn-primary:hover {
         background: var(--neon-cyan);
         color: #000;
-        box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
+        box-shadow: 0 0 25px rgba(0, 243, 255, 0.4);
+        transform: translateY(-3px);
     }
 
     .btn-secondary {
         background: var(--glass-bg);
-        border-color: var(--glass-border);
-        color: #fff;
-        backdrop-filter: blur(10px);
-    }
-
-    .project-tag {
-        background: rgba(188, 19, 254, 0.1);
-        border: 1px solid rgba(188, 19, 254, 0.3);
-        color: #e2a0ff;
-        padding: 5px 15px;
-        border-radius: 50px;
-        font-size: 0.8rem;
-        font-weight: 700;
-    }
-
-    .project-detail-title {
-        font-family: 'Syncopate', sans-serif;
-        font-size: clamp(2rem, 5vw, 3.5rem);
-        font-weight: 900;
-        margin: 1.5rem 0;
-        background: linear-gradient(90deg, #fff, var(--neon-cyan));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .project-detail-desc {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        color: var(--text-muted);
-        margin-bottom: 2rem;
-    }
-
-    .project-detail-meta {
-        background: var(--glass-bg);
         border: 1px solid var(--glass-border);
-        border-radius: 20px;
-        padding: 25px;
-        backdrop-filter: blur(15px);
-        margin-bottom: 2rem;
+        color: #fff;
     }
 
-    .meta-row {
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-3px);
+    }
+
+    .project-detail-gallery {
+        position: relative;
         display: flex;
-        justify-content: space-between;
-        padding: 10px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+        justify-content: center;
+        align-items: center;
     }
 
-    .meta-label { color: var(--neon-cyan); font-weight: 800; }
+    .gallery-main-wrapper {
+        position: relative;
+        width: 100%;
+        border-radius: 24px;
+        padding: 10px;
+        background: linear-gradient(145deg, rgba(20,20,30,0.6) 0%, rgba(5,5,10,0.8) 100%);
+        border: 1px solid rgba(0, 243, 255, 0.15);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 40px rgba(0, 243, 255, 0.05);
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .gallery-main-wrapper:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 50px rgba(0, 243, 255, 0.1);
+        border-color: rgba(0, 243, 255, 0.3);
+    }
 
     .gallery-main {
         width: 100%;
-        border-radius: 24px;
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        transition: 0.5s;
+        height: auto;
+        border-radius: 16px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .snapshots-title {
+        margin-top: 8rem; 
+        font-family: 'Syncopate', sans-serif; 
+        font-weight: 900; 
+        color: var(--text-main);
+        text-align: center;
+        font-size: 2rem;
+        letter-spacing: 5px;
+    }
+    .snapshots-title span {
+        color: var(--neon-cyan);
     }
 
     .images-gallery-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 25px;
         margin-top: 3rem;
     }
 
     .gallery-thumb {
-        border-radius: 15px;
+        border-radius: 20px;
         overflow: hidden;
         border: 1px solid var(--glass-border);
         height: 250px;
+        position: relative;
+        cursor: pointer;
     }
 
-    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-    .gallery-thumb:hover img { transform: scale(1.1); }
+    .gallery-thumb::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 243, 255, 0.1);
+        opacity: 0;
+        transition: 0.4s;
+    }
+
+    .gallery-thumb:hover::after { opacity: 1; }
+
+    .gallery-thumb img { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+        transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); 
+    }
+    
+    .gallery-thumb:hover img { 
+        transform: scale(1.08); 
+    }
+
+    .cta-section {
+        margin-top: 8rem; 
+        text-align: center; 
+        padding: 5rem 2rem; 
+        background: linear-gradient(145deg, rgba(20,20,30,0.5) 0%, rgba(5,5,10,0.7) 100%);
+        border: 1px solid var(--glass-border); 
+        border-radius: 30px; 
+        backdrop-filter: blur(20px);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 50%;
+        transform: translateX(-50%);
+        width: 50%; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    }
 
     @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
     @keyframes float-particle { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-100vh) scale(0); opacity: 0; } }
 
-    /* التعديلات الخاصة بالجوال لتصحيح المسافات */
-    @media (max-width: 768px) {
+    @media (max-width: 991px) {
         .project-detail-hero-inner { 
-            flex-direction: column-reverse; 
-            gap: 1.5rem; /* تقليل المسافة بين الصورة والكلام */
+            grid-template-columns: 1fr; 
+            gap: 3rem;
         }
         
-        .project-detail-info, 
-        .project-detail-gallery {
-            flex: 1 1 100%; /* إلغاء فرض حجم 500 بكسل في الشاشات الصغيرة */
-            width: 100%;
+        .project-detail-wrap {
+            padding-top: 120px;
         }
 
-        .project-detail-wrap {
-            padding-top: 100px; /* تقليل المساحة العلوية في الجوال لتناسق أفضل */
+        .gallery-main-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .project-detail-meta {
+            grid-template-columns: 1fr;
+            gap: 15px;
         }
     }
 </style>
@@ -222,16 +373,17 @@
 
 <div class="project-detail-wrap">
 
+    <a href="/#projects" class="back-btn">
+        <i class="fa-solid fa-arrow-right"></i> العودة للمشاريع
+    </a>
+
     <div class="project-detail-hero">
         <div class="project-detail-hero-inner">
             
             <div class="project-detail-info">
-                <a href="/#projects" class="btn btn-secondary" style="margin-bottom:2rem;">
-                    <i class="fa-solid fa-arrow-right"></i> العودة للمشاريع
-                </a>
-
+                
                 {% if project.technologies %}
-                <div class="d-flex flex-wrap gap-2 mb-3">
+                <div class="tech-stack-container">
                     {% for tech in project.technologies.split %}
                         <span class="project-tag">{{ tech }}</span>
                     {% endfor %}
@@ -242,24 +394,24 @@
                 <p class="project-detail-desc">{{ project.description }}</p>
 
                 <div class="project-detail-meta">
-                    <div class="meta-row">
-                        <span class="meta-label">المنصة</span>
-                        <span class="meta-value">ويب / تطبيق</span>
+                    <div class="meta-box">
+                        <span class="meta-label"><i class="fa-solid fa-layer-group"></i> المنصة</span>
+                        <span class="meta-value">تطبيق ويب متكامل</span>
                     </div>
-                    <div class="meta-row">
-                        <span class="meta-label">التاريخ</span>
+                    <div class="meta-box">
+                        <span class="meta-label"><i class="fa-regular fa-calendar"></i> تاريخ الإطلاق</span>
                         <span class="meta-value">{{ project.created_at|date:"F Y" }}</span>
                     </div>
                 </div>
 
-                <div class="d-flex gap-3 flex-wrap">
+                <div class="action-buttons">
                     {% if project.live_url %}
-                    <a href="{{ project.live_url }}" target="_blank" class="btn btn-primary">
-                        <i class="fa-solid fa-bolt"></i> معاينة حية
+                    <a href="{{ project.live_url }}" target="_blank" class="btn-cyber btn-primary">
+                        <i class="fa-solid fa-globe"></i> معاينة حية
                     </a>
                     {% endif %}
                     {% if project.github_url %}
-                    <a href="{{ project.github_url }}" target="_blank" class="btn btn-secondary">
+                    <a href="{{ project.github_url }}" target="_blank" class="btn-cyber btn-secondary">
                         <i class="fa-brands fa-github"></i> الكود المصدرى
                     </a>
                     {% endif %}
@@ -267,19 +419,24 @@
             </div>
 
             <div class="project-detail-gallery">
-                {% with project.images.first as img %}
-                {% if img %}
-                    <img src="{{ img.image.url }}" alt="{{ project.title }}" class="gallery-main">
-                {% else %}
-                    <div style="height:400px; background:var(--glass-bg); border-radius:24px; display:flex; align-items:center; justify-content:center; font-size:3rem;">💻</div>
-                {% endif %}
-                {% endwith %}
+                <div class="gallery-main-wrapper">
+                    {% with project.images.first as img %}
+                    {% if img %}
+                        <img src="{{ img.image.url }}" alt="{{ project.title }}" class="gallery-main">
+                    {% else %}
+                        <div style="height:400px; display:flex; align-items:center; justify-content:center; font-size:4rem; color: var(--glass-border);">
+                            <i class="fa-solid fa-image"></i>
+                        </div>
+                    {% endif %}
+                    {% endwith %}
+                </div>
             </div>
+
         </div>
     </div>
 
     {% if project.images.count > 1 %}
-    <h2 style="margin-top:5rem; font-family:'Syncopate'; font-weight:900; color:var(--neon-cyan);">SNAPSHOTS</h2>
+    <h2 class="snapshots-title">PROJECT <span>GALLERY</span></h2>
     <div class="images-gallery-grid">
         {% for image in project.images.all %}
             {% if not forloop.first %}
@@ -291,18 +448,19 @@
     </div>
     {% endif %}
 
-    <div style="margin-top:6rem; text-align:center; padding:4rem 2rem; background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:30px; backdrop-filter:blur(20px);">
-        <h3 style="font-size:2rem; font-weight:800; margin-bottom:1rem;">هل تبحث عن تنفيذ فكرة مشابهة؟</h3>
-        <p style="color:var(--text-muted); margin-bottom:2.5rem;">أنا جاهز لتحويل رؤيتك إلى واقع رقمي مبهر.</p>
-        <a href="/#contact" class="btn btn-primary" style="padding:15px 40px;">ابدأ مشروعك الآن</a>
+    <div class="cta-section">
+        <h3 style="font-size:clamp(1.8rem, 3vw, 2.5rem); font-weight:800; margin-bottom:1rem;">هل تبحث عن تنفيذ فكرة مشابهة؟</h3>
+        <p style="color:var(--text-muted); font-size: 1.1rem; margin-bottom:2.5rem;">أنا جاهز لتحويل رؤيتك إلى واقع رقمي مبهر يتميز بالأداء والتصميم الخارق.</p>
+        <a href="/#contact" class="btn-cyber btn-primary" style="padding:15px 40px; font-size: 1.1rem;">
+            ابدأ مشروعك الآن <i class="fa-solid fa-paper-plane"></i>
+        </a>
     </div>
 
 </div>
 
 <script>
-    // جلب نفس سكريبت الجزيئات والماوس من الـ Index
     const particlesContainer = document.getElementById('particles');
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 40; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         p.style.left = Math.random() * 100 + 'vw';
@@ -311,13 +469,14 @@
         p.style.width = size + 'px';
         p.style.height = size + 'px';
         p.style.animationDelay = Math.random() * 15 + 's';
+        p.style.animationDuration = (Math.random() * 10 + 10) + 's';
         p.style.background = i % 3 === 0 ? 'var(--neon-purple)' : 'var(--neon-cyan)';
         particlesContainer.appendChild(p);
     }
 
     const cursor = document.getElementById('cursor');
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let cursorX = mouseX, cursorY = mouseY;
 
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;

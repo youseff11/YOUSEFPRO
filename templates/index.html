@@ -37,8 +37,8 @@
 
     .cursor-follower {
         position: fixed;
-        width: 400px;
-        height: 400px;
+        width: 600px;
+        height: 600px;
         background: radial-gradient(circle, rgba(0, 243, 255, 0.08) 0%, transparent 60%);
         border-radius: 50%;
         pointer-events: none;
@@ -46,6 +46,8 @@
         top: 0;
         left: 0;
         will-change: transform;
+        mix-blend-mode: screen;
+        transition: width 0.2s, height 0.2s;
     }
 
     .hero-quantum {
@@ -117,13 +119,11 @@
     .projects-container { padding-bottom: 100px; position: relative; z-index: 10; }
     
     .card-vault {
-        background: linear-gradient(145deg, rgba(20,20,30,0.7) 0%, rgba(5,5,10,0.9) 100%);
+        background: linear-gradient(145deg, rgba(20,20,30,0.4) 0%, rgba(5,5,10,0.6) 100%);
         border: 1px solid var(--glass-border); border-radius: 20px; position: relative;
-        transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-        overflow: hidden;
-        backdrop-filter: blur(8px); height: 100%; display: flex; flex-direction: column;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        will-change: transform;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); overflow: hidden;
+        backdrop-filter: blur(20px); height: 100%; display: flex; flex-direction: column;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
     }
     .card-vault::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent); opacity: 0; transition: 0.5s; }
     .card-vault:hover { transform: translateY(-12px) scale(1.02); border-color: rgba(0, 243, 255, 0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 40px rgba(0, 243, 255, 0.15); }
@@ -657,21 +657,13 @@
     animateCursor();
 
     const interactiveCards = document.querySelectorAll('.interactive-card');
-    let isTicking = false;
-
     interactiveCards.forEach(card => {
         card.addEventListener('mousemove', e => {
-            if (!isTicking) {
-                window.requestAnimationFrame(() => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    card.style.setProperty('--mouse-x', `${x}px`);
-                    card.style.setProperty('--mouse-y', `${y}px`);
-                    isTicking = false;
-                });
-                isTicking = true;
-            }
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
         });
     });
 

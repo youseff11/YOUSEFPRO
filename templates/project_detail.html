@@ -264,7 +264,6 @@
         width: 100%;
         height: auto;
         border-radius: 16px;
-        object-fit: cover;
         display: block;
     }
 
@@ -391,7 +390,14 @@
                 {% endif %}
 
                 <h1 class="project-detail-title">{{ project.title }}</h1>
-                <p class="project-detail-desc">{{ project.description }}</p>
+                
+                <div class="project-detail-desc">
+                    {% for paragraph in project.paragraphs.all %}
+                        <p style="margin-bottom: 1.5rem;">{{ paragraph.text|linebreaksbr }}</p>
+                    {% empty %}
+                        <p>{{ project.description }}</p>
+                    {% endfor %}
+                </div>
 
                 <div class="project-detail-meta">
                     <div class="meta-box">

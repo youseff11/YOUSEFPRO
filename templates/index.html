@@ -392,7 +392,13 @@
                                     </div>
                                     <h2 class="project-title">{{ project.title }}</h2>
                                     <p class="project-desc">
-                                        {{ project.description|truncatewords:15 }}
+                                        {% with first_p=project.paragraphs.first %}
+                                            {% if first_p %}
+                                                {{ first_p.text|truncatewords:15 }}
+                                            {% else %}
+                                                {{ project.description|truncatewords:15 }}
+                                            {% endif %}
+                                        {% endwith %}
                                         <br>
                                         <span class="read-more-btn" onclick="this.closest('.project-flip-inner').classList.toggle('is-flipped')">
                                             اضغط هنا لقراءة الوصف <i class="fa-solid fa-arrow-left" style="font-size: 0.75rem;"></i>
@@ -432,7 +438,13 @@
                             <div class="card-vault interactive-card" style="padding: 30px; display: flex; flex-direction: column; height: 100%;">
                                 <h2 class="project-title" style="margin-bottom: 20px; text-align: center;">{{ project.title }}</h2>
                                 <div class="desc-scroll" style="overflow-y: auto; flex-grow: 1; margin-bottom: 20px; padding-left: 10px; direction: rtl;">
-                                    <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300;">{{ project.description }}</p>
+                                    {% for paragraph in project.paragraphs.all %}
+                                        <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300; margin-bottom: 15px;">
+                                            {{ paragraph.text|linebreaksbr }}
+                                        </p>
+                                    {% empty %}
+                                        <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300;">{{ project.description }}</p>
+                                    {% endfor %}
                                 </div>
                                 <button class="protocol-btn" style="width: 100%; margin-top: auto; justify-content: center;" onclick="this.closest('.project-flip-inner').classList.toggle('is-flipped')">
                                     <i class="fa-solid fa-rotate-left"></i> رجوع

@@ -2,7 +2,7 @@ from django.db import models
 
 class Project(models.Model):
     title = models.CharField(max_length=200, verbose_name="عنوان المشروع")
-    description = models.TextField(verbose_name="وصف المشروع")
+    description = models.TextField(verbose_name="وصف المشروع (مختصر)")
     technologies = models.CharField(max_length=200, blank=True, verbose_name="التقنيات المستخدمة (مثل: Django, HTML)")
     live_url = models.URLField(blank=True, verbose_name="رابط المشروع الحي (Live)")
     github_url = models.URLField(blank=True, verbose_name="رابط الكود (GitHub - إن وجد)")
@@ -17,6 +17,20 @@ class Project(models.Model):
     def __str__(self):
         return self.title
 
+# مودل جديد لفقرات المشروع (عشان تزود تيكست بوكس براحتك)
+class ProjectParagraph(models.Model):
+    project = models.ForeignKey(Project, related_name='paragraphs', on_delete=models.CASCADE)
+    text = models.TextField(verbose_name="محتوى الفقرة")
+    order = models.PositiveIntegerField(default=0, verbose_name="الترتيب (اختياري)", blank=True, null=True)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = "فقرة المشروع"
+        verbose_name_plural = "فقرات المشروع"
+
+    def __str__(self):
+        return f"فقرة تابعة لـ: {self.project.title}"
+
 class ProjectImage(models.Model):
     project = models.ForeignKey(Project, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='portfolio_images/')
@@ -24,6 +38,7 @@ class ProjectImage(models.Model):
     class Meta:
         verbose_name = "صورة المشروع"
         verbose_name_plural = "صور المشروع"
+
 class ContactMessage(models.Model):
     name = models.CharField(max_length=150, verbose_name="اسم المرسل")
     email = models.EmailField(verbose_name="البريد الإلكتروني")

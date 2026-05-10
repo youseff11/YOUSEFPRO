@@ -392,13 +392,7 @@
                                     </div>
                                     <h2 class="project-title">{{ project.title }}</h2>
                                     <p class="project-desc">
-                                        {% with first_p=project.paragraphs.first %}
-                                            {% if first_p %}
-                                                {{ first_p.text|truncatewords:15 }}
-                                            {% else %}
-                                                {{ project.description|truncatewords:15 }}
-                                            {% endif %}
-                                        {% endwith %}
+                                        {{ project.description|truncatewords:15 }}
                                         <br>
                                         <span class="read-more-btn" onclick="this.closest('.project-flip-inner').classList.toggle('is-flipped')">
                                             اضغط هنا لقراءة الوصف <i class="fa-solid fa-arrow-left" style="font-size: 0.75rem;"></i>

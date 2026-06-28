@@ -278,7 +278,7 @@
         <div class="row gy-5">
             <div class="col-lg-4 col-md-6" data-aos="fade-up">
                 <a class="footer-brand" href="{% url 'index' %}">Joo<span>Tech</span></a>
-                <p class="footer-desc mt-3">نحن ندمج التكنولوجيا بالفن لنصنع تجارب رقمية خارجة عن المألوف. أنظمة برمجية مصممة للمستقبل.</p>
+                <p class="footer-desc mt-3" data-ar="نحن ندمج التكنولوجيا بالفن لنصنع تجارب رقمية خارجة عن المألوف. أنظمة برمجية مصممة للمستقبل." data-en="We merge technology with art to create extraordinary digital experiences. Software systems designed for the future.">نحن ندمج التكنولوجيا بالفن لنصنع تجارب رقمية خارجة عن المألوف. أنظمة برمجية مصممة للمستقبل.</p>
                 
                 <div class="social-wrapper">
                     <a href="https://www.linkedin.com/in/yousef-osama-b92b312ab?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="social-hex"><i class="fab fa-linkedin-in"></i></a>
@@ -292,26 +292,26 @@
             <div class="col-lg-2 col-md-6 ms-auto" data-aos="fade-up" data-aos-delay="100">
                 <h5 class="footer-title">SYS_MAP</h5>
                 <div class="d-flex flex-column">
-                    <a href="{% if request.path == index_url %}#home{% else %}{{ index_url }}#home{% endif %}" class="footer-link">الرئيسية</a>
-                    <a href="{% if request.path == index_url %}#projects{% else %}{{ index_url }}#projects{% endif %}" class="footer-link">المشاريع</a>
-                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link">خدماتي</a>
-                    <a href="{% if request.path == index_url %}#contact{% else %}{{ index_url }}#contact{% endif %}" class="footer-link">تواصل معي</a>
+                    <a href="{% if request.path == index_url %}#home{% else %}{{ index_url }}#home{% endif %}" class="footer-link" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+                    <a href="{% if request.path == index_url %}#projects{% else %}{{ index_url }}#projects{% endif %}" class="footer-link" data-ar="المشاريع" data-en="Projects">المشاريع</a>
+                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link" data-ar="خدماتي" data-en="Services">خدماتي</a>
+                    <a href="{% if request.path == index_url %}#contact{% else %}{{ index_url }}#contact{% endif %}" class="footer-link" data-ar="تواصل معي" data-en="Contact">تواصل معي</a>
                 </div>
             </div>
 
             <div class="col-lg-2 col-md-6" data-aos="fade-up" data-aos-delay="200">
                 <h5 class="footer-title">MODULES</h5>
                 <div class="d-flex flex-column">
-                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link">هندسة الويب</a>
-                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link">تصميم UI/UX</a>
-                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link">قواعد البيانات</a>
-                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link">أمن المعلومات</a>
+                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link" data-ar="هندسة الويب" data-en="Web Engineering">هندسة الويب</a>
+                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link" data-ar="تصميم UI/UX" data-en="UI/UX Design">تصميم UI/UX</a>
+                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link" data-ar="قواعد البيانات" data-en="Databases">قواعد البيانات</a>
+                    <a href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}" class="footer-link" data-ar="أمن المعلومات" data-en="Cyber Security">أمن المعلومات</a>
                 </div>
             </div>
 
             <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
                 <h5 class="footer-title">UPLINK</h5>
-                <p class="footer-desc mb-3" style="font-size: 0.85rem;">قم بتهيئة الاتصال لاستقبال التحديثات الأمنية والتقنية.</p>
+                <p class="footer-desc mb-3" style="font-size: 0.85rem;" data-ar="قم بتهيئة الاتصال لاستقبال التحديثات الأمنية والتقنية." data-en="Set up connection to receive security and tech updates.">قم بتهيئة الاتصال لاستقبال التحديثات الأمنية والتقنية.</p>
                 
                 <div class="cyber-input-group">
                     <input type="text" class="cyber-input" placeholder="ENTER_EMAIL_ADDRESS...">

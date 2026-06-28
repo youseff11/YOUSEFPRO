@@ -114,6 +114,28 @@
             .navbar-collapse { background: rgba(15, 23, 42, 0.95); margin-top: 20px; padding: 25px; border-radius: 30px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); }
             .navbar-kharaq { border-radius: 25px; }
         }
+
+        .btn-lang-toggle {
+            background: rgba(0, 243, 255, 0.08);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 50px;
+            padding: 8px 18px !important;
+            color: var(--accent-glow) !important;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-lang-toggle:hover {
+            background: var(--accent-glow);
+            color: #000 !important;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -133,28 +155,34 @@
 
                         <li class="nav-item">
                             <a class="nav-link" href="{% if request.path == index_url %}#home{% else %}{{ index_url }}#home{% endif %}">
-                                <i class="fa-solid fa-house-user me-2 opacity-50"></i>الرئيسية
+                                <i class="fa-solid fa-house-user me-2 opacity-50"></i><span data-ar="الرئيسية" data-en="Home">الرئيسية</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% if request.path == index_url %}#projects{% else %}{{ index_url }}#projects{% endif %}">
-                                <i class="fa-solid fa-code-merge me-2 opacity-50"></i>المشاريع
+                                <i class="fa-solid fa-code-merge me-2 opacity-50"></i><span data-ar="المشاريع" data-en="Projects">المشاريع</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% if request.path == index_url %}#services{% else %}{{ index_url }}#services{% endif %}">
-                                <i class="fa-solid fa-layer-group me-2 opacity-50"></i>خدماتي
+                                <i class="fa-solid fa-layer-group me-2 opacity-50"></i><span data-ar="خدماتي" data-en="Services">خدماتي</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% if request.path == index_url %}#contact{% else %}{{ index_url }}#contact{% endif %}">
-                                <i class="fa-solid fa-comments me-2 opacity-50"></i>تواصل معي
+                                <i class="fa-solid fa-comments me-2 opacity-50"></i><span data-ar="تواصل معي" data-en="Contact">تواصل معي</span>
                             </a>
                         </li>
                         <li class="nav-item mx-lg-3">
                             <a class="nav-link btn-action" href="{% if request.path == index_url %}#contact{% else %}{{ index_url }}#contact{% endif %}" style="text-decoration:none;">
-                                <i class="fa-regular fa-paper-plane me-2"></i>ابدأ مشروعك
+                                <i class="fa-regular fa-paper-plane me-2"></i><span data-ar="ابدأ مشروعك" data-en="Start Project">ابدأ مشروعك</span>
                             </a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link btn-lang-toggle" id="langToggle" onclick="toggleLanguage()" title="Switch Language">
+                                <i class="fa-solid fa-globe me-1"></i>
+                                <span id="langLabel">EN</span>
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -177,6 +205,56 @@
             } else {
                 holder.classList.remove('scrolled');
             }
+        });
+
+        // Language Toggle System
+        function toggleLanguage() {
+            const currentLang = localStorage.getItem('siteLang') || 'ar';
+            const newLang = currentLang === 'ar' ? 'en' : 'ar';
+            localStorage.setItem('siteLang', newLang);
+            applyLanguage(newLang);
+        }
+
+        function applyLanguage(lang) {
+            const label = document.getElementById('langLabel');
+            if (label) label.textContent = lang === 'ar' ? 'EN' : 'عربي';
+
+            // Toggle direction for sections
+            const html = document.documentElement;
+            if (lang === 'en') {
+                html.setAttribute('dir', 'ltr');
+                html.setAttribute('lang', 'en');
+            } else {
+                html.setAttribute('dir', 'ltr');
+                html.setAttribute('lang', 'ar');
+            }
+
+            // Swap all translatable elements
+            document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+                el.textContent = el.getAttribute('data-' + lang);
+            });
+
+            // Swap placeholder attributes
+            document.querySelectorAll('[data-placeholder-ar][data-placeholder-en]').forEach(el => {
+                el.placeholder = el.getAttribute('data-placeholder-' + lang);
+            });
+
+            // Toggle RTL on specific containers
+            document.querySelectorAll('[data-rtl-toggle]').forEach(el => {
+                if (lang === 'en') {
+                    el.style.direction = 'ltr';
+                    el.style.textAlign = 'left';
+                } else {
+                    el.style.direction = 'rtl';
+                    el.style.textAlign = 'right';
+                }
+            });
+        }
+
+        // Apply saved language on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('siteLang') || 'ar';
+            applyLanguage(savedLang);
         });
     </script>
 </body>

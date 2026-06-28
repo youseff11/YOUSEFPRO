@@ -7,10 +7,13 @@ class Project(models.Model):
     live_url = models.URLField(blank=True, verbose_name="رابط المشروع الحي (Live)")
     github_url = models.URLField(blank=True, verbose_name="رابط الكود (GitHub - إن وجد)")
     is_published = models.BooleanField(default=True, verbose_name="نشر المشروع؟ (إلغاء التحديد سيخفيه من الموقع)")
+    order = models.PositiveIntegerField(default=0, verbose_name="ترتيب العرض (الأصغر يظهر أولاً)", help_text="اكتب رقم لترتيب المشروع. المشروع ذو الرقم الأصغر يظهر أولاً.")
+    title_en = models.CharField(max_length=200, blank=True, verbose_name="عنوان المشروع (إنجليزي)")
+    description_en = models.TextField(blank=True, verbose_name="وصف المشروع بالإنجليزي (مختصر)")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإضافة")
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['order', '-created_at']
         verbose_name = "مشروع"
         verbose_name_plural = "المشاريع"
 
@@ -21,6 +24,7 @@ class Project(models.Model):
 class ProjectParagraph(models.Model):
     project = models.ForeignKey(Project, related_name='paragraphs', on_delete=models.CASCADE)
     text = models.TextField(verbose_name="محتوى الفقرة")
+    text_en = models.TextField(blank=True, verbose_name="محتوى الفقرة (إنجليزي)")
     order = models.PositiveIntegerField(default=0, verbose_name="الترتيب (اختياري)", blank=True, null=True)
 
     class Meta:

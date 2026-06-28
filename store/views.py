@@ -7,7 +7,7 @@ from .models import Project, ContactMessage
 
 # --- الصفحة الرئيسية ---
 def index(request):
-    projects = Project.objects.filter(is_published=True).prefetch_related('images').order_by('-created_at')
+    projects = Project.objects.filter(is_published=True).prefetch_related('images', 'paragraphs').order_by('order', '-created_at')
     context = {
         'projects': projects,
         'total_projects': projects.count(),
@@ -16,7 +16,7 @@ def index(request):
 
 # --- صفحة كل المشاريع ---
 def project(request):
-    projects = Project.objects.filter(is_published=True).prefetch_related('images').order_by('-created_at')
+    projects = Project.objects.filter(is_published=True).prefetch_related('images', 'paragraphs').order_by('order', '-created_at')
     context = {
         'projects': projects,
         'total_projects': projects.count(),

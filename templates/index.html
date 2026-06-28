@@ -302,7 +302,7 @@
                     <span class="text-layer-1">YOUSEF</span>
                     <span class="text-layer-2">VISIONARY</span>
                 </h1>
-                <p class="hero-desc">
+                <p class="hero-desc" data-ar="أنا لا أبرمج صفحات الويب فقط، بل أصمم عوالم رقمية تتجاوز المألوف. مهندس برمجيات ومصمم تجارب تفاعلية يدمج بين الفن التقني والأداء الخارق لبناء المستقبل اليوم." data-en="I don't just code web pages — I design digital worlds beyond the ordinary. A software engineer and interactive experience designer, merging technical art with extreme performance to build the future today.">
                     أنا لا أبرمج صفحات الويب فقط، بل أصمم عوالم رقمية تتجاوز المألوف. مهندس برمجيات ومصمم تجارب تفاعلية يدمج بين الفن التقني والأداء الخارق لبناء المستقبل اليوم.
                 </p>
                 <div class="btn-container">
@@ -349,7 +349,7 @@
             <h1 class="main-text-glitch">
                 <span style="color: #fff"></span> <span style="color: var(--neon-cyan)">Projects</span>
             </h1>
-            <p style="color: #a0a0b0; max-width: 700px; margin: 0 auto; font-family: 'Alexandria', sans-serif; font-size: 1.1rem; line-height: 1.9; font-weight: 300;">
+            <p style="color: #a0a0b0; max-width: 700px; margin: 0 auto; font-family: 'Alexandria', sans-serif; font-size: 1.1rem; line-height: 1.9; font-weight: 300;" data-ar="هنا تكمن نتائج التجارب الرقمية، حيث تلتقي الشيفرة البرمجية مع الخيال الهندسي لتكوين واجهات استثنائية وأداء لا يقبل المنافسة." data-en="Here lie the results of digital experiments, where code meets engineering imagination to create exceptional interfaces and unmatched performance.">
                 هنا تكمن نتائج التجارب الرقمية، حيث تلتقي الشيفرة البرمجية مع الخيال الهندسي لتكوين واجهات استثنائية وأداء لا يقبل المنافسة.
             </p>
         </div>
@@ -390,12 +390,12 @@
                                         <span class="project-id">ID: 0{{ forloop.counter }}</span>
                                         <span class="project-date">{{ project.created_at|date:"Y" }}</span>
                                     </div>
-                                    <h2 class="project-title">{{ project.title }}</h2>
+                                    <h2 class="project-title" data-ar="{{ project.title }}" data-en="{{ project.title_en|default:project.title }}">{{ project.title }}</h2>
                                     <p class="project-desc">
-                                        {{ project.description|truncatewords:15 }}
+                                        <span data-ar="{{ project.description|truncatewords:15 }}" data-en="{{ project.description_en|default:project.description|truncatewords:15 }}">{{ project.description|truncatewords:15 }}</span>
                                         <br>
                                         <span class="read-more-btn" onclick="this.closest('.project-flip-inner').classList.toggle('is-flipped')">
-                                            اضغط هنا لقراءة الوصف <i class="fa-solid fa-arrow-left" style="font-size: 0.75rem;"></i>
+                                            <span data-ar="اضغط هنا لقراءة الوصف" data-en="Click to read more">اضغط هنا لقراءة الوصف</span> <i class="fa-solid fa-arrow-left" style="font-size: 0.75rem;"></i>
                                         </span>
                                     </p>
                                     
@@ -410,7 +410,7 @@
 
                                     <div class="d-flex gap-2 mt-4 flex-row-reverse">
                                         <a href="{% url 'project_detail' project.id %}" class="protocol-btn flex-grow-1">
-                                            <i class="fa-solid fa-bolt"></i> تفاصيل الموقع 
+                                            <i class="fa-solid fa-bolt"></i> <span data-ar="تفاصيل الموقع" data-en="View Details">تفاصيل الموقع</span>
                                         </a>
                                         
                                         {% if project.live_url %}
@@ -430,18 +430,18 @@
 
                         <div class="project-flip-back">
                             <div class="card-vault interactive-card" style="padding: 30px; display: flex; flex-direction: column; height: 100%;">
-                                <h2 class="project-title" style="margin-bottom: 20px; text-align: center;">{{ project.title }}</h2>
-                                <div class="desc-scroll" style="overflow-y: auto; flex-grow: 1; margin-bottom: 20px; padding-left: 10px; direction: rtl;">
+                                <h2 class="project-title" style="margin-bottom: 20px; text-align: center;" data-ar="{{ project.title }}" data-en="{{ project.title_en|default:project.title }}">{{ project.title }}</h2>
+                                <div class="desc-scroll" style="overflow-y: auto; flex-grow: 1; margin-bottom: 20px; padding-left: 10px; direction: rtl;" data-rtl-toggle>
                                     {% for paragraph in project.paragraphs.all %}
-                                        <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300; margin-bottom: 15px;">
+                                        <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300; margin-bottom: 15px;" data-ar="{{ paragraph.text }}" data-en="{{ paragraph.text_en|default:paragraph.text }}">
                                             {{ paragraph.text|linebreaksbr }}
                                         </p>
                                     {% empty %}
-                                        <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300;">{{ project.description }}</p>
+                                        <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300;" data-ar="{{ project.description }}" data-en="{{ project.description_en|default:project.description }}">{{ project.description }}</p>
                                     {% endfor %}
                                 </div>
                                 <button class="protocol-btn" style="width: 100%; margin-top: auto; justify-content: center;" onclick="this.closest('.project-flip-inner').classList.toggle('is-flipped')">
-                                    <i class="fa-solid fa-rotate-left"></i> رجوع
+                                    <i class="fa-solid fa-rotate-left"></i> <span data-ar="رجوع" data-en="Back">رجوع</span>
                                 </button>
                             </div>
                         </div>
@@ -454,11 +454,11 @@
     </main>
 </div>
 
-<section id="services" class="container services-grid" dir="rtl">
+<section id="services" class="container services-grid" dir="rtl" data-rtl-toggle>
     <div class="text-center mb-5">
-        <span style="color: var(--neon-cyan); letter-spacing: 5px; font-size: 0.7rem; font-weight: 800; border: 1px solid var(--neon-cyan); padding: 5px 15px; border-radius: 50px; margin-bottom: 15px; display: inline-block;">الخبرات_والمميزات</span>
+        <span style="color: var(--neon-cyan); letter-spacing: 5px; font-size: 0.7rem; font-weight: 800; border: 1px solid var(--neon-cyan); padding: 5px 15px; border-radius: 50px; margin-bottom: 15px; display: inline-block;" data-ar="الخبرات_والمميزات" data-en="SKILLS_&_FEATURES">الخبرات_والمميزات</span>
         <h1 class="main-title" style="font-family: 'Syncopate', sans-serif; font-weight: 900; font-size: clamp(2.2rem, 5vw, 4rem); margin-top: 15px;">
-            الخدمات <span style="color: var(--neon-cyan)">الرقمية</span>
+            <span data-ar="الخدمات" data-en="Digital">الخدمات</span> <span style="color: var(--neon-cyan)" data-ar="الرقمية" data-en="Services">الرقمية</span>
         </h1>
     </div>
 
@@ -466,43 +466,43 @@
         <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-server"></i></div>
-                <h3 class="service-title">قواعد البيانات</h3>
-                <p class="service-desc">تصميم وإدارة قواعد البيانات العلائقية (PostgreSQL, SQLite) مع تحسين الأداء وضمان أمان البيانات.</p>
+                <h3 class="service-title" data-ar="قواعد البيانات" data-en="Databases">قواعد البيانات</h3>
+                <p class="service-desc" data-ar="تصميم وإدارة قواعد البيانات العلائقية (PostgreSQL, SQLite) مع تحسين الأداء وضمان أمان البيانات." data-en="Designing and managing relational databases (PostgreSQL, SQLite) with performance optimization and data security.">تصميم وإدارة قواعد البيانات العلائقية (PostgreSQL, SQLite) مع تحسين الأداء وضمان أمان البيانات.</p>
             </div>
         </div>
         <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-gear"></i></div>
-                <h3 class="service-title">تطوير تطبيقات ويب</h3>
-                <p class="service-desc">تصميم وتطوير تطبيقات ويب متقدمة مع لوحات تحكم، نظام مستخدمين، وواجهات برمجة REST API قوية وآمنة.</p>
+                <h3 class="service-title" data-ar="تطوير تطبيقات ويب" data-en="Web App Development">تطوير تطبيقات ويب</h3>
+                <p class="service-desc" data-ar="تصميم وتطوير تطبيقات ويب متقدمة مع لوحات تحكم، نظام مستخدمين، وواجهات برمجة REST API قوية وآمنة." data-en="Building advanced web applications with dashboards, user systems, and secure REST APIs.">تصميم وتطوير تطبيقات ويب متقدمة مع لوحات تحكم، نظام مستخدمين، وواجهات برمجة REST API قوية وآمنة.</p>
             </div>
         </div>
         <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-globe"></i></div>
-                <h3 class="service-title">تطوير مواقع ويب</h3>
-                <p class="service-desc">بناء مواقع ويب احترافية كاملة من الصفر باستخدام Django و HTML/CSS/JS مع التركيز على السرعة والأداء وتجربة المستخدم.</p>
+                <h3 class="service-title" data-ar="تطوير مواقع ويب" data-en="Web Development">تطوير مواقع ويب</h3>
+                <p class="service-desc" data-ar="بناء مواقع ويب احترافية كاملة من الصفر باستخدام Django و HTML/CSS/JS مع التركيز على السرعة والأداء وتجربة المستخدم." data-en="Building professional websites from scratch using Django & HTML/CSS/JS, focused on speed, performance and UX.">بناء مواقع ويب احترافية كاملة من الصفر باستخدام Django و HTML/CSS/JS مع التركيز على السرعة والأداء وتجربة المستخدم.</p>
             </div>
         </div>
         <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-handshake"></i></div>
-                <h3 class="service-title">استشارات تقنية</h3>
-                <p class="service-desc">تقديم الاستشارات التقنية لمساعدتك في اختيار الحلول المناسبة لمشروعك وتخطيط المسار الصحيح للتطوير.</p>
+                <h3 class="service-title" data-ar="استشارات تقنية" data-en="Tech Consulting">استشارات تقنية</h3>
+                <p class="service-desc" data-ar="تقديم الاستشارات التقنية لمساعدتك في اختيار الحلول المناسبة لمشروعك وتخطيط المسار الصحيح للتطوير." data-en="Providing technical consulting to help you choose the right solutions and plan the development path for your project.">تقديم الاستشارات التقنية لمساعدتك في اختيار الحلول المناسبة لمشروعك وتخطيط المسار الصحيح للتطوير.</p>
             </div>
         </div>
         <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-wrench"></i></div>
-                <h3 class="service-title">صيانة وتطوير</h3>
-                <p class="service-desc">تطوير وصيانة المشاريع القائمة، إضافة ميزات جديدة، وتحسين أداء التطبيقات الموجودة.</p>
+                <h3 class="service-title" data-ar="صيانة وتطوير" data-en="Maintenance & Updates">صيانة وتطوير</h3>
+                <p class="service-desc" data-ar="تطوير وصيانة المشاريع القائمة، إضافة ميزات جديدة، وتحسين أداء التطبيقات الموجودة." data-en="Maintaining and upgrading existing projects, adding new features, and improving application performance.">تطوير وصيانة المشاريع القائمة، إضافة ميزات جديدة، وتحسين أداء التطبيقات الموجودة.</p>
             </div>
         </div>
         <div class="col-lg-4 col-md-6">
             <div class="card-vault interactive-card service-card">
                 <div class="service-icon-box"><i class="fa-solid fa-mobile-screen-button"></i></div>
-                <h3 class="service-title">تصميم متجاوب</h3>
-                <p class="service-desc">تطوير واجهات تعمل بسلاسة على جميع الأجهزة من الجوال للديسكتوب مع ضمان تجربة مستخدم ممتازة.</p>
+                <h3 class="service-title" data-ar="تصميم متجاوب" data-en="Responsive Design">تصميم متجاوب</h3>
+                <p class="service-desc" data-ar="تطوير واجهات تعمل بسلاسة على جميع الأجهزة من الجوال للديسكتوب مع ضمان تجربة مستخدم ممتازة." data-en="Developing interfaces that work seamlessly across all devices, from mobile to desktop, ensuring an excellent UX.">تطوير واجهات تعمل بسلاسة على جميع الأجهزة من الجوال للديسكتوب مع ضمان تجربة مستخدم ممتازة.</p>
             </div>
         </div>
     </div>
@@ -511,9 +511,9 @@
 <section id="contact" class="contact-section">
     <div class="container">
         <div class="text-center mb-5">
-            <span style="color: var(--neon-cyan); letter-spacing: 5px; font-size: 0.7rem; font-weight: 800; border: 1px solid var(--neon-cyan); padding: 5px 15px; border-radius: 50px; margin-bottom: 15px; display: inline-block;">اتصال_بالنظام</span>
+            <span style="color: var(--neon-cyan); letter-spacing: 5px; font-size: 0.7rem; font-weight: 800; border: 1px solid var(--neon-cyan); padding: 5px 15px; border-radius: 50px; margin-bottom: 15px; display: inline-block;" data-ar="اتصال_بالنظام" data-en="SYSTEM_CONNECT">اتصال_بالنظام</span>
             <h1 class="main-title" style="font-family: 'Syncopate', sans-serif; font-weight: 900; font-size: clamp(2.2rem, 5vw, 4rem);">
-                مركز <span style="color: var(--neon-cyan)">التواصل</span>
+                <span data-ar="مركز" data-en="Contact">مركز</span> <span style="color: var(--neon-cyan)" data-ar="التواصل" data-en="Center">التواصل</span>
             </h1>
         </div>
 
@@ -530,13 +530,13 @@
                     
                     <div class="row g-5">
                         <div class="col-lg-5">
-                            <div class="info-box">
-                                <h2 style="font-weight: 800; margin-bottom: 35px; color: #fff; font-size: 1.6rem;">دعنا نتحدث عن مشروعك القادم</h2>
+                            <div class="info-box" data-rtl-toggle>
+                                <h2 style="font-weight: 800; margin-bottom: 35px; color: #fff; font-size: 1.6rem;" data-ar="دعنا نتحدث عن مشروعك القادم" data-en="Let's talk about your next project">دعنا نتحدث عن مشروعك القادم</h2>
                                 
                                 <div class="info-item">
                                     <div class="info-icon"><i class="fa-regular fa-envelope"></i></div>
                                     <div class="info-content">
-                                        <h4>البريد الإلكتروني</h4>
+                                        <h4 data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</h4>
                                         <p>jootech3@gmail.com</p>
                                     </div>
                                 </div>
@@ -544,7 +544,7 @@
                                 <div class="info-item">
                                     <div class="info-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
                                     <div class="info-content">
-                                        <h4>رقم الهاتف</h4>
+                                        <h4 data-ar="رقم الهاتف" data-en="Phone">رقم الهاتف</h4>
                                         <p>+201143890607</p>
                                     </div>
                                 </div>
@@ -552,19 +552,19 @@
                         </div>
 
                         <div class="col-lg-7">
-                            <form method="POST" class="cyber-form" action="{% url 'contact' %}">
+                            <form method="POST" class="cyber-form" action="{% url 'contact' %}" data-rtl-toggle>
                                 {% csrf_token %}
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group-cyber">
-                                            <label class="label-cyber">الاسم بالكامل</label>
-                                            <input type="text" name="name" class="input-cyber" placeholder="الاسم" required>
+                                            <label class="label-cyber" data-ar="الاسم بالكامل" data-en="Full Name">الاسم بالكامل</label>
+                                            <input type="text" name="name" class="input-cyber" placeholder="الاسم" data-placeholder-ar="الاسم" data-placeholder-en="Your name" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group-cyber">
-                                            <label class="label-cyber">البريد الإلكتروني</label>
-                                            <input type="email" name="email" class="input-cyber" placeholder="البريد" required>
+                                            <label class="label-cyber" data-ar="البريد الإلكتروني" data-en="Email Address">البريد الإلكتروني</label>
+                                            <input type="email" name="email" class="input-cyber" placeholder="البريد" data-placeholder-ar="البريد" data-placeholder-en="Your email" required>
                                         </div>
                                     </div>
                                 </div>
@@ -572,25 +572,25 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="input-group-cyber">
-                                            <label class="label-cyber">رقم الهاتف</label>
+                                            <label class="label-cyber" data-ar="رقم الهاتف" data-en="Phone Number">رقم الهاتف</label>
                                             <input type="tel" name="phone" class="input-cyber" placeholder="01xxxxxxxxx" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="input-group-cyber">
-                                            <label class="label-cyber">عنوان الرسالة</label>
-                                            <input type="text" name="subject" class="input-cyber" placeholder="طلب مشروع">
+                                            <label class="label-cyber" data-ar="عنوان الرسالة" data-en="Subject">عنوان الرسالة</label>
+                                            <input type="text" name="subject" class="input-cyber" placeholder="طلب مشروع" data-placeholder-ar="طلب مشروع" data-placeholder-en="Project request">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="input-group-cyber">
-                                    <label class="label-cyber">تفاصيل الرسالة</label>
-                                    <textarea name="message" class="input-cyber" rows="5" placeholder="اكتب هنا تفاصيل فكرتك..."></textarea>
+                                    <label class="label-cyber" data-ar="تفاصيل الرسالة" data-en="Message Details">تفاصيل الرسالة</label>
+                                    <textarea name="message" class="input-cyber" rows="5" placeholder="اكتب هنا تفاصيل فكرتك..." data-placeholder-ar="اكتب هنا تفاصيل فكرتك..." data-placeholder-en="Write your project details here..."></textarea>
                                 </div>
 
                                 <button type="submit" class="btn-submit">
-                                    إرسال الرسالة <i class="fa-solid fa-paper-plane"></i>
+                                    <span data-ar="إرسال الرسالة" data-en="Send Message">إرسال الرسالة</span> <i class="fa-solid fa-paper-plane"></i>
                                 </button>
                             </form>
                         </div>  

@@ -373,7 +373,7 @@
 <div class="project-detail-wrap">
 
     <a href="/#projects" class="back-btn">
-        <i class="fa-solid fa-arrow-right"></i> العودة للمشاريع
+        <i class="fa-solid fa-arrow-right"></i> <span data-ar="العودة للمشاريع" data-en="Back to Projects">العودة للمشاريع</span>
     </a>
 
     <div class="project-detail-hero">
@@ -389,23 +389,23 @@
                 </div>
                 {% endif %}
 
-                <h1 class="project-detail-title">{{ project.title }}</h1>
+                <h1 class="project-detail-title" data-ar="{{ project.title }}" data-en="{{ project.title_en|default:project.title }}">{{ project.title }}</h1>
                 
-                <div class="project-detail-desc">
+                <div class="project-detail-desc" data-rtl-toggle>
                     {% for paragraph in project.paragraphs.all %}
-                        <p style="margin-bottom: 1.5rem;">{{ paragraph.text|linebreaksbr }}</p>
+                        <p style="margin-bottom: 1.5rem;" data-ar="{{ paragraph.text }}" data-en="{{ paragraph.text_en|default:paragraph.text }}">{{ paragraph.text|linebreaksbr }}</p>
                     {% empty %}
-                        <p>{{ project.description }}</p>
+                        <p data-ar="{{ project.description }}" data-en="{{ project.description_en|default:project.description }}">{{ project.description }}</p>
                     {% endfor %}
                 </div>
 
                 <div class="project-detail-meta">
                     <div class="meta-box">
-                        <span class="meta-label"><i class="fa-solid fa-layer-group"></i> المنصة</span>
-                        <span class="meta-value">تطبيق ويب متكامل</span>
+                        <span class="meta-label"><i class="fa-solid fa-layer-group"></i> <span data-ar="المنصة" data-en="Platform">المنصة</span></span>
+                        <span class="meta-value" data-ar="تطبيق ويب متكامل" data-en="Full-stack Web App">تطبيق ويب متكامل</span>
                     </div>
                     <div class="meta-box">
-                        <span class="meta-label"><i class="fa-regular fa-calendar"></i> تاريخ الإطلاق</span>
+                        <span class="meta-label"><i class="fa-regular fa-calendar"></i> <span data-ar="تاريخ الإطلاق" data-en="Launch Date">تاريخ الإطلاق</span></span>
                         <span class="meta-value">{{ project.created_at|date:"F Y" }}</span>
                     </div>
                 </div>
@@ -413,12 +413,12 @@
                 <div class="action-buttons">
                     {% if project.live_url %}
                     <a href="{{ project.live_url }}" target="_blank" class="btn-cyber btn-primary">
-                        <i class="fa-solid fa-globe"></i> معاينة حية
+                        <i class="fa-solid fa-globe"></i> <span data-ar="معاينة حية" data-en="Live Preview">معاينة حية</span>
                     </a>
                     {% endif %}
                     {% if project.github_url %}
                     <a href="{{ project.github_url }}" target="_blank" class="btn-cyber btn-secondary">
-                        <i class="fa-brands fa-github"></i> الكود المصدرى
+                        <i class="fa-brands fa-github"></i> <span data-ar="الكود المصدرى" data-en="Source Code">الكود المصدرى</span>
                     </a>
                     {% endif %}
                 </div>
@@ -455,10 +455,10 @@
     {% endif %}
 
     <div class="cta-section">
-        <h3 style="font-size:clamp(1.8rem, 3vw, 2.5rem); font-weight:800; margin-bottom:1rem;">هل تبحث عن تنفيذ فكرة مشابهة؟</h3>
-        <p style="color:var(--text-muted); font-size: 1.1rem; margin-bottom:2.5rem;">أنا جاهز لتحويل رؤيتك إلى واقع رقمي مبهر يتميز بالأداء والتصميم الخارق.</p>
+        <h3 style="font-size:clamp(1.8rem, 3vw, 2.5rem); font-weight:800; margin-bottom:1rem;" data-ar="هل تبحث عن تنفيذ فكرة مشابهة؟" data-en="Looking for a similar project?">هل تبحث عن تنفيذ فكرة مشابهة؟</h3>
+        <p style="color:var(--text-muted); font-size: 1.1rem; margin-bottom:2.5rem;" data-ar="أنا جاهز لتحويل رؤيتك إلى واقع رقمي مبهر يتميز بالأداء والتصميم الخارق." data-en="I'm ready to turn your vision into a stunning digital reality with outstanding performance and design.">أنا جاهز لتحويل رؤيتك إلى واقع رقمي مبهر يتميز بالأداء والتصميم الخارق.</p>
         <a href="/#contact" class="btn-cyber btn-primary" style="padding:15px 40px; font-size: 1.1rem;">
-            ابدأ مشروعك الآن <i class="fa-solid fa-paper-plane"></i>
+            <span data-ar="ابدأ مشروعك الآن" data-en="Start Your Project Now">ابدأ مشروعك الآن</span> <i class="fa-solid fa-paper-plane"></i>
         </a>
     </div>
 

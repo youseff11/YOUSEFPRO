@@ -146,9 +146,18 @@
                 <a class="navbar-brand" href="{% url 'index' %}">
                     <span>Joo<span style="color:var(--accent-glow)">Tech</span></span>
                 </a>
-                <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-                    <i class="fa-solid fa-bars-staggered text-white"></i>
-                </button>
+                
+                <!-- أزرار شاشات الموبايل (زر الترجمة + زر القائمة) -->
+                <div class="d-flex align-items-center gap-2 d-lg-none ms-auto">
+                    <button class="btn-lang-toggle m-0" onclick="toggleLanguage()" title="Switch Language" style="padding: 6px 12px !important; font-size: 0.8rem;">
+                        <i class="fa-solid fa-globe"></i>
+                        <span class="langLabel">EN</span>
+                    </button>
+                    <button class="navbar-toggler shadow-none border-0 p-1" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                        <i class="fa-solid fa-bars-staggered text-white fs-4"></i>
+                    </button>
+                </div>
+
                 <div class="collapse navbar-collapse" id="navContent">
                     <ul class="navbar-nav ms-auto align-items-center">
                         {% url 'index' as index_url %}
@@ -178,10 +187,11 @@
                                 <i class="fa-regular fa-paper-plane me-2"></i><span data-ar="ابدأ مشروعك" data-en="Start Project">ابدأ مشروعك</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <button class="nav-link btn-lang-toggle" id="langToggle" onclick="toggleLanguage()" title="Switch Language">
+                        <!-- زر الترجمة الخاص بشاشات الديسكتوب فقط -->
+                        <li class="nav-item d-none d-lg-block">
+                            <button class="nav-link btn-lang-toggle" onclick="toggleLanguage()" title="Switch Language">
                                 <i class="fa-solid fa-globe me-1"></i>
-                                <span id="langLabel">EN</span>
+                                <span class="langLabel">EN</span>
                             </button>
                         </li>
                     </ul>
@@ -216,8 +226,10 @@
         }
 
         function applyLanguage(lang) {
-            const label = document.getElementById('langLabel');
-            if (label) label.textContent = lang === 'ar' ? 'EN' : 'عربي';
+            // تحديث نص زر الترجمة لجميع الأزرار (الموبايل والديسكتوب) عبر استخدام الكلاس
+            document.querySelectorAll('.langLabel').forEach(label => {
+                label.textContent = lang === 'ar' ? 'EN' : 'عربي';
+            });
 
             // Toggle direction for sections
             const html = document.documentElement;

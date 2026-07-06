@@ -38,8 +38,10 @@ class ProjectParagraph(models.Model):
 class ProjectImage(models.Model):
     project = models.ForeignKey(Project, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='portfolio_images/')
+    order = models.PositiveIntegerField(default=0, verbose_name="ترتيب الصورة", help_text="اكتب رقم لترتيب الصورة. الصورة ذات الرقم الأصغر تظهر أولاً.")
 
     class Meta:
+        ordering = ['order', 'id']
         verbose_name = "صورة المشروع"
         verbose_name_plural = "صور المشروع"
 

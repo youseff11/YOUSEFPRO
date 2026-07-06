@@ -50,8 +50,9 @@ class ProjectParagraphInline(admin.StackedInline):
 class ProjectImageInline(admin.TabularInline):
     model = ProjectImage
     extra = 0
-    fields = ('image', 'preview_image')
+    fields = ('preview_image', 'image', 'order')
     readonly_fields = ('preview_image',)
+    ordering = ('order', 'id')
 
     def preview_image(self, obj):
         if obj.image:

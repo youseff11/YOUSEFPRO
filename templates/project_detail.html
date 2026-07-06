@@ -81,9 +81,9 @@
 
     .project-detail-hero-inner {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 60px;
-        align-items: center;
+        align-items: start;
     }
 
     .back-btn {
@@ -236,37 +236,6 @@
         transform: translateY(-3px);
     }
 
-    .project-detail-gallery {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .gallery-main-wrapper {
-        position: relative;
-        width: 100%;
-        border-radius: 24px;
-        padding: 10px;
-        background: linear-gradient(145deg, rgba(20,20,30,0.6) 0%, rgba(5,5,10,0.8) 100%);
-        border: 1px solid rgba(0, 243, 255, 0.15);
-        box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 40px rgba(0, 243, 255, 0.05);
-        transition: transform 0.5s ease, box-shadow 0.5s ease;
-    }
-
-    .gallery-main-wrapper:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 50px rgba(0, 243, 255, 0.1);
-        border-color: rgba(0, 243, 255, 0.3);
-    }
-
-    .gallery-main {
-        width: 100%;
-        height: auto;
-        border-radius: 16px;
-        display: block;
-    }
-
     .snapshots-title {
         margin-top: 8rem; 
         font-family: 'Syncopate', sans-serif; 
@@ -318,6 +287,131 @@
         transform: scale(1.03);
     }
 
+    .zoom-hint {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(3, 3, 5, 0.6);
+        border: 1px solid rgba(0, 243, 255, 0.3);
+        color: var(--neon-cyan);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+        backdrop-filter: blur(6px);
+        pointer-events: none;
+    }
+
+    .gallery-thumb:hover .zoom-hint {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    /* Lightbox */
+    .lightbox-overlay {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(3, 3, 5, 0.92);
+        backdrop-filter: blur(8px);
+        z-index: 10000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        direction: ltr;
+    }
+
+    .lightbox-overlay.active {
+        display: flex;
+        animation: fadeInLightbox 0.3s ease;
+    }
+
+    @keyframes fadeInLightbox {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .lightbox-viewport {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: auto;
+        padding: 40px;
+        box-sizing: border-box;
+    }
+
+    .lightbox-viewport img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 12px;
+        box-shadow: 0 0 60px rgba(0, 243, 255, 0.15);
+        cursor: zoom-in;
+        transition: transform 0.4s ease;
+        transform-origin: center center;
+        user-select: none;
+    }
+
+    .lightbox-viewport img.zoomed {
+        max-width: none;
+        max-height: none;
+        width: auto;
+        cursor: zoom-out;
+        transform: scale(1.9);
+    }
+
+    .lightbox-close,
+    .lightbox-zoom-btn {
+        position: fixed;
+        top: 25px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--glass-border);
+        color: #fff;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10001;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .lightbox-close { right: 25px; }
+    .lightbox-zoom-btn { right: 85px; }
+
+    .lightbox-close:hover,
+    .lightbox-zoom-btn:hover {
+        background: rgba(0, 243, 255, 0.15);
+        border-color: var(--neon-cyan);
+        color: var(--neon-cyan);
+    }
+
+    .lightbox-hint {
+        position: fixed;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--glass-border);
+        padding: 8px 20px;
+        border-radius: 50px;
+        backdrop-filter: blur(10px);
+    }
+
     .cta-section {
         margin-top: 8rem; 
         text-align: center; 
@@ -344,17 +438,11 @@
 
     @media (max-width: 991px) {
         .project-detail-hero-inner { 
-            grid-template-columns: 1fr; 
             gap: 3rem;
         }
         
         .project-detail-wrap {
             padding-top: 120px;
-        }
-
-        .gallery-main-wrapper {
-            max-width: 600px;
-            margin: 0 auto;
         }
     }
 
@@ -424,33 +512,22 @@
                 </div>
             </div>
 
-            <div class="project-detail-gallery">
-                <div class="gallery-main-wrapper">
-                    {% with project.images.first as img %}
-                    {% if img %}
-                        <img src="{{ img.image.url }}" alt="{{ project.title }}" class="gallery-main">
-                    {% else %}
-                        <div style="height:400px; display:flex; align-items:center; justify-content:center; font-size:4rem; color: var(--glass-border);">
-                            <i class="fa-solid fa-image"></i>
-                        </div>
-                    {% endif %}
-                    {% endwith %}
-                </div>
-            </div>
-
         </div>
     </div>
 
-    {% if project.images.count > 1 %}
+    {% if project.images.exists %}
     <h2 class="snapshots-title">PROJECT <span>GALLERY</span></h2>
     <div class="images-gallery-grid">
         {% for image in project.images.all %}
-            {% if not forloop.first %}
-            <div class="gallery-thumb">
-                <img src="{{ image.image.url }}" alt="Screenshot" loading="lazy">
+            <div class="gallery-thumb" onclick="openLightbox('{{ image.image.url }}')">
+                <img src="{{ image.image.url }}" alt="{{ project.title }}" loading="lazy">
+                <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
             </div>
-            {% endif %}
         {% endfor %}
+    </div>
+    {% else %}
+    <div style="height:400px; display:flex; align-items:center; justify-content:center; font-size:4rem; color: var(--glass-border); margin-top:3rem;">
+        <i class="fa-solid fa-image"></i>
     </div>
     {% endif %}
 
@@ -462,6 +539,19 @@
         </a>
     </div>
 
+</div>
+
+<div class="lightbox-overlay" id="lightboxOverlay">
+    <div class="lightbox-zoom-btn" id="lightboxZoomBtn" title="تكبير / تصغير">
+        <i class="fa-solid fa-magnifying-glass-plus" id="lightboxZoomIcon"></i>
+    </div>
+    <div class="lightbox-close" id="lightboxCloseBtn" title="إغلاق">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+    <div class="lightbox-viewport" id="lightboxViewport">
+        <img src="" alt="" id="lightboxImage">
+    </div>
+    <div class="lightbox-hint" data-ar="اضغط على الصورة للتكبير" data-en="Click the image to zoom">اضغط على الصورة للتكبير</div>
 </div>
 
 <script>
@@ -497,6 +587,50 @@
         requestAnimationFrame(animateCursor);
     }
     animateCursor();
+
+    // ===== Lightbox with click-to-zoom =====
+    const lightboxOverlay = document.getElementById('lightboxOverlay');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxViewport = document.getElementById('lightboxViewport');
+    const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
+    const lightboxZoomBtn = document.getElementById('lightboxZoomBtn');
+    const lightboxZoomIcon = document.getElementById('lightboxZoomIcon');
+
+    function openLightbox(src) {
+        lightboxImage.src = src;
+        lightboxImage.classList.remove('zoomed');
+        lightboxZoomIcon.className = 'fa-solid fa-magnifying-glass-plus';
+        lightboxOverlay.classList.add('active');
+        lightboxViewport.scrollTop = 0;
+        lightboxViewport.scrollLeft = 0;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        lightboxOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function toggleZoom() {
+        lightboxImage.classList.toggle('zoomed');
+        lightboxZoomIcon.className = lightboxImage.classList.contains('zoomed')
+            ? 'fa-solid fa-magnifying-glass-minus'
+            : 'fa-solid fa-magnifying-glass-plus';
+    }
+
+    lightboxImage.addEventListener('click', toggleZoom);
+    lightboxZoomBtn.addEventListener('click', toggleZoom);
+    lightboxCloseBtn.addEventListener('click', closeLightbox);
+
+    lightboxOverlay.addEventListener('click', (e) => {
+        if (e.target === lightboxOverlay || e.target === lightboxViewport) {
+            closeLightbox();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeLightbox();
+    });
 </script>
 
 {% endblock %}

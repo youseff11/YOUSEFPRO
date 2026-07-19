@@ -107,9 +107,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type
+# إسكات تحذير W042 بدون أي تغيير في قاعدة البيانات الحالية
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'jootech3@gmail.com'  
+
+# ============ مساعد الذكاء الاصطناعي في لوحة الأدمن ============
+# الحل المجاني (الأسهل): مفتاح Google Gemini المجاني
+#   1. ادخل على https://aistudio.google.com واعمل حساب بجيميلك
+#   2. اضغط "Get API key" وانسخ المفتاح
+#   3. ضعه في متغير البيئة:
+#        Linux/Mac:   export GEMINI_API_KEY="AIza..."
+#        Windows:     set GEMINI_API_KEY=AIza...
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
+
+# بديل مدفوع (اختياري): مفتاح Anthropic من console.anthropic.com
+AI_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
+# (لا تكتب أي مفتاح هنا مباشرة أبداً — الريبو عام على GitHub)
 EMAIL_HOST_PASSWORD = 'sgcy ppsj ltle ixtx'

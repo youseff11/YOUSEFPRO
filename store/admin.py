@@ -1,7 +1,12 @@
 from django.contrib import admin
 from django import forms
 from django.utils.html import format_html
+from django.urls import path
+from django.http import JsonResponse
+import json
+
 from .models import Project, ProjectParagraph, ProjectImage, ContactMessage
+from .ai import ai_process
 
 
 class MultiFileInput(forms.ClearableFileInput):
@@ -68,6 +73,36 @@ class ProjectImageInline(admin.TabularInline):
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     form = ProjectAdminForm
+
+    class Media:
+        # سكريبت زراير الذكاء الاصطناعي (تحسين النص + الترجمة التلقائية)
+        js = ('admin/ai_assist.js',)
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                'ai-assist/',
+                self.admin_site.admin_view(self.ai_assist_view),
+                name='store_project_ai_assist',
+            ),
+        ]
+        return custom + urls
+
+    def ai_assist_view(self, request):
+        """نقطة اتصال زراير الذكاء الاصطناعي — محمية بصلاحيات الأدمن تلقائياً."""
+        if request.method != 'POST':
+            return JsonResponse({'error': 'طريقة غير مسموحة'}, status=405)
+        try:
+            body = json.loads(request.body.decode('utf-8'))
+        except Exception:
+            return JsonResponse({'error': 'بيانات غير صالحة'}, status=400)
+
+        result, error = ai_process(body.get('mode', ''), body.get('text', ''))
+        if error:
+            return JsonResponse({'error': error}, status=400)
+        return JsonResponse({'result': result})
+
     list_display = ('get_image', 'title', 'order', 'technologies', 'is_published', 'created_at')
     list_display_links = ('get_image', 'title')
     list_editable = ('is_published', 'order')

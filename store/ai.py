@@ -13,7 +13,7 @@ import urllib.error
 
 from django.conf import settings
 
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-flash-latest"
 ANTHROPIC_MODEL = "claude-haiku-4-5"
 
 PROMPTS = {

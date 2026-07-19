@@ -4,6 +4,17 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# ============ تحميل ملف .env (الأسرار) ============
+# يقرأ ملف .env من جذر المشروع (جنب manage.py) ويحمّل ما فيه كمتغيرات بيئة.
+# الملف ده لازم يبقى في .gitignore — الأسرار لا تُرفع على GitHub أبداً.
+_env_file = BASE_DIR / '.env'
+if _env_file.exists():
+    for _line in _env_file.read_text(encoding='utf-8').splitlines():
+        _line = _line.strip()
+        if _line and not _line.startswith('#') and '=' in _line:
+            _key, _, _value = _line.partition('=')
+            os.environ.setdefault(_key.strip(), _value.strip().strip('"').strip("'"))
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-1gd^kfuz6#!+!-wo8k-o$ew)#6k8t!tw6kb@2jboowno(r=)2x'
 

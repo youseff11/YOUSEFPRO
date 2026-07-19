@@ -7,19 +7,28 @@ from .models import Project, ContactMessage
 
 # --- الصفحة الرئيسية ---
 def index(request):
-    projects = Project.objects.filter(is_published=True).prefetch_related('images', 'paragraphs').order_by('order', '-created_at')
+    # PERF: list() تنفّذ الاستعلام مرة واحدة، و len() لا تعمل استعلام COUNT إضافي على قاعدة البيانات
+    projects = list(
+        Project.objects.filter(is_published=True)
+        .prefetch_related('images', 'paragraphs')
+        .order_by('order', '-created_at')
+    )
     context = {
         'projects': projects,
-        'total_projects': projects.count(),
+        'total_projects': len(projects),
     }
     return render(request, 'index.html', context)
 
 # --- صفحة كل المشاريع ---
 def project(request):
-    projects = Project.objects.filter(is_published=True).prefetch_related('images', 'paragraphs').order_by('order', '-created_at')
+    projects = list(
+        Project.objects.filter(is_published=True)
+        .prefetch_related('images', 'paragraphs')
+        .order_by('order', '-created_at')
+    )
     context = {
         'projects': projects,
-        'total_projects': projects.count(),
+        'total_projects': len(projects),
     }
     return render(request, 'projects.html', context)
 

@@ -26,6 +26,11 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # PERF: ضغط GZip يقلل حجم صفحة الـ HTML المرسلة للمتصفح بنسبة 70-80%
+    'django.middleware.gzip.GZipMiddleware',
+    # PERF (للإنتاج): بعد تثبيت whitenoise بالأمر pip install whitenoise
+    # قم بإزالة التعليق من السطر التالي ليقدّم الملفات الثابتة مضغوطة ومع كاش طويل:
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -60,6 +65,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        # PERF: إعادة استخدام اتصال قاعدة البيانات بدل فتح اتصال جديد مع كل طلب
+        'CONN_MAX_AGE': 60,
     }
 }
 
@@ -82,6 +89,16 @@ STATIC_URL = '/static/'
 # بما أن مجلدك اسمه staticfiles في الصورة، سنعتمد هذا المسار
 STATICFILES_DIRS = [BASE_DIR / 'staticfiles'] 
 STATIC_ROOT = BASE_DIR / "static_root"
+
+# PERF (للإنتاج فقط): بعد تثبيت whitenoise أزل التعليق من السطور التالية
+# ليتم ضغط الملفات الثابتة وتخزينها في كاش المتصفح لمدة سنة:
+# STORAGES = {
+#     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+#     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+# }
+
+# PERF مهم جداً: عند رفع الموقع على السيرفر غيّر DEBUG = False
+# لأن DEBUG = True يعطّل الكاش الداخلي للقوالب ويجعل جانغو أبطأ بكثير
 
 # Media files (Uploaded images for projects)
 MEDIA_URL = '/media/'

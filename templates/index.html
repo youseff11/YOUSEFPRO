@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block extra_head %}
+<!-- PERF: تحميل صورة الهيرو (أهم صورة في الصفحة) بأعلى أولوية -->
+<link rel="preload" as="image" href="/media/images/5.jpg" fetchpriority="high">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+{% endblock %}
+
+{% block content %}
 
 <style>
     .cosmic-engine {
@@ -12,18 +17,28 @@
         background: radial-gradient(circle at 50% 50%, #0a0014 0%, #030305 80%);
     }
 
+    /* PERF: نفس شكل الشبكة المتحركة بالضبط، لكن الحركة صارت transform على طبقة GPU
+       بدل تحريك background-position الذي كان يعيد رسم الشاشة كاملة 60 مرة بالثانية */
     .grid-overlay {
         position: fixed;
         top: 0; left: 0;
         width: 100vw; height: 100vh;
-        background-image: 
-            linear-gradient(var(--glass-border) 1px, transparent 1px),
-            linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
-        background-size: 50px 50px;
         z-index: -1;
         opacity: 0.15;
         transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+        pointer-events: none;
+    }
+    .grid-overlay::before {
+        content: '';
+        position: absolute;
+        left: 0; right: 0;
+        top: -50px; bottom: 0;
+        background-image:
+            linear-gradient(var(--glass-border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+        background-size: 50px 50px;
         animation: gridMove 25s linear infinite;
+        will-change: transform;
     }
 
     .particle {
@@ -248,7 +263,7 @@
     .wa-main-btn:hover { transform: scale(1.1) rotate(15deg); }
     .wa-float-container.active .wa-contact-list { display: flex; animation: slideIn 0.4s var(--luxury-ease) forwards; }
 
-    @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
+    @keyframes gridMove { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
     @keyframes float-particle { 0% { transform: translateY(0) scale(1); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-100vh) scale(0); opacity: 0; } }
     @keyframes pulse-glow-cyan { 0% { box-shadow: 0 0 10px rgba(0, 243, 255, 0.1); } 100% { box-shadow: 0 0 25px rgba(0, 243, 255, 0.3); } }
     @keyframes scrollMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -258,6 +273,29 @@
     @keyframes scan { 0% { top: 10%; opacity: 0; } 10% { opacity: 0.5; } 90% { opacity: 0.5; } 100% { top: 90%; opacity: 0; } }
     @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes slideIn { from { opacity: 0; transform: translateY(20px) scale(0.8); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    /* PERF: الأقسام تحت الشاشة الأولى لا يتم رسمها إلا عند الاقتراب منها بالسكرول
+       (لا يغيّر أي شيء في الشكل، فقط يسرّع الفتح الأول للصفحة بشكل كبير) */
+    .services-grid, .contact-section {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 900px;
+    }
+
+    /* PERF (موبايل فقط): الـ backdrop-filter على كل كارت هو أثقل عملية رسم في الموقع.
+       على الموبايل نستبدله بخلفية بنفس الدرجة اللونية تماماً — الفرق غير مرئي بالعين
+       على الخلفية الداكنة، لكن الفرق في سلاسة السكرول ضخم على الأجهزة الضعيفة */
+    @media (max-width: 768px) {
+        .card-vault {
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            background: linear-gradient(145deg, rgba(18,18,27,0.88) 0%, rgba(6,6,11,0.94) 100%);
+        }
+        .contact-card {
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            background: rgba(12, 12, 18, 0.92);
+        }
+    }
 
     @media (max-width: 991px) {
         .hero-quantum { padding-top: 8rem; text-align: center; }
@@ -316,7 +354,7 @@
                     <div class="cyber-scanner"></div>
                     <div class="hud-badge badge-top-right"><i class="fa-solid fa-shield-halved"></i> SECURE</div>
                     <div class="hud-badge badge-bottom-left"><i class="fa-solid fa-bolt"></i> HIGH_PERFORMANCE</div>
-                    <img src="media/images/5.jpg" alt="Youssef Avatar" class="hero-cyber-img" loading="lazy">
+                    <img src="/media/images/5.jpg" alt="Youssef Avatar" class="hero-cyber-img" fetchpriority="high" decoding="async" width="550" height="550">
                 </div>
             </div>
         </div>
@@ -370,7 +408,7 @@
                                             {% for img_obj in project.images.all %}
                                             <div class="swiper-slide">
                                                 <a href="{{ project.live_url }}" target="_blank" style="display: block; width: 100%; height: 100%;">
-                                                    <img src="{{ img_obj.image.url }}" alt="{{ project.title }}" loading="lazy">
+                                                    <img src="{{ img_obj.image.url }}" alt="{{ project.title }}" loading="lazy" decoding="async">
                                                 </a>
                                             </div>
                                             {% empty %}
@@ -601,18 +639,24 @@
     </div>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<!-- PERF: defer = تحميل Swiper بدون حجب رسم الصفحة -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
 
 <script>
-    new Swiper(".mySwiper", {
-        loop: true,
-        grabCursor: true,
-        navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
-        pagination: { el: ".swiper-pagination", dynamicBullets: true },
+    // PERF: تهيئة Swiper بعد اكتمال تحميل الصفحة (السكريبت الآن defer)
+    document.addEventListener('DOMContentLoaded', () => {
+        new Swiper(".mySwiper", {
+            loop: true,
+            grabCursor: true,
+            navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+            pagination: { el: ".swiper-pagination", dynamicBullets: true },
+        });
     });
 
+    // PERF: إنشاء الجزيئات دفعة واحدة عبر DocumentFragment بدل 30 إضافة منفصلة للـ DOM
     const particlesContainer = document.getElementById('particles');
     if (particlesContainer) {
+        const frag = document.createDocumentFragment();
         for (let i = 0; i < 30; i++) {
             const p = document.createElement('div');
             p.className = 'particle';
@@ -624,48 +668,71 @@
             p.style.animationDelay = Math.random() * 15 + 's';
             p.style.animationDuration = (Math.random() * 10 + 10) + 's';
             p.style.background = i % 3 === 0 ? 'var(--neon-purple)' : '#fff';
-            particlesContainer.appendChild(p);
+            frag.appendChild(p);
         }
+        particlesContainer.appendChild(frag);
     }
 
+    // PERF: كل تأثيرات الماوس تعمل فقط على الأجهزة التي بها ماوس فعلاً.
+    // على الموبايل لا يوجد mousemove أصلاً، فنوفر حلقة rAF التي كانت تعمل للأبد بلا فائدة.
+    const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
     const cursor = document.getElementById('cursor');
     const heroBox = document.getElementById('heroBox');
-    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-    let cursorX = mouseX, cursorY = mouseY;
 
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        
-        if (heroBox) {
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            const rotateX = ((mouseY - centerY) / centerY) * -10;
-            const rotateY = ((mouseX - centerX) / centerX) * 10;
-            heroBox.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    if (hasFinePointer) {
+        let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+        let cursorX = mouseX, cursorY = mouseY;
+        let winW = window.innerWidth, winH = window.innerHeight;
+        let rafId = null;
+        let lastTiltX = null, lastTiltY = null;
+
+        window.addEventListener('resize', () => {
+            winW = window.innerWidth;
+            winH = window.innerHeight;
+        }, { passive: true });
+
+        // PERF: الكتابة على الـ DOM تتم داخل rAF فقط (مرة واحدة كل فريم)
+        // بدل الكتابة مع كل حدث mousemove (قد يصل 100+ مرة بالثانية)
+        function frame() {
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            if (cursor) {
+                cursor.style.transform = `translate3d(${cursorX - 300}px, ${cursorY - 300}px, 0)`;
+            }
+            if (heroBox) {
+                const rotateX = ((mouseY - winH / 2) / (winH / 2)) * -10;
+                const rotateY = ((mouseX - winW / 2) / (winW / 2)) * 10;
+                if (rotateX !== lastTiltX || rotateY !== lastTiltY) {
+                    lastTiltX = rotateX; lastTiltY = rotateY;
+                    heroBox.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                }
+            }
+            // PERF: إذا وصل الكيرسور لمكانه توقّف الحلقة تماماً (صفر استهلاك عند السكون)
+            if (Math.abs(mouseX - cursorX) > 0.2 || Math.abs(mouseY - cursorY) > 0.2) {
+                rafId = requestAnimationFrame(frame);
+            } else {
+                rafId = null;
+            }
         }
-    });
 
-    function animateCursor() {
-        cursorX += (mouseX - cursorX) * 0.1;
-        cursorY += (mouseY - cursorY) * 0.1;
-        if(cursor) {
-            cursor.style.transform = `translate3d(${cursorX - 300}px, ${cursorY - 300}px, 0)`;
-        }
-        requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            if (rafId === null) rafId = requestAnimationFrame(frame);
+        }, { passive: true });
 
-    const interactiveCards = document.querySelectorAll('.interactive-card');
-    interactiveCards.forEach(card => {
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            card.style.setProperty('--mouse-x', `${x}px`);
-            card.style.setProperty('--mouse-y', `${y}px`);
+        // تأثير الإضاءة التفاعلية على الكروت (ماوس فقط)
+        document.querySelectorAll('.interactive-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+                card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+            }, { passive: true });
         });
-    });
+    } else if (cursor) {
+        // على شاشات اللمس: نثبّت التوهج في منتصف الشاشة (نفس الشكل السابق) بدون أي حلقة أنيميشن
+        cursor.style.transform = `translate3d(${window.innerWidth / 2 - 300}px, ${window.innerHeight / 2 - 300}px, 0)`;
+    }
 
     document.addEventListener('click', (e) => {
         const waContainer = document.getElementById('waContainer');
@@ -673,7 +740,5 @@
             waContainer.classList.remove('active');
         }
     });
-
-    window.addEventListener('load', () => { document.body.style.opacity = '1'; });
 </script>
 {% endblock %}

@@ -1,9 +1,8 @@
 import os
-import resend
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.conf import settings
-from django.utils.html import strip_tags
+from django.core.mail import EmailMultiAlternatives
 from .models import Project, ContactMessage
 
 def index(request):
@@ -80,17 +79,17 @@ def contact(request):
         """
 
         try:
-            resend.api_key = getattr(settings, 'RESEND_API_KEY', '') or os.environ.get('RESEND_API_KEY')
-
-            resend.Emails.send({
-                "from": "onboarding@resend.dev",
-                "to": ["jootech3@gmail.com"],
-                "subject": f"🚀 {name}: {subject}",
-                "html": html_content
-            })
+            msg = EmailMultiAlternatives(
+                subject=f"🚀 {name}: {subject}",
+                body=f"رسالة جديدة من {name} ({email}):\n\n{message_content}",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=['jootech3@gmail.com']
+            )
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
             messages.success(request, 'تم استلام رسالتك بنجاح، سأتواصل معك قريباً!')
         except Exception as e:
-            print(f"Resend API Error Log: {e}")
+            print(f"SMTP Error Log: {e}")
             messages.warning(request, 'تم حفظ رسالتك، ولكن واجهنا مشكلة في إرسال التنبيه البريدي.')
 
         return redirect('/#contact')

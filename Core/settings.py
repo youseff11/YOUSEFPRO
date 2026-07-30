@@ -128,3 +128,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 # ============ مفاتيح الـ API ============
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
 AI_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_COOKIE_HTTPONLY = True

@@ -8,6 +8,5 @@ urlpatterns = [
     path('', include('store.urls')), # ربط تطبيق البورتفوليو بالصفحة الرئيسية
 ]
 
-# لعرض الصور أثناء مرحلة التطوير
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# عرض الصور والملفات المرفوعة محلياً وعلى Vercel
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

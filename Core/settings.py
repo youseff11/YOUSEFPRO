@@ -120,11 +120,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 # ============ إعدادات البريد الإلكتروني ============
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_PORT = 465  # تغيير البورت لـ 465 بدل 587 (SSL)
+EMAIL_USE_SSL = True  # تفعيل SSL بدلاً من TLS
+EMAIL_USE_TLS = False
+EMAIL_TIMEOUT = 10  # إعطاء مهلة مناسبة للاتصال
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '') 
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
-
 # ============ مفاتيح الـ API ============
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
 AI_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')

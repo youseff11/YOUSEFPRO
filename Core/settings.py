@@ -30,8 +30,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     
+    # Cloudinary storage apps
+    'cloudinary_storage',
+    'cloudinary',
+    
+    'django.contrib.staticfiles',
     'store', # تطبيق المتجر/الأعمال الخاص بك
 ]
 
@@ -115,15 +119,22 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'staticfiles'] 
 STATIC_ROOT = BASE_DIR / "static_root"
 
-# إعداد خزن الملفات الثابتة عبر WhiteNoise
-STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
-}
-
 # Media files (Uploaded images for projects)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# ============ Cloudinary Storage Config ============
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'xelbohhj'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', '381188723524369'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
+}
+
+# إعداد خزن الملفات الثابتة والصور عبر Cloudinary & WhiteNoise
+STORAGES = {
+    "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 

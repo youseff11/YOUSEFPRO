@@ -17,6 +17,7 @@ django-colorfield==0.14.0
 # الاتصال والـ API
 requests==2.32.3
 urllib3==2.6.2
+resend>=2.0.0
 
 # أدوات مساعدة
 python-slugify==8.0.4

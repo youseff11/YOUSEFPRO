@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import shutil
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -68,24 +69,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Core.wsgi.application'
 
-# ============ Database Setup (Vercel Fix) ============
-ORIGINAL_DB = BASE_DIR / 'db.sqlite3'
-TMP_DB = Path('/tmp/db.sqlite3')
-
-if os.environ.get('VERCEL') or os.environ.get('VERCEL_ENV'):
-    if ORIGINAL_DB.exists() and not TMP_DB.exists():
-        shutil.copyfile(ORIGINAL_DB, TMP_DB)
-        os.chmod(TMP_DB, 0o666)
-    DB_PATH = TMP_DB
-else:
-    DB_PATH = ORIGINAL_DB
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DB_PATH,
+# ============ Database Setup (Neon PostgreSQL / SQLite Fallback) ============
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
-}
+else:
+    ORIGINAL_DB = BASE_DIR / 'db.sqlite3'
+    TMP_DB = Path('/tmp/db.sqlite3')
+
+    if os.environ.get('VERCEL') or os.environ.get('VERCEL_ENV'):
+        if ORIGINAL_DB.exists() and not TMP_DB.exists():
+            shutil.copyfile(ORIGINAL_DB, TMP_DB)
+            os.chmod(TMP_DB, 0o666)
+        DB_PATH = TMP_DB
+    else:
+        DB_PATH = ORIGINAL_DB
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': DB_PATH,
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

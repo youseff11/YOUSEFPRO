@@ -5,8 +5,6 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ============ تحميل ملف .env (الأسرار) ============
-# يقرأ ملف .env من جذر المشروع (جنب manage.py) ويحمّل ما فيه كمتغيرات بيئة.
-# الملف ده لازم يبقى في .gitignore — الأسرار لا تُرفع على GitHub أبداً.
 _env_file = BASE_DIR / '.env'
 if _env_file.exists():
     for _line in _env_file.read_text(encoding='utf-8').splitlines():
@@ -16,12 +14,12 @@ if _env_file.exists():
             os.environ.setdefault(_key.strip(), _value.strip().strip('"').strip("'"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1gd^kfuz6#!+!-wo8k-o$ew)#6k8t!tw6kb@2jboowno(r=)2x'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-1gd^kfuz6#!+!-wo8k-o$ew)#6k8t!tw6kb@2jboowno(r=)2x')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', 'localhost', '*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -37,11 +35,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # PERF: ضغط GZip يقلل حجم صفحة الـ HTML المرسلة للمتصفح بنسبة 70-80%
+    # تفعيل WhiteNoise لخدمة الملفات الثابتة على Vercel
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.gzip.GZipMiddleware',
-    # PERF (للإنتاج): بعد تثبيت whitenoise بالأمر pip install whitenoise
-    # قم بإزالة التعليق من السطر التالي ليقدّم الملفات الثابتة مضغوطة ومع كاش طويل:
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -76,7 +72,6 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-        # PERF: إعادة استخدام اتصال قاعدة البيانات بدل فتح اتصال جديد مع كل طلب
         'CONN_MAX_AGE': 60,
     }
 }
@@ -96,29 +91,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-
-# بما أن مجلدك اسمه staticfiles في الصورة، سنعتمد هذا المسار
 STATICFILES_DIRS = [BASE_DIR / 'staticfiles'] 
 STATIC_ROOT = BASE_DIR / "static_root"
 
-# PERF (للإنتاج فقط): بعد تثبيت whitenoise أزل التعليق من السطور التالية
-# ليتم ضغط الملفات الثابتة وتخزينها في كاش المتصفح لمدة سنة:
-# STORAGES = {
-#     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-#     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
-# }
-
-# PERF مهم جداً: عند رفع الموقع على السيرفر غيّر DEBUG = False
-# لأن DEBUG = True يعطّل الكاش الداخلي للقوالب ويجعل جانغو أبطأ بكثير
+# إعداد خزن الملفات الثابتة عبر WhiteNoise
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
 
 # Media files (Uploaded images for projects)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-
-# Default primary key field type
-# إسكات تحذير W042 بدون أي تغيير في قاعدة البيانات الحالية
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -126,17 +111,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'jootech3@gmail.com'  
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'sgcy ppsj ltle ixtx')
 
-# ============ مساعد الذكاء الاصطناعي في لوحة الأدمن ============
-# الحل المجاني (الأسهل): مفتاح Google Gemini المجاني
-#   1. ادخل على https://aistudio.google.com واعمل حساب بجيميلك
-#   2. اضغط "Get API key" وانسخ المفتاح
-#   3. ضعه في متغير البيئة:
-#        Linux/Mac:   export GEMINI_API_KEY="AIza..."
-#        Windows:     set GEMINI_API_KEY=AIza...
+# ============ مفاتيح الـ API ============
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
-
-# بديل مدفوع (اختياري): مفتاح Anthropic من console.anthropic.com
 AI_API_KEY = os.environ.get('ANTHROPIC_API_KEY', '')
-# (لا تكتب أي مفتاح هنا مباشرة أبداً — الريبو عام على GitHub)
-EMAIL_HOST_PASSWORD = 'sgcy ppsj ltle ixtx'

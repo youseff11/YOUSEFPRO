@@ -125,26 +125,6 @@
         justify-content: center;
     }
 
-    .tech-stack-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .project-tag {
-        background: rgba(188, 19, 254, 0.05);
-        border: 1px solid rgba(188, 19, 254, 0.3);
-        color: #e2a0ff;
-        padding: 6px 18px;
-        border-radius: 50px;
-        font-size: 0.75rem;
-        letter-spacing: 1px;
-        font-weight: 700;
-        text-transform: uppercase;
-        box-shadow: 0 0 10px rgba(188, 19, 254, 0.1);
-    }
-
     .project-detail-title {
         font-family: 'Alexandria', sans-serif;
         font-size: clamp(2rem, 4vw, 3.2rem);
@@ -522,14 +502,6 @@
         <div class="project-detail-hero-inner">
             
             <div class="project-detail-info">
-                
-                {% if project.technologies %}
-                <div class="tech-stack-container">
-                    {% for tech in project.technologies.split %}
-                        <span class="project-tag">{{ tech }}</span>
-                    {% endfor %}
-                </div>
-                {% endif %}
 
                 <h1 class="project-detail-title" data-ar="{{ project.title }}" data-en="{{ project.title_en|default:project.title }}">{{ project.title }}</h1>
 

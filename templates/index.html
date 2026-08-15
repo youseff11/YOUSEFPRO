@@ -132,6 +132,8 @@
     .main-text-glitch { font-family: 'Syncopate', sans-serif; font-size: clamp(2.5rem, 6vw, 5.5rem); font-weight: 900; text-transform: uppercase; letter-spacing: -2px; margin-bottom: 25px; text-shadow: 0 0 30px rgba(0, 243, 255, 0.2); }
     .status-tag { display: inline-block; padding: 8px 18px; background: rgba(0, 243, 255, 0.05); border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 50px; font-size: 0.75rem; letter-spacing: 4px; color: var(--neon-cyan); margin-bottom: 2rem; box-shadow: 0 0 15px rgba(0, 243, 255, 0.1); }
     .projects-container { padding-bottom: 100px; position: relative; z-index: 10; }
+    .projects-container .row { align-items: stretch; }
+    .projects-container .row > [class*='col-'] { display: flex; }
     
     .card-vault {
         background: linear-gradient(145deg, rgba(20,20,30,0.4) 0%, rgba(5,5,10,0.6) 100%);
@@ -157,11 +159,14 @@
     .project-flip-container {
         perspective: 1500px;
         height: 100%;
+        width: 100%;
+        display: flex;
     }
     .project-flip-inner {
         position: relative;
         width: 100%;
         height: 100%;
+        display: flex;
         transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         transform-style: preserve-3d;
     }
@@ -177,7 +182,14 @@
     .project-flip-front {
         position: relative;
         z-index: 2;
+        display: flex;
+        flex-direction: column;
     }
+    .project-flip-front .card-vault,
+    .project-flip-back .card-vault { flex: 1; }
+    .project-flip-front .content-vault { min-height: 345px; }
+    .project-card-actions { margin-top: auto !important; align-items: stretch; }
+    .project-card-actions .protocol-btn { margin-top: 0; }
     .project-flip-back {
         position: absolute;
         top: 0; left: 0;
@@ -222,6 +234,16 @@
     .project-date { color: #666; font-size: 0.7rem; letter-spacing: 2px; }
     .project-title { font-family: 'Alexandria', sans-serif; font-size: 1.4rem; font-weight: 800; margin: 5px 0 10px 0; background: linear-gradient(90deg, #ffffff, #a0a0b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; direction: rtl; text-align: right; }
     .project-desc { color: #a0a0b0; font-family: 'Alexandria', sans-serif; font-size: 0.9rem; line-height: 1.6; font-weight: 400; direction: rtl; text-align: right; margin-bottom: 20px; }
+    .project-flip-front .project-desc { flex-grow: 1; margin-bottom: 4px; }
+    .project-read-more {
+        min-height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        direction: rtl;
+        margin-bottom: 10px;
+    }
+    .project-read-more .read-more-btn { margin-top: 0; }
     .case-study-summary { display: grid; gap: 14px; margin-bottom: 18px; direction: rtl; text-align: right; }
     .case-study-item { padding: 13px 15px; background: rgba(255,255,255,0.035); border-right: 2px solid var(--neon-cyan); border-radius: 10px; }
     .case-study-item:nth-child(2) { border-right-color: var(--neon-purple); }
@@ -231,9 +253,6 @@
     .case-study-item:nth-child(3) .case-study-label { color: #72f1b8; }
     .case-study-text { color: #e3e3ed; font-family: 'Alexandria', sans-serif; font-size: 0.86rem; line-height: 1.75; margin: 0; }
     .case-study-details-title { color: #fff; font-size: 0.82rem; font-weight: 800; margin: 18px 0 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .tech-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); direction: rtl; }
-    .tech-pill { padding: 5px 10px; background: rgba(188, 19, 254, 0.05); border: 1px solid rgba(188, 19, 254, 0.4); color: #e2a0ff; font-size: 0.65rem; border-radius: 6px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; transition: 0.3s; }
-    .card-vault:hover .tech-pill { background: rgba(188, 19, 254, 0.15); border-color: var(--neon-purple); box-shadow: 0 0 10px rgba(188, 19, 254, 0.2); }
     .protocol-btn { margin-top: 20px; padding: 12px 20px; background: rgba(0, 243, 255, 0.05); border: 1px solid var(--neon-cyan); color: var(--neon-cyan); font-family: 'Alexandria', sans-serif; font-size: 0.85rem; font-weight: 700; text-decoration: none; text-align: center; transition: all 0.4s ease; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; direction: rtl; gap: 8px; }
     .protocol-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 25px rgba(0, 243, 255, 0.5); transform: translateY(-3px); }
     .icon-btn { width: 50px; padding: 0; font-family: 'Space Grotesk'; }
@@ -439,23 +458,15 @@
                                     </div>
                                     <h2 class="project-title" data-ar="{{ project.title }}" data-en="{{ project.title_en|default:project.title }}">{{ project.title }}</h2>
                                     <p class="project-desc">
-                                        <span data-ar="{{ project.description|truncatewords:15 }}" data-en="{{ project.description_en|default:project.description|truncatewords:15 }}">{{ project.description|truncatewords:15 }}</span>
-                                        <br>
+                                        <span data-ar="{{ project.description|truncatewords:24 }}" data-en="{{ project.description_en|default:project.description|truncatewords:24 }}">{{ project.description|truncatewords:24 }}</span>
+                                    </p>
+                                    <div class="project-read-more">
                                         <span class="read-more-btn" onclick="this.closest('.project-flip-inner').classList.toggle('is-flipped')">
                                             <span data-ar="اضغط هنا لقراءة الوصف" data-en="Click to read more">اضغط هنا لقراءة الوصف</span> <i class="fa-solid fa-arrow-left" style="font-size: 0.75rem;"></i>
                                         </span>
-                                    </p>
-                                    
-                                    <div class="tech-stack">
-                                        {% if project.technologies %}
-                                            <span class="tech-pill">{{ project.technologies }}</span>
-                                        {% else %}
-                                            <span class="tech-pill">DJANGO</span>
-                                            <span class="tech-pill">UI/UX</span>
-                                        {% endif %}
                                     </div>
-
-                                    <div class="d-flex gap-2 mt-4 flex-row-reverse">
+                                    
+                                    <div class="project-card-actions d-flex gap-2 flex-row-reverse">
                                         <a href="{% url 'project_detail' project.id %}" class="protocol-btn flex-grow-1">
                                             <i class="fa-solid fa-bolt"></i> <span data-ar="تفاصيل الموقع" data-en="View Details">تفاصيل الموقع</span>
                                         </a>

@@ -75,8 +75,9 @@ class ProjectAdmin(admin.ModelAdmin):
     form = ProjectAdminForm
 
     class Media:
-        # سكريبت زراير الذكاء الاصطناعي (تحسين النص + الترجمة التلقائية)
+        # أدوات الإدارة المخصصة: مساعد الكتابة وتنسيق صفحات المشاريع.
         js = ('admin/ai_assist.js',)
+        css = {'all': ('admin/project_admin.css',)}
 
     def get_urls(self):
         urls = super().get_urls()
@@ -103,22 +104,32 @@ class ProjectAdmin(admin.ModelAdmin):
             return JsonResponse({'error': error}, status=400)
         return JsonResponse({'result': result})
 
-    list_display = ('get_image', 'title', 'order', 'technologies', 'is_published', 'created_at')
-    list_display_links = ('get_image', 'title')
+    list_display = ('get_image', 'project_title', 'short_description', 'is_published', 'order', 'created_at')
+    list_display_links = ('get_image', 'project_title')
     list_editable = ('is_published', 'order')
-    search_fields = ('title', 'description', 'problem', 'solution', 'outcome', 'technologies')
+    # لا نعرض مربع البحث في قائمة المشاريع؛ الفلاتر والجدول يكفيان لهذه الشاشة.
+    search_fields = ()
     list_filter = ('is_published', 'created_at')
     ordering = ('order', '-created_at')
+    list_per_page = 20
     inlines = [ProjectParagraphInline, ProjectImageInline]
 
     fieldsets = (
-        ('البيانات الأساسية (عربي)', {
-            'fields': ('title', 'description', 'problem', 'solution', 'outcome', 'technologies', 'live_url', 'github_url', 'is_published', 'order')
+        ('المحتوى الأساسي — يظهر للزوار', {
+            'fields': ('title', 'description', 'problem', 'solution', 'outcome')
+        }),
+        ('إعدادات النشر والروابط', {
+            'fields': ('is_published', 'order', 'live_url', 'github_url')
+        }),
+        ('بيانات تقنية داخلية', {
+            'classes': ('collapse',),
+            'fields': ('technologies',),
+            'description': 'التقنيات محفوظة للاستخدام الداخلي فقط ولا تظهر في البورتفوليو بعد التعديل.'
         }),
         ('الترجمة الإنجليزية (اختياري)', {
             'classes': ('collapse',),
             'fields': ('title_en', 'description_en', 'problem_en', 'solution_en', 'outcome_en'),
-            'description': 'أضف الترجمة الإنجليزية هنا لتفعيل زرار تبديل اللغة في الموقع'
+            'description': 'أضف الترجمة الإنجليزية هنا لتفعيل زرار تبديل اللغة في الموقع.'
         }),
         ('رفع الصور', {
             'fields': ('upload_multiple_images',),
@@ -131,16 +142,27 @@ class ProjectAdmin(admin.ModelAdmin):
         for image in images:
             ProjectImage.objects.create(project=obj, image=image)
 
+    @admin.display(description='المعاينة', ordering='id')
     def get_image(self, obj):
         first_image = obj.images.first()
         if first_image and first_image.image:
             return format_html(
-                '<img src="{}" style="width: 80px; height: 50px; object-fit: cover; border-radius: 8px;" />',
-                first_image.image.url
+                '<img src="{}" class="project-admin-thumb" alt="{}" />',
+                first_image.image.url,
+                obj.title
             )
-        return "No Image"
+        return format_html('<span class="project-admin-empty">بدون صورة</span>')
 
-    get_image.short_description = 'Preview'
+    @admin.display(description='عنوان المشروع', ordering='title')
+    def project_title(self, obj):
+        return format_html('<strong class="project-admin-title">{}</strong>', obj.title)
+
+    @admin.display(description='الوصف المختصر')
+    def short_description(self, obj):
+        text = obj.description or obj.problem or ''
+        if len(text) > 115:
+            text = text[:112].rstrip() + '...'
+        return format_html('<span class="project-admin-description">{}</span>', text)
 
 
 @admin.register(ContactMessage)

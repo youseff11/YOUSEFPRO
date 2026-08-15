@@ -41,6 +41,9 @@ def compress_image_to_webp(django_file, max_dim=IMG_MAX_DIMENSION, quality=IMG_W
 class Project(models.Model):
     title = models.CharField(max_length=200, verbose_name="عنوان المشروع")
     description = models.TextField(verbose_name="وصف المشروع (مختصر)")
+    problem = models.TextField(blank=True, default='', verbose_name="المشكلة التي يحلها المشروع")
+    solution = models.TextField(blank=True, default='', verbose_name="الحل الذي تم تنفيذه")
+    outcome = models.TextField(blank=True, default='', verbose_name="القيمة أو النتيجة")
     technologies = models.CharField(max_length=200, blank=True, verbose_name="التقنيات المستخدمة (مثل: Django, HTML)")
     live_url = models.URLField(blank=True, verbose_name="رابط المشروع الحي (Live)")
     github_url = models.URLField(blank=True, verbose_name="رابط الكود (GitHub - إن وجد)")
@@ -48,6 +51,9 @@ class Project(models.Model):
     order = models.PositiveIntegerField(default=0, verbose_name="ترتيب العرض (الأصغر يظهر أولاً)", help_text="اكتب رقم لترتيب المشروع. المشروع ذو الرقم الأصغر يظهر أولاً.")
     title_en = models.CharField(max_length=200, blank=True, verbose_name="عنوان المشروع (إنجليزي)")
     description_en = models.TextField(blank=True, verbose_name="وصف المشروع بالإنجليزي (مختصر)")
+    problem_en = models.TextField(blank=True, default='', verbose_name="المشكلة (إنجليزي)")
+    solution_en = models.TextField(blank=True, default='', verbose_name="الحل (إنجليزي)")
+    outcome_en = models.TextField(blank=True, default='', verbose_name="القيمة أو النتيجة (إنجليزي)")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإضافة")
 
     class Meta:

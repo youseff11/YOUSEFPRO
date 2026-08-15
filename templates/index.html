@@ -222,6 +222,15 @@
     .project-date { color: #666; font-size: 0.7rem; letter-spacing: 2px; }
     .project-title { font-family: 'Alexandria', sans-serif; font-size: 1.4rem; font-weight: 800; margin: 5px 0 10px 0; background: linear-gradient(90deg, #ffffff, #a0a0b0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; direction: rtl; text-align: right; }
     .project-desc { color: #a0a0b0; font-family: 'Alexandria', sans-serif; font-size: 0.9rem; line-height: 1.6; font-weight: 400; direction: rtl; text-align: right; margin-bottom: 20px; }
+    .case-study-summary { display: grid; gap: 14px; margin-bottom: 18px; direction: rtl; text-align: right; }
+    .case-study-item { padding: 13px 15px; background: rgba(255,255,255,0.035); border-right: 2px solid var(--neon-cyan); border-radius: 10px; }
+    .case-study-item:nth-child(2) { border-right-color: var(--neon-purple); }
+    .case-study-item:nth-child(3) { border-right-color: #72f1b8; }
+    .case-study-label { display: block; color: var(--neon-cyan); font-size: 0.72rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 6px; }
+    .case-study-item:nth-child(2) .case-study-label { color: #d58bff; }
+    .case-study-item:nth-child(3) .case-study-label { color: #72f1b8; }
+    .case-study-text { color: #e3e3ed; font-family: 'Alexandria', sans-serif; font-size: 0.86rem; line-height: 1.75; margin: 0; }
+    .case-study-details-title { color: #fff; font-size: 0.82rem; font-weight: 800; margin: 18px 0 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .tech-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); direction: rtl; }
     .tech-pill { padding: 5px 10px; background: rgba(188, 19, 254, 0.05); border: 1px solid rgba(188, 19, 254, 0.4); color: #e2a0ff; font-size: 0.65rem; border-radius: 6px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; transition: 0.3s; }
     .card-vault:hover .tech-pill { background: rgba(188, 19, 254, 0.15); border-color: var(--neon-purple); box-shadow: 0 0 10px rgba(188, 19, 254, 0.2); }
@@ -470,13 +479,40 @@
                             <div class="card-vault interactive-card" style="padding: 30px; display: flex; flex-direction: column; height: 100%;">
                                 <h2 class="project-title" style="margin-bottom: 20px; text-align: center;" data-ar="{{ project.title }}" data-en="{{ project.title_en|default:project.title }}">{{ project.title }}</h2>
                                 <div class="desc-scroll" style="overflow-y: auto; flex-grow: 1; margin-bottom: 20px; padding-left: 10px; direction: rtl;" data-rtl-toggle>
-                                    {% for paragraph in project.paragraphs.all %}
+                                    {% if project.problem or project.solution or project.outcome %}
+                                    <div class="case-study-summary">
+                                        {% if project.problem %}
+                                        <div class="case-study-item">
+                                            <span class="case-study-label" data-ar="المشكلة" data-en="The Challenge">المشكلة</span>
+                                            <p class="case-study-text" data-ar="{{ project.problem }}" data-en="{{ project.problem_en|default:project.problem }}">{{ project.problem }}</p>
+                                        </div>
+                                        {% endif %}
+                                        {% if project.solution %}
+                                        <div class="case-study-item">
+                                            <span class="case-study-label" data-ar="الحل" data-en="The Solution">الحل</span>
+                                            <p class="case-study-text" data-ar="{{ project.solution }}" data-en="{{ project.solution_en|default:project.solution }}">{{ project.solution }}</p>
+                                        </div>
+                                        {% endif %}
+                                        {% if project.outcome %}
+                                        <div class="case-study-item">
+                                            <span class="case-study-label" data-ar="القيمة" data-en="The Value">القيمة</span>
+                                            <p class="case-study-text" data-ar="{{ project.outcome }}" data-en="{{ project.outcome_en|default:project.outcome }}">{{ project.outcome }}</p>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                    {% with details=project.paragraphs.all %}
+                                    {% if details %}
+                                    <h3 class="case-study-details-title" data-ar="تفاصيل التنفيذ" data-en="Implementation Details">تفاصيل التنفيذ</h3>
+                                    {% for paragraph in details %}
                                         <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300; margin-bottom: 15px;" data-ar="{{ paragraph.text }}" data-en="{{ paragraph.text_en|default:paragraph.text }}">
                                             {{ paragraph.text|linebreaksbr }}
                                         </p>
-                                    {% empty %}
-                                        <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300;" data-ar="{{ project.description }}" data-en="{{ project.description_en|default:project.description }}">{{ project.description }}</p>
                                     {% endfor %}
+                                    {% else %}
+                                        <p class="project-desc" style="color: #fff; font-size: 1.05rem; line-height: 1.9; font-weight: 300;" data-ar="{{ project.description }}" data-en="{{ project.description_en|default:project.description }}">{{ project.description }}</p>
+                                    {% endif %}
+                                    {% endwith %}
                                 </div>
                                 <button class="protocol-btn" style="width: 100%; margin-top: auto; justify-content: center;" onclick="this.closest('.project-flip-inner').classList.toggle('is-flipped')">
                                     <i class="fa-solid fa-rotate-left"></i> <span data-ar="رجوع" data-en="Back">رجوع</span>

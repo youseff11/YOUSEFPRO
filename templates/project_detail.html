@@ -166,6 +166,48 @@
         text-align: justify;
     }
 
+    .case-study-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin: 0 0 2.5rem;
+        direction: rtl;
+    }
+    .case-study-card {
+        padding: 20px;
+        min-height: 150px;
+        background: rgba(255,255,255,0.035);
+        border: 1px solid var(--glass-border);
+        border-top: 2px solid var(--neon-cyan);
+        border-radius: 16px;
+        backdrop-filter: blur(12px);
+    }
+    .case-study-card:nth-child(2) { border-top-color: var(--neon-purple); }
+    .case-study-card:nth-child(3) { border-top-color: #72f1b8; }
+    .case-study-card h3 {
+        margin: 0 0 10px;
+        color: var(--neon-cyan);
+        font-size: 0.82rem;
+        font-weight: 800;
+    }
+    .case-study-card:nth-child(2) h3 { color: #d58bff; }
+    .case-study-card:nth-child(3) h3 { color: #72f1b8; }
+    .case-study-card p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.88rem;
+        line-height: 1.9;
+        font-weight: 300;
+    }
+    .implementation-heading {
+        margin: 0 0 1.25rem;
+        color: #fff;
+        font-size: 1.15rem;
+        font-weight: 800;
+        border-right: 3px solid var(--neon-cyan);
+        padding-right: 12px;
+    }
+
     .project-detail-meta {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -460,6 +502,9 @@
             grid-template-columns: 1fr;
             gap: 15px;
         }
+        .case-study-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
@@ -487,7 +532,31 @@
                 {% endif %}
 
                 <h1 class="project-detail-title" data-ar="{{ project.title }}" data-en="{{ project.title_en|default:project.title }}">{{ project.title }}</h1>
-                
+
+                {% if project.problem or project.solution or project.outcome %}
+                <div class="case-study-grid" data-rtl-toggle>
+                    {% if project.problem %}
+                    <article class="case-study-card">
+                        <h3 data-ar="المشكلة" data-en="The Challenge">المشكلة</h3>
+                        <p data-ar="{{ project.problem }}" data-en="{{ project.problem_en|default:project.problem }}">{{ project.problem }}</p>
+                    </article>
+                    {% endif %}
+                    {% if project.solution %}
+                    <article class="case-study-card">
+                        <h3 data-ar="الحل" data-en="The Solution">الحل</h3>
+                        <p data-ar="{{ project.solution }}" data-en="{{ project.solution_en|default:project.solution }}">{{ project.solution }}</p>
+                    </article>
+                    {% endif %}
+                    {% if project.outcome %}
+                    <article class="case-study-card">
+                        <h3 data-ar="القيمة" data-en="The Value">القيمة</h3>
+                        <p data-ar="{{ project.outcome }}" data-en="{{ project.outcome_en|default:project.outcome }}">{{ project.outcome }}</p>
+                    </article>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <h2 class="implementation-heading" data-ar="تفاصيل التنفيذ" data-en="Implementation Details">تفاصيل التنفيذ</h2>
                 <div class="project-detail-desc" data-rtl-toggle>
                     {% for paragraph in project.paragraphs.all %}
                         <p style="margin-bottom: 1.5rem;" data-ar="{{ paragraph.text }}" data-en="{{ paragraph.text_en|default:paragraph.text }}">{{ paragraph.text|linebreaksbr }}</p>

@@ -106,18 +106,18 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ('get_image', 'title', 'order', 'technologies', 'is_published', 'created_at')
     list_display_links = ('get_image', 'title')
     list_editable = ('is_published', 'order')
-    search_fields = ('title', 'description', 'technologies')
+    search_fields = ('title', 'description', 'problem', 'solution', 'outcome', 'technologies')
     list_filter = ('is_published', 'created_at')
     ordering = ('order', '-created_at')
     inlines = [ProjectParagraphInline, ProjectImageInline]
 
     fieldsets = (
         ('البيانات الأساسية (عربي)', {
-            'fields': ('title', 'description', 'technologies', 'live_url', 'github_url', 'is_published', 'order')
+            'fields': ('title', 'description', 'problem', 'solution', 'outcome', 'technologies', 'live_url', 'github_url', 'is_published', 'order')
         }),
         ('الترجمة الإنجليزية (اختياري)', {
             'classes': ('collapse',),
-            'fields': ('title_en', 'description_en'),
+            'fields': ('title_en', 'description_en', 'problem_en', 'solution_en', 'outcome_en'),
             'description': 'أضف الترجمة الإنجليزية هنا لتفعيل زرار تبديل اللغة في الموقع'
         }),
         ('رفع الصور', {

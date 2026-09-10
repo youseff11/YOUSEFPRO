@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "regions": ["fra1"],
   "builds": [
     {
       "src": "Core/wsgi.py",
@@ -8,6 +9,20 @@
     }
   ],
   "routes": [
+    {
+      "src": "/media/(.*)",
+      "dest": "Core/wsgi.py",
+      "headers": {
+        "cache-control": "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=86400"
+      }
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "Core/wsgi.py",
+      "headers": {
+        "cache-control": "public, max-age=2592000, s-maxage=31536000, stale-while-revalidate=86400"
+      }
+    },
     {
       "src": "/(.*)",
       "dest": "Core/wsgi.py"

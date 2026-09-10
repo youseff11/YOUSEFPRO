@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load media_extras %}
 
 {% block title %}{{ project.title }} | يوسف{% endblock %}
 {% block meta_description %}{{ project.description|truncatechars:150 }}{% endblock %}
@@ -569,8 +570,11 @@
     <h2 class="snapshots-title">PROJECT <span>GALLERY</span></h2>
     <div class="images-gallery-grid">
         {% for image in project.images.all %}
-            <div class="gallery-thumb" onclick="openLightbox('{{ image.image.url }}')">
-                <img src="{{ image.image.url }}" alt="{{ project.title }}" loading="lazy" decoding="async">
+            <div class="gallery-thumb" onclick="openLightbox('{{ image.image.url|cld:'f_auto,q_auto,w_1600' }}')">
+                <img src="{{ image.image.url|cld:'f_auto,q_auto,w_600' }}"
+                     srcset="{{ image.image.url|cld_srcset:'400,600,900' }}"
+                     sizes="(max-width: 767px) 92vw, 380px"
+                     alt="{{ project.title }}" loading="lazy" decoding="async">
                 <div class="zoom-hint"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
             </div>
         {% endfor %}

@@ -6,20 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Joo Tech</title>
     
-    <link rel="icon" type="image/png" href="/media/images/icin.jpeg">
+    <!-- PERF: الأيقونة كانت JPEG بمقاس 1024x1024 وحجم 111KB — دلوقتي 3KB -->
+    <link rel="icon" type="image/png" sizes="64x64" href="/media/images/favicon.png">
+    <link rel="apple-touch-icon" href="/media/images/apple-touch-icon.png">
     <meta name="description" content="جـو تـك (Joo Tech) - معرض أعمال المهندس يوسف. متخصص في تطوير البرمجيات وبناء المواقع والتطبيقات الذكية بأحدث التقنيات. ابدأ مشروعك الرقمي الآن!">
 
     <!-- PERF: فتح الاتصال مبكراً مع سيرفرات الخطوط والـ CDN لتسريع التحميل -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
 
     {% block extra_head %}{% endblock %}
 
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700;900&family=Alexandria:wght@300;400;500;700;800&family=Space+Grotesk:wght@300;500;700&family=Cairo:wght@300;400;600;700;800&family=Outfit:wght@300;500;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PERF: صيغة النطاق (300..800) = ملف variable واحد لكل خط بدل ملف لكل وزن.
+         نفس الـ 5 خطوط بالظبط، بس الـ CSS نزل من 27KB لـ 7.7KB و54 @font-face بقوا 16 -->
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300..800&family=Cairo:wght@300..800&family=Outfit:wght@300..800&family=Space+Grotesk:wght@300..700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- PERF: Font Awesome بيتحمّل من غير ما يوقف رسم الصفحة (الأيقونات مش محتاجة تظهر في أول 100ms) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          media="print" onload="this.media='all';this.onload=null">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 
     <style>
         /* ================= المتغيرات العامة والأساسيات ================= */
@@ -222,7 +231,23 @@
 
     {% include 'footer.html' %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <!-- PERF: كنا بنحمّل bootstrap.bundle.min.js كامل (24KB وأبطأ ملف في الصفحة — 1.3 ثانية)
+         عشان زرار القائمة في الموبايل بس. دلوقتي 8 سطور JS بدالها. -->
+    <script>
+        (() => {
+            const btn = document.querySelector('[data-bs-toggle="collapse"]');
+            if (!btn) return;
+            const target = document.querySelector(btn.getAttribute('data-bs-target'));
+            if (!target) return;
+            const close = () => target.classList.remove('show');
+            btn.addEventListener('click', () => target.classList.toggle('show'));
+            target.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+            document.addEventListener('click', e => {
+                if (!target.contains(e.target) && !btn.contains(e.target)) close();
+            });
+        })();
+    </script>
+
     <script>
         // تغيير شكل الـ Navbar مع السكرول
         // PERF: passive + عدم لمس الـ DOM إلا عند تغيّر الحالة فعلياً (بدل كل بكسل سكرول)

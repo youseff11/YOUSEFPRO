@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
     'django.contrib.staticfiles',
+    'adminsortable2',
     'store',
 ]
 

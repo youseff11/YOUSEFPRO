@@ -5,6 +5,8 @@ from django.urls import path
 from django.http import JsonResponse
 import json
 
+from adminsortable2.admin import SortableAdminBase, SortableInlineAdminMixin
+
 from .models import Project, ProjectParagraph, ProjectImage, ContactMessage
 from .ai import ai_process
 
@@ -52,7 +54,7 @@ class ProjectParagraphInline(admin.StackedInline):
     fields = ('text', 'text_en', 'order')
 
 
-class ProjectImageInline(admin.TabularInline):
+class ProjectImageInline(SortableInlineAdminMixin, admin.TabularInline):
     model = ProjectImage
     extra = 0
     fields = ('preview_image', 'image', 'order')
@@ -71,7 +73,7 @@ class ProjectImageInline(admin.TabularInline):
 
 
 @admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(SortableAdminBase, admin.ModelAdmin):
     form = ProjectAdminForm
 
     class Media:

@@ -119,6 +119,11 @@ STORAGES = {
     "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
+# django-cloudinary-storage's "collectstatic" override still reads الإعداد القديم
+# مباشرة (settings.STATICFILES_STORAGE) بدل STORAGES الجديد، فلو مش موجود بيرمي
+# AttributeError. تعريفه هنا بنفس قيمة STORAGES['staticfiles']['BACKEND'] بيحل
+# المشكلة من غير ما يغيّر سلوك التخزين الفعلي (Django بيدّي الأولوية لـ STORAGES).
+STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 

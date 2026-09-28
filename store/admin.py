@@ -5,7 +5,7 @@ from django.urls import path
 from django.http import JsonResponse
 import json
 
-from adminsortable2.admin import SortableAdminBase, SortableInlineAdminMixin
+from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 
 from .models import Project, ProjectParagraph, ProjectImage, ContactMessage
 from .ai import ai_process
@@ -73,7 +73,7 @@ class ProjectImageInline(SortableInlineAdminMixin, admin.TabularInline):
 
 
 @admin.register(Project)
-class ProjectAdmin(SortableAdminBase, admin.ModelAdmin):
+class ProjectAdmin(SortableAdminMixin, admin.ModelAdmin):
     form = ProjectAdminForm
 
     class Media:
@@ -108,7 +108,9 @@ class ProjectAdmin(SortableAdminBase, admin.ModelAdmin):
 
     list_display = ('get_image', 'project_title', 'short_description', 'is_published', 'order', 'created_at')
     list_display_links = ('get_image', 'project_title')
-    list_editable = ('is_published', 'order')
+    # order اتشالت من هنا: SortableAdminMixin بيحوّل عمود order لمقبض سحب
+    # وبيحدّث القيمة بنفسه بالـ AJAX، فمحتاجة تفضل قابلة للسحب مش للكتابة اليدوية.
+    list_editable = ('is_published',)
     # لا نعرض مربع البحث في قائمة المشاريع؛ الفلاتر والجدول يكفيان لهذه الشاشة.
     search_fields = ()
     list_filter = ('is_published', 'created_at')
